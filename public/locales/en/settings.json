@@ -1,0 +1,8 @@
+{
+  "settings": "Settings",
+  "usage": "Here you can add your OpenAI API key. This will require you to pay for your own OpenAI usage but give you greater access to AgentGPT! You can additionally select any model OpenAI offers.",
+  "notice-access": "To use GPT-4, your API Key needs to have the correct access.",
+  "model": "Model:",
+  "key": "Key:",
+  "note-with-link": "<0>NOTE: To get a key, sign up for an OpenAI account and visit the following <1>link</1>. This key is only used in the current browser session.</0>"
+}

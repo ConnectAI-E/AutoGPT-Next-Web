@@ -1,0 +1,101 @@
+<div align="center">
+
+<h1 align="center">AutoGPT-Next-Web</h1>
+
+[English](./README.md) / 简体中文
+
+One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
+
+一键免费部署你的私人 AutoGPT-Next-Web 网页应用。
+
+[Demo](https://auto-agentgpt.com) / [Issues](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [Join Discord](https://discord.gg/Xnsbhg6Uvd) / [Buy Me a Coffee](https://www.buymeacoffee.com/elricliu)
+
+[演示](https://auto-agentgpt.com/) / [反馈](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [QQ 群](https://user-images.githubusercontent.com/38354472/232797111-d34a81b0-2739-4251-82b6-6093dc0eb0b6.png) / [微信](https://user-images.githubusercontent.com/38354472/232797309-9348f3a6-1dd7-422a-ad01-935247b1970e.png) / [知识星球](https://user-images.githubusercontent.com/38354472/232797482-c42222ff-74f9-4519-ba6f-752288dbe262.png) / [打赏开发者](https://user-images.githubusercontent.com/38354472/232796654-c749602b-c1d4-402b-8c31-e7c013b7a42d.png)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDogtiti%2FAutoGPT-Next-Web&env=NEXTAUTH_URL&env=NEXTAUTH_SECRET&env=OPENAI_API_KEY&env=DATABASE_URL&project-name=autogpt-next-web&repository-name=AutoGPT-Next-Web)
+
+![cover](./public/cover-zh.png)
+
+</div>
+
+## Discuss with us
+
+![cover](https://user-images.githubusercontent.com/38354472/232792153-683125c9-33bf-492f-ac6b-fbaab8c7b46e.png)
+
+## 特点
+
+- 使用 Vercel 一分钟一键式免费部署。
+- 与 AgentGPT 设计相匹配的 UI 和响应式设计，并且支持深色模式。
+- 极快的首页加载速度。
+- 您拥有自己的域名吗？如果有的话在绑定后，您可以随时随地快速访问它。
+
+### Docker 配置
+
+使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法，这里提供了便捷的脚本以帮助您快速入门。
+
+```bash
+./setup.sh --docker
+```
+
+### 本地开发环境配置
+
+如果您想在本地开发 AutoGPT-Next-Web，则最简单的方法是使用提供的设置脚本。
+
+```bash
+./setup.sh --local
+```
+
+### 手动配置
+
+> 您需要安装 [Nodejs +18 (LTS recommended)](https://nodejs.org/en/)
+
+1. Fork 此项目：
+
+- [点击 Fork](https://github.com/Dogtiti/AutoGPT-Next-Web/fork).
+
+2. 克隆代码库:
+
+```bash
+git clone git@github.com:YOU_USER/AutoGPT-Next-Web.git
+```
+
+3. 安装依赖项:
+
+```bash
+cd AutoGPT-Next-Web
+npm install
+```
+
+4. 创建一个名为 **.env** 的文件，包含以下内容:
+
+> 环境变量必须匹配以下 [schema](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/src/env/schema.mjs).
+
+```bash
+#  部署环境:
+NODE_ENV=development
+
+# NNext Auth 配置:
+# 使用 `openssl rand -base64 32` 生成密钥
+NEXTAUTH_SECRET=changeme
+NEXTAUTH_URL=http://localhost:3000
+DATABASE_URL=file:./db.sqlite
+
+# 您的 Open API 密钥
+OPENAI_API_KEY=changeme
+```
+
+5. 修改 Prisma schema 以使用 SQLite
+
+```bash
+./prisma/useSqlite.sh
+```
+
+**Note:** 如果您希望使用 SQLite，则必须执行此操作。
+
+6. 准备就绪，现在运行:
+
+```bash
+# C创建数据库迁移
+npx prisma db push
+npm run dev
+```

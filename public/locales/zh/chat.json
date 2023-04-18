@@ -1,0 +1,20 @@
+{
+  "create-agent-and-deploy": "> 添加名称/目标并部署，即可创建代理！",
+  "provide-api-key-via-settings": "您可以在设置选项卡中提供自己的 OpenAI API 密钥！",
+  "donate-help": "💝️ 支持 AutoGPT Next Web 的进步 💝<br />请考虑捐赠以资助我们高昂的基础设施成本。",
+  "donate-now": "现在捐助",
+  "restart": "如果这需要超过 30 秒，请重新开始。",
+  "errors": {
+    "run-with-filled-customApiKey": "获取初始任务数组时出现错误。请确认你的 API 密钥不是免费版，让你的目标更加明确，或者修正你的目标使其符合我们模型的政策要求。正在关闭...",
+    "run-with-empty-customApiKey": "无法获取初始任务数组。请重试，让你的目标更加明确，或者修正你的目标使其符合我们模型的政策要求。正在关闭...",
+    "adding-additional-task": "添加额外的任务时发生了错误。可能是因为这些任务违反了我们模型的策略。不过，我们还是继续处理其他任务。",
+    "loop-with-filled-customApiKey": "该代理程序运行时间过长 (50个回合)。为了节省您的费用，该代理程序将关闭。在未来，迭代次数将是可配置的。",
+    "loop-with-empty-customApiKey": "非常抱歉，由于这只是一个演示，我们的代理程序不能运行太长时间。请注意，如果您需要更长的运行时间，请在设置中提供自己的API密钥。正在关闭..."
+  },
+  "all-tasks-completed": "所有任务已完成。正在关闭...",
+  "manually-shutdown": "代理已被手动关闭。",
+  "task-marked-as-complete": "任务已标记为已完成！",
+  "new-goal": "开始追寻一个新的目标：",
+  "added-task": "已添加任务。",
+  "thinking": "思考中..."
+}

@@ -1,0 +1,8 @@
+{
+  "settings": "设置",
+  "usage": "在这里您可以添加您的 OpenAI API Key。这将要求您为自己的 OpenAI 使用付费，但是将为您提供更多的 AgentGPT 访问权限！您还可以选择任何 OpenAI 提供的模型。",
+  "notice-access": "要使用 GPT-4 ，您的 API Key 需要具有正确的访问权限。",
+  "model": "模型：",
+  "key": "秘钥：",
+  "note-with-link": "<0>注意：若要获取密钥，请注册 OpenAI 账户并访问以下<1>链接</1>。此密钥仅在当前浏览器会话中使用。</0>"
+}
