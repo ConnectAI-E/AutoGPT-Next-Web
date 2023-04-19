@@ -75,7 +75,7 @@ npm install
 NODE_ENV=development
 
 # NNext Auth 配置:
-# 使用 `openssl rand -base64 32` 生成密钥
+# 使用 `openssl rand -base64 32` 生成密钥，或者通过其他网页工具生成秘钥，例如 https://generate-secret.vercel.app/
 NEXTAUTH_SECRET=changeme
 NEXTAUTH_URL=http://localhost:3000
 DATABASE_URL=file:./db.sqlite
