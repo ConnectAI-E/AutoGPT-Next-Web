@@ -190,9 +190,6 @@ const Drawer = ({
                 session={session}
               />
             ))}
-          {env.NEXT_PUBLIC_FF_AUTH_ENABLED && (
-            <AuthItem session={session} signIn={signIn} signOut={signOut} />
-          )}
           <hr className="my-2 border-white/20" />
         </div>
       </div>
