@@ -23,6 +23,7 @@
   "current-tasks": "Current tasks",
   "coming-soon": " Coming Soon!",
   "back": "Back",
-  "image":"Image"
-
+  "image": "Image",
+  "delete": "Delete",
+  "share": "Share"
 }

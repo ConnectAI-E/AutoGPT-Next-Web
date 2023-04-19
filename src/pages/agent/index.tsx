@@ -1,4 +1,4 @@
-import { type NextPage } from "next";
+import { type NextPage, type GetStaticProps } from "next";
 import DefaultLayout from "../../layout/default";
 import Button from "../../components/Button";
 
@@ -10,10 +10,13 @@ import type { Message } from "../../types/agentTypes";
 import Toast from "../../components/toast";
 import { FaTrash, FaShare, FaBackspace } from "react-icons/fa";
 import { env } from "../../env/client.mjs";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const AgentPage: NextPage = () => {
   const [showCopied, setShowCopied] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const agentId = typeof router.query.id === "string" ? router.query.id : "";
 
@@ -55,7 +58,7 @@ const AgentPage: NextPage = () => {
           }}
           enabledClassName={"bg-green-600 hover:bg-green-400"}
         >
-          Share
+          {t("share")}
         </Button>
         <Button
           icon={<FaTrash />}
@@ -64,15 +67,15 @@ const AgentPage: NextPage = () => {
           }}
           enabledClassName={"bg-red-600 hover:bg-red-400"}
         >
-          Delete
+          {t("delete")}
         </Button>
         <Button icon={<FaBackspace />} onClick={() => void router.push("/")}>
-          Back
+          {t("back")}
         </Button>
       </div>
       <Toast
         model={[showCopied, setShowCopied]}
-        title="Copied to clipboard! 🚀"
+        title={`${t("copied")} 🚀}`}
         className="bg-gray-950 text-sm"
       />
     </DefaultLayout>
@@ -80,3 +83,14 @@ const AgentPage: NextPage = () => {
 };
 
 export default AgentPage;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? "zh", [
+      "common",
+      "help",
+      "settings",
+      "chat",
+    ])),
+  },
+});

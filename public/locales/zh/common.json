@@ -23,5 +23,7 @@
   "current-tasks": "当前任务",
   "coming-soon": "即将到来！",
   "back": "返回",
-  "image":"图片"
+  "image": "图片",
+  "delete": "删除",
+  "share": "分享"
 }
