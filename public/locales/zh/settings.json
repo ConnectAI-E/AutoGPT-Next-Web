@@ -1,8 +1,14 @@
 {
   "settings": "设置",
   "usage": "在这里您可以添加您的 OpenAI API Key。这将要求您为自己的 OpenAI 使用付费，但是将为您提供更多的 AgentGPT 访问权限！您还可以选择任何 OpenAI 提供的模型。",
-  "notice-access": "要使用 GPT-4 ，您的 API Key 需要具有正确的访问权限。",
   "model": "模型：",
   "key": "秘钥：",
-  "note-with-link": "<0>注意：若要获取密钥，请注册 OpenAI 账户并访问以下<1>链接</1>。此密钥仅在当前浏览器会话中使用。</0>"
+  "gpt4-notice": "<0>为了使用GPT-4模型，您还需要提供GPT-4的API密钥。您可以在这里申请<1>API密钥</1>。（ChatGPT Plus的订阅无法使用)</0>",
+  "invalid-key": "无效的key，请确保您已经在OpenAI账户中付费了。",
+  "advanceds-ettings": "高级设置",
+  "temp": "随机性：",
+  "temp-tips": "较高的值会使输出变得更随机，而较低的值会使输出更加聚焦和确定性。",
+  "loop": "循环 #：",
+  "loop-tips": "控制代理程序将运行的最大循环次数（较高的值将产生更多的 API 调用）。",
+  "api-key-notice": "<0>注意：要获取密钥，请注册OpenAI账户并访问以下<1>链接。</1>此密钥仅在当前浏览器会话中使用。</0>"
 }

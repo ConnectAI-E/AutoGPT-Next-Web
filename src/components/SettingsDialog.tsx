@@ -57,9 +57,7 @@ export default function SettingsDialog({
       setCustomApiKey(key);
       close();
     } else {
-      alert(
-        "key is invalid, please ensure that you have set up billing in your OpenAI account"
-      );
+      alert(t("invalid-key"));
     }
   };
 
@@ -79,15 +77,14 @@ export default function SettingsDialog({
         left={
           <>
             <FaThermometerFull />
-            <span className="ml-2">Temp: </span>
+            <span className="ml-2">{t("temp")}</span>
           </>
         }
         value={customTemperature}
         onChange={(e) => setCustomTemperature(parseFloat(e.target.value))}
         type="range"
         toolTipProperties={{
-          message:
-            "Higher values will make the output more random, while lower values make the output more focused and deterministic.",
+          message: t("temp-tips") as string,
           disabled: false,
         }}
         attributes={{
@@ -101,7 +98,7 @@ export default function SettingsDialog({
         left={
           <>
             <FaSyncAlt />
-            <span className="ml-2">Loop #: </span>
+            <span className="ml-2">{t("loop")}</span>
           </>
         }
         value={customMaxLoops}
@@ -109,8 +106,7 @@ export default function SettingsDialog({
         onChange={(e) => setCustomMaxLoops(parseFloat(e.target.value))}
         type="range"
         toolTipProperties={{
-          message:
-            "Controls the maximum number of loops that the agent will run (higher value will make more API calls).",
+          message: t("loop-tips") as string,
           disabled: false,
         }}
         attributes={{
@@ -124,16 +120,12 @@ export default function SettingsDialog({
 
   return (
     <Dialog
-      header="Settings ⚙"
+      header={`${t("settings")} ⚙`}
       isShown={show}
       close={handleClose}
-      footerButton={<Button onClick={handleSave}>Save</Button>}
+      footerButton={<Button onClick={handleSave}>{t("common:save")}</Button>}
     >
-      <p>
-        Here you can add your OpenAI API key. This will require you to pay for
-        your own OpenAI usage but give you greater access to AgentGPT! You can
-        additionally select any model OpenAI offers.
-      </p>
+      <p>{t("usage")}</p>
       <br />
       <p
         className={
@@ -144,17 +136,19 @@ export default function SettingsDialog({
       >
         <FaExclamationCircle className="inline-block" />
         &nbsp;
-        <b>
-          To use the GPT-4 model, you need to also provide the API key for
-          GPT-4. You can request for it&nbsp;
-          <a
-            href="https://openai.com/waitlist/gpt-4-api"
-            className="text-blue-500"
-          >
-            here
-          </a>
-          . (ChatGPT Plus subscription will not work)
-        </b>
+        <Trans i18nKey="gpt4-notice" ns="settings">
+          <b>
+            To use the GPT-4 model, you need to also provide the API key for
+            GPT-4. You can request for it&nbsp;
+            <a
+              href="https://openai.com/waitlist/gpt-4-api"
+              className="text-blue-500"
+            >
+              here
+            </a>
+            . (ChatGPT Plus subscription will not work)
+          </b>
+        </Trans>
       </p>
       <br />
       <div className="text-md relative flex-auto p-2 leading-relaxed">
@@ -186,20 +180,22 @@ export default function SettingsDialog({
         <br className="md:inline" />
         <Accordion
           child={advancedSettings}
-          name="Advanced Settings"
+          name={t("advanceds-ettings")}
         ></Accordion>
         <br />
-        <strong className="mt-10">
-          NOTE: To get a key, sign up for an OpenAI account and visit the
-          following{" "}
-          <a
-            href="https://platform.openai.com/account/api-keys"
-            className="text-blue-500"
-          >
-            link.
-          </a>{" "}
-          This key is only used in the current browser session
-        </strong>
+        <Trans i18nKey="api-key-notice" ns="settings">
+          <strong className="mt-10">
+            NOTE: To get a key, sign up for an OpenAI account and visit the
+            following
+            <a
+              href="https://platform.openai.com/account/api-keys"
+              className="text-blue-500"
+            >
+              link.
+            </a>
+            This key is only used in the current browser session
+          </strong>
+        </Trans>
       </div>
     </Dialog>
   );

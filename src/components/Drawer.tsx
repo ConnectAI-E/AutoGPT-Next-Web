@@ -103,7 +103,7 @@ const Drawer = ({
       >
         <div className="flex flex-col gap-1 overflow-hidden">
           <div className="mb-2 flex justify-center gap-2">
-            My Agent(s)
+            {t("my-agents")}
             <button
               className="z-40 rounded-md border-2 border-white/20 bg-zinc-900 p-2 text-white hover:bg-zinc-700 md:hidden"
               onClick={toggleDrawer}
@@ -122,16 +122,9 @@ const Drawer = ({
               />
             ))}
 
-            {status === "unauthenticated" && (
-              <div>
-                Sign in to be able to save agents and manage your account!
-              </div>
-            )}
+            {status === "unauthenticated" && <div>{t("sign-in")}</div>}
             {status === "authenticated" && userAgents.length === 0 && (
-              <div>
-                You need to create and save your first agent before anything
-                shows up here!
-              </div>
+              <div>{t("create-agent")}</div>
             )}
           </ul>
         </div>
@@ -200,36 +193,7 @@ const Drawer = ({
           {env.NEXT_PUBLIC_FF_AUTH_ENABLED && (
             <AuthItem session={session} signIn={signIn} signOut={signOut} />
           )}
-          <DrawerItem
-            icon={<FaQuestionCircle />}
-            text="Help"
-            onClick={showHelp}
-          />
-          <DrawerItem icon={<FaCog />} text="Settings" onClick={showSettings} />
           <hr className="my-2 border-white/20" />
-          <div className="flex flex-row items-center">
-            <DrawerItem
-              icon={<FaDiscord size={30} />}
-              text="Discord"
-              href="https://discord.gg/jdSBAnmdnY"
-              target="_blank"
-              small
-            />
-            <DrawerItem
-              icon={<FaTwitter size={30} />}
-              text="Twitter"
-              href="https://twitter.com/asimdotshrestha/status/1644883727707959296"
-              target="_blank"
-              small
-            />
-            <DrawerItem
-              icon={<FaGithub size={30} />}
-              text="GitHub"
-              href="https://github.com/reworkd/AgentGPT"
-              target="_blank"
-              small
-            />
-          </div>
         </div>
       </div>
     </>

@@ -1,8 +1,14 @@
 {
   "settings": "Settings",
   "usage": "Here you can add your OpenAI API key. This will require you to pay for your own OpenAI usage but give you greater access to AgentGPT! You can additionally select any model OpenAI offers.",
-  "notice-access": "To use GPT-4, your API Key needs to have the correct access.",
   "model": "Model:",
   "key": "Key:",
-  "note-with-link": "<0>NOTE: To get a key, sign up for an OpenAI account and visit the following <1>link</1>. This key is only used in the current browser session.</0>"
+  "gpt4-notice": "<0> To use the GPT-4 model, you need to also provide the API key for GPT-4. You can request for it <1>here</1>。(ChatGPT Plus subscription will not work)</0>",
+  "invalid-key": "key is invalid, please ensure that you have set up billing in your OpenAI account",
+  "advanceds-ettings": "Advanced Settings",
+  "temp": "Temp:",
+  "temp-tips": "Higher values will make the output more random, while lower values make the output more focused and deterministic.",
+  "loop": "Loop #:",
+  "loop-tips": "Controls the maximum number of loops that the agent will run (higher value will make more API calls).",
+  "api-key-notice": "<0>NOTE: To get a key, sign up for an OpenAI account and visit the following <1>link.</1>,This key is only used in the current browser session</0>"
 }

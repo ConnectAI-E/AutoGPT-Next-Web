@@ -33,6 +33,7 @@ interface ChatWindowProps extends HeaderProps {
   showDonation: boolean;
   fullscreen?: boolean;
   scrollToBottom?: boolean;
+  showWeChatPay: () => void;
 }
 
 const messageListId = "chat-window-message-list";
@@ -131,10 +132,11 @@ interface HeaderProps {
   title?: string | ReactNode;
   messages: Message[];
   onSave?: (format: string) => void;
-  showWeChatPay: () => void;
 }
 
 const MacWindowHeader = (props: HeaderProps) => {
+  const { t } = useTranslation(["chat", "common"]);
+
   const saveElementAsImage = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -188,21 +190,21 @@ const MacWindowHeader = (props: HeaderProps) => {
           delay={0.8}
           onClick={() => props.onSave?.("db")}
           icon={<FaSave size={12} />}
-          text={"Save"}
+          text={t("common:save") as string}
         />
       )}
       <WindowButton
         delay={0.7}
         onClick={(): void => saveElementAsImage(messageListId)}
         icon={<FaImage size={12} />}
-        text={"Image"}
+        text={t("common:image") as string}
       />
 
       <WindowButton
         delay={0.8}
         onClick={(): void => copyElementText(messageListId)}
         icon={<FaClipboard size={12} />}
-        text={"Copy"}
+        text={t("common:copy") as string}
       />
       <PDFButton messages={props.messages} />
     </div>

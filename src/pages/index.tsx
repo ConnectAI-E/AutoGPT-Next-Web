@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { type NextPage } from "next";
+import { type NextPage, type GetStaticProps } from "next";
 import DefaultLayout from "../layout/default";
 import ChatWindow from "../components/ChatWindow";
 import Drawer from "../components/Drawer";
@@ -112,7 +112,7 @@ const Home: NextPage = () => {
 
   const proTitle = (
     <>
-      AgentGPT<span className="ml-1 text-amber-500/90">Pro</span>
+      AutoGPT Next Web<span className="ml-1 text-amber-500/90">Pro</span>
     </>
   );
 
@@ -195,7 +195,7 @@ const Home: NextPage = () => {
               <ChatWindow
                 className="sm:mt-4"
                 messages={messages}
-                title={session?.user.subscriptionId ? proTitle : "AgentGPT"}
+                title={session?.user.subscriptionId ? proTitle : "AutoGPT"}
                 showDonation={
                   status != "loading" && !session?.user.subscriptionId
                 }
@@ -224,7 +224,7 @@ const Home: NextPage = () => {
                   left={
                     <>
                       <FaRobot />
-                      <span className="ml-2">{t("name")}</span>
+                      <span className="ml-2">{t("agent-name")}</span>
                     </>
                   }
                   value={name}
