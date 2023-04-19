@@ -3,13 +3,14 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   FaBrain,
   FaClipboard,
+  FaCopy,
+  FaDatabase,
+  FaImage,
   FaListAlt,
   FaPlayCircle,
   FaSave,
   FaStar,
-  FaCopy,
 } from "react-icons/fa";
-import autoAnimate from "@formkit/auto-animate";
 import PopIn from "./motions/popin";
 import Expand from "./motions/expand";
 import * as htmlToImage from "html-to-image";
@@ -18,15 +19,20 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import Button from "./Button";
-import { useRouter } from "next/router";
-import { clientEnv } from "../env/schema.mjs";
 import { useTranslation, Trans } from "next-i18next";
 
-interface ChatWindowProps {
+import WindowButton from "./WindowButton";
+import PDFButton from "./pdf/PDFButton";
+import FadeIn from "./motions/FadeIn";
+import type { Message } from "../types/agentTypes";
+import clsx from "clsx";
+
+interface ChatWindowProps extends HeaderProps {
   children?: ReactNode;
   className?: string;
-  messages: Message[];
-  showWeChatPay: () => void;
+  showDonation: boolean;
+  fullscreen?: boolean;
+  scrollToBottom?: boolean;
 }
 
 const messageListId = "chat-window-message-list";
@@ -35,6 +41,11 @@ const ChatWindow = ({
   messages,
   children,
   className,
+  title,
+  showDonation,
+  onSave,
+  fullscreen,
+  scrollToBottom,
   showWeChatPay,
 }: ChatWindowProps) => {
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
@@ -54,16 +65,12 @@ const ChatWindow = ({
 
   useEffect(() => {
     // Scroll to bottom on re-renders
-    if (scrollRef && scrollRef.current) {
+    if (scrollToBottom && scrollRef && scrollRef.current) {
       if (!hasUserScrolled) {
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
       }
     }
   });
-
-  useEffect(() => {
-    scrollRef.current && autoAnimate(scrollRef.current);
-  }, [messages]);
 
   return (
     <div
@@ -72,25 +79,26 @@ const ChatWindow = ({
         (className ?? "")
       }
     >
-      <MacWindowHeader />
+      <MacWindowHeader title={title} messages={messages} onSave={onSave} />
       <div
-        className="mb-2 mr-2 h-[14em] overflow-y-auto overflow-x-hidden sm-h:h-[17em] md-h:h-[22em] lg-h:h-[30em] "
+        className={clsx(
+          "mb-2 mr-2 ",
+          (fullscreen && "max-h-[75vh] flex-grow overflow-auto") ||
+            "window-heights"
+        )}
         ref={scrollRef}
         onScroll={handleScroll}
         id={messageListId}
       >
         {messages.map((message, index) => (
-          <ChatMessage key={`${index}-${message.type}`} message={message} />
+          <FadeIn key={`${index}-${message.type}`}>
+            <ChatMessage message={message} />
+          </FadeIn>
         ))}
         {children}
 
         {messages.length === 0 && (
           <>
-            {!!clientEnv.NEXT_PUBLIC_STRIPE_DONATION_ENABLED && (
-              <Expand delay={0.7} type="spring">
-                <DonationMessage showWeChatPay={showWeChatPay} />
-              </Expand>
-            )}
             <Expand delay={0.8} type="spring">
               <ChatMessage
                 message={{
@@ -106,6 +114,11 @@ const ChatWindow = ({
                   value: `📢 ${t("provide-api-key-via-settings")}`,
                 }}
               />
+              {showDonation && (
+                <Expand delay={0.7} type="spring">
+                  <DonationMessage showWeChatPay={showWeChatPay} />
+                </Expand>
+              )}
             </Expand>
           </>
         )}
@@ -114,9 +127,14 @@ const ChatWindow = ({
   );
 };
 
-const MacWindowHeader = () => {
-  const { t } = useTranslation(["chat", "common"]);
+interface HeaderProps {
+  title?: string | ReactNode;
+  messages: Message[];
+  onSave?: (format: string) => void;
+  showWeChatPay: () => void;
+}
 
+const MacWindowHeader = (props: HeaderProps) => {
   const saveElementAsImage = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -152,7 +170,7 @@ const MacWindowHeader = () => {
   };
 
   return (
-    <div className="flex items-center gap-1 rounded-t-3xl p-3">
+    <div className="flex items-center gap-1 overflow-hidden rounded-t-3xl p-3">
       <PopIn delay={0.4}>
         <div className="h-3 w-3 rounded-full bg-red-500" />
       </PopIn>
@@ -162,26 +180,31 @@ const MacWindowHeader = () => {
       <PopIn delay={0.6}>
         <div className="h-3 w-3 rounded-full bg-green-500" />
       </PopIn>
-      <div className="flex flex-grow"></div>
-      <PopIn delay={0.7}>
-        <div
-          className="mr-1 flex cursor-pointer items-center gap-2 rounded-full border-2 border-white/30 p-1 px-2 text-xs hover:bg-white/10"
-          onClick={(): void => saveElementAsImage(messageListId)}
-        >
-          <FaSave size={12} />
-          <p className="font-mono">{t("common:save")}</p>
-        </div>
-      </PopIn>
+      <div className="flex flex-grow font-mono text-sm font-bold text-gray-600 sm:ml-2">
+        {props.title}
+      </div>
+      {props.onSave && (
+        <WindowButton
+          delay={0.8}
+          onClick={() => props.onSave?.("db")}
+          icon={<FaSave size={12} />}
+          text={"Save"}
+        />
+      )}
+      <WindowButton
+        delay={0.7}
+        onClick={(): void => saveElementAsImage(messageListId)}
+        icon={<FaImage size={12} />}
+        text={"Image"}
+      />
 
-      <PopIn delay={0.8}>
-        <div
-          className="mr-1 flex cursor-pointer items-center gap-2 rounded-full border-2 border-white/30 p-1 px-2 text-xs hover:bg-white/10"
-          onClick={(): void => copyElementText(messageListId)}
-        >
-          <FaClipboard size={12} />
-          <p className="font-mono">{t("common:copy")}</p>
-        </div>
-      </PopIn>
+      <WindowButton
+        delay={0.8}
+        onClick={(): void => copyElementText(messageListId)}
+        icon={<FaClipboard size={12} />}
+        text={"Copy"}
+      />
+      <PDFButton messages={props.messages} />
     </div>
   );
 };
@@ -259,9 +282,8 @@ const ChatMessage = ({ message }: { message: Message }) => {
 
 const DonationMessage = ({ showWeChatPay }: { showWeChatPay: () => void }) => {
   const { t } = useTranslation(["chat", "common"]);
-
   return (
-    <div className="mx-2 my-1 flex flex-col gap-2 rounded-lg border-[2px] border-white/10 bg-blue-500/20 p-1 font-mono hover:border-[#1E88E5]/40 sm:mx-4 sm:flex-row sm:p-3 sm:text-center sm:text-base">
+    <div className="mx-2 my-1 flex flex-col gap-2 rounded-lg border-[2px] border-white/10 bg-blue-500/20 p-1 text-center font-mono hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base md:flex-row">
       <div className="max-w-none flex-grow">
         <Trans i18nKey="donate-help" ns="chat">
           💝️ Help support the advancement of AutoGPT Next Web. 💝 <br /> Please
@@ -307,12 +329,6 @@ const getMessagePrefix = (message: Message) => {
       return message.info ? message.info : "Executing:";
   }
 };
-
-export interface Message {
-  type: "goal" | "thinking" | "task" | "action" | "system";
-  info?: string;
-  value: string;
-}
 
 export default ChatWindow;
 export { ChatMessage };

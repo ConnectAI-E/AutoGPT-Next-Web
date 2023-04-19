@@ -2,11 +2,11 @@ import { type ReactNode } from "react";
 import Head from "next/head";
 import DottedGridBackground from "../components/DottedGridBackground";
 import clsx from "clsx";
-import Script from "next/script";
 
 interface LayoutProps {
   children: ReactNode;
   className?: string;
+  centered?: boolean;
 }
 
 const DefaultLayout = (props: LayoutProps) => {
@@ -34,13 +34,10 @@ const DefaultLayout = (props: LayoutProps) => {
           content="sG4QDkC8g2oxKSopgJdIe2hQ_SaJDaEaBjwCXZNkNWA"
         />
         <link rel="icon" href="/favicon.ico" />
-        <Script
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-          data-domain="auto-agentgpt.com"
-        />
       </Head>
-      <DottedGridBackground className={clsx("min-h-screen", props.className)}>
+      <DottedGridBackground
+        className={clsx("min-w-screen min-h-screen", props.className)}
+      >
         {props.children}
       </DottedGridBackground>
     </div>

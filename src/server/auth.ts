@@ -21,33 +21,32 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+    } & DefaultSession["user"] &
+      User;
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    role?: string;
+    subscriptionId: string | undefined;
+  }
 }
 
 const providers = [
-  //   GoogleProvider({
-  //     clientId: serverEnv.GOOGLE_CLIENT_ID ?? "",
-  //     clientSecret: serverEnv.GOOGLE_CLIENT_SECRET ?? "",
-  //     allowDangerousEmailAccountLinking: true,
-  //   }),
-  //   GithubProvider({
-  //     clientId: serverEnv.GITHUB_CLIENT_ID ?? "",
-  //     clientSecret: serverEnv.GITHUB_CLIENT_SECRET ?? "",
-  //     allowDangerousEmailAccountLinking: true,
-  //   }),
-  //   DiscordProvider({
-  //     clientId: serverEnv.DISCORD_CLIENT_ID ?? "",
-  //     clientSecret: serverEnv.DISCORD_CLIENT_SECRET ?? "",
-  //     allowDangerousEmailAccountLinking: true,
-  //   }),
+  GoogleProvider({
+    clientId: serverEnv.GOOGLE_CLIENT_ID ?? "",
+    clientSecret: serverEnv.GOOGLE_CLIENT_SECRET ?? "",
+    allowDangerousEmailAccountLinking: true,
+  }),
+  GithubProvider({
+    clientId: serverEnv.GITHUB_CLIENT_ID ?? "",
+    clientSecret: serverEnv.GITHUB_CLIENT_SECRET ?? "",
+    allowDangerousEmailAccountLinking: true,
+  }),
+  DiscordProvider({
+    clientId: serverEnv.DISCORD_CLIENT_ID ?? "",
+    clientSecret: serverEnv.DISCORD_CLIENT_SECRET ?? "",
+    allowDangerousEmailAccountLinking: true,
+  }),
 ];
 
 /**
@@ -60,13 +59,14 @@ export const authOptions: NextAuthOptions = {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
+        session.user.role = user.role;
+        session.user.subscriptionId = user.subscriptionId;
       }
       return session;
     },
   },
   adapter: PrismaAdapter(prisma),
-  providers: [],
+  providers,
   theme: {
     colorScheme: "dark",
     logo: "https://auto-agentgpt.com/logo-white.svg",
