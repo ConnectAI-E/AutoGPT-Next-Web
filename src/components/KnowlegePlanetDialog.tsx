@@ -21,13 +21,12 @@ export default function KnowlegePlanetDialog({
 
   return (
     <Dialog header={header} isShown={show} close={close}>
-      <div className="text-md relative flex-auto p-2 leading-relaxed">
+      <div className="text-md relative h-[300px] w-[300px] flex-auto p-2 leading-relaxed">
         <Image
           src="/knowlege-planet.png"
           alt="knowlege-planet"
           loading="eager"
-          width={400}
-          height={400}
+          fill
           priority={true}
           className="object-contain"
         />
