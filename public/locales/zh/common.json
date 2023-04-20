@@ -3,7 +3,9 @@
   "help": "帮助",
   "settings": "设置",
   "new-agent": "新的代理",
-  "restart-agent": "点击上方按钮以重新启动。在未来，这将是您已部署代理程序的列表！",
+  "sign-in": "请登录以保存代理并管理您的帐户！",
+  "create-agent": "在此处显示任何内容之前，您需要创建并保存您的第一个代理！",
+  "my-agents": " 我的代理",
   "close": "关闭",
   "weChat": "微信",
   "weChatPay": "微信支付",
@@ -20,5 +22,8 @@
   "stop-agent": "停止代理程序",
   "current-tasks": "当前任务",
   "coming-soon": "即将到来！",
-  "back": "返回"
+  "back": "返回",
+  "image": "图片",
+  "delete": "删除",
+  "share": "分享"
 }

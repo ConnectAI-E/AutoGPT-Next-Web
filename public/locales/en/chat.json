@@ -5,16 +5,18 @@
   "donate-now": "Donate Now",
   "restart": "Restart if this takes more than 30 seconds",
   "errors": {
-    "run-with-filled-customApiKey": "ERROR retrieving initial tasks array. Make sure your API key is not the free tier, make your goal more clear, or revise your goal such that it is within our model's policies to run. Shutting Down.",
-    "run-with-empty-customApiKey": "ERROR retrieving initial tasks array. Retry, make your goal more clear, or revise your goal such that it is within our model's policies to run. Shutting Down.",
     "adding-additional-task": "ERROR adding additional task(s). It might have been against our model's policies to run them. Continuing.",
     "loop-with-filled-customApiKey": "This agent has been running for too long (50 Loops). To save your wallet this agent is shutting down. In the future, the number of iterations will be configurable.",
-    "loop-with-empty-customApiKey": "We're sorry, because this is a demo, we cannot have our agents running for too long. Note, if you desire longer runs, please provide your own API key in Settings. Shutting down."
+    "loop-with-empty-customApiKey": "We're sorry, because this is a demo, we cannot have our agents running for too long. Note, if you desire longer runs, please provide your own API key in Settings. Shutting down.",
+    "accessing-apis": "ERROR accessing OpenAI APIs. Please check your API key or try again later",
+    "accessing-using-apis": "ERROR using your OpenAI API key. You've exceeded your current quota, please check your plan and billing details.",
+    "accessing-gtp4": "ERROR your API key does not have GPT-4 access. You must first join OpenAI's wait-list. (This is different from ChatGPT Plus)",
+    "initial-tasks": "ERROR retrieving initial tasks array. Retry, make your goal more clear, or revise your goal such that it is within our model's policies to run. Shutting Down."
   },
   "all-tasks-completed": "All tasks completed. Shutting down.",
   "manually-shutdown": "The agent has been manually shutdown.",
   "task-marked-as-complete": "Task marked as complete!",
-  "new-goal":"Embarking on a new goal:",
-  "added-task":"Added task:",
-  "thinking":"Thinking..."
+  "new-goal": "Embarking on a new goal:",
+  "added-task": "Added task:",
+  "thinking": "Thinking..."
 }

@@ -3,7 +3,9 @@
   "help": "Help",
   "settings": "Settings",
   "new-agent": "New Agent",
-  "restart-agent": "Click the above button to restart. In the future, this will be a list of your deployed agents!",
+  "sign-in": "Sign in to be able to save agents and manage your account!",
+  "create-agent": "You need to create and save your first agent before anything shows up here!",
+  "my-agents": " My Agent(s)",
   "close": "Close",
   "weChat": "WeChat",
   "weChatPay": "WeChatPay",
@@ -20,5 +22,8 @@
   "stop-agent": "Stop agent",
   "current-tasks": "Current tasks",
   "coming-soon": " Coming Soon!",
-  "back": "Back"
+  "back": "Back",
+  "image": "Image",
+  "delete": "Delete",
+  "share": "Share"
 }
