@@ -54,11 +54,6 @@ class AutonomousAgent {
       }
     } catch (e) {
       console.log(e);
-      // this.sendErrorMessage(
-      //   this.modelSettings.customApiKey !== ""
-      //     ? "errors.run-with-filled-customApiKey"
-      //     : "errors.run-with-empty-customApiKey"
-      // );
       this.sendErrorMessage(getMessageFromError(e));
       this.shutdown();
       return;

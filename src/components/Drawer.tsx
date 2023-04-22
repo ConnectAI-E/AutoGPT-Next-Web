@@ -16,7 +16,6 @@ import {
   FaQq,
   FaGlobe,
 } from "react-icons/fa";
-import { BiPlus } from "react-icons/bi";
 import clsx from "clsx";
 import { useAuth } from "../hooks/useAuth";
 import type { Session } from "next-auth";
@@ -32,12 +31,14 @@ const Drawer = ({
   showWeChat,
   showQQ,
   showKnowledgePlanet,
+  handleLanguageChange,
 }: {
   showHelp: () => void;
   showSettings: () => void;
   showWeChat: () => void;
   showQQ: () => void;
   showKnowledgePlanet: () => void;
+  handleLanguageChange: () => void;
 }) => {
   const [showDrawer, setShowDrawer] = useState(false);
   const { session, signIn, signOut, status } = useAuth();
@@ -75,12 +76,6 @@ const Drawer = ({
     setShowDrawer((prevState) => !prevState);
   };
 
-  const onToggleLanguageClick = () => {
-    const { pathname, asPath, query, locale } = router;
-    router.push({ pathname, query }, asPath, {
-      locale: locale === "en" ? "zh" : "en",
-    });
-  };
   const userAgents = query.data ?? [];
 
   return (
@@ -180,7 +175,7 @@ const Drawer = ({
           <DrawerItem
             icon={<FaLanguage />}
             text="language"
-            onClick={onToggleLanguageClick}
+            onClick={handleLanguageChange}
           />
           {env.NEXT_PUBLIC_FF_SUB_ENABLED ||
             (router.query.pro && (
