@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { type NextPage, type GetStaticProps } from "next";
 import DefaultLayout from "../layout/default";
 import ChatWindow from "../components/ChatWindow";
@@ -22,32 +22,35 @@ import WeChatPayDialog from "../components/WeChatPayDialog";
 import QQDialog from "../components/QQDialog";
 import KnowlegePlanetDialog from "../components/KnowlegePlanetDialog";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const { session, status } = useAuth();
-  const [name, setName] = React.useState<string>("");
-  const [goalInput, setGoalInput] = React.useState<string>("");
-  const [agent, setAgent] = React.useState<AutonomousAgent | null>(null);
-  const [customApiKey, setCustomApiKey] = React.useState<string>("");
-  const [customModelName, setCustomModelName] =
-    React.useState<string>(GPT_35_TURBO);
-  const [customTemperature, setCustomTemperature] = React.useState<number>(0.9);
-  const [customMaxLoops, setCustomMaxLoops] = React.useState<number>(
+  const [name, setName] = useState<string>("");
+  const [goalInput, setGoalInput] = useState<string>("");
+  const [agent, setAgent] = useState<AutonomousAgent | null>(null);
+  const [customApiKey, setCustomApiKey] = useState<string>("");
+  const [customModelName, setCustomModelName] = useState<string>(GPT_35_TURBO);
+  const [customTemperature, setCustomTemperature] = useState<number>(0.9);
+  const [customMaxLoops, setCustomMaxLoops] = useState<number>(
     DEFAULT_MAX_LOOPS_FREE
   );
-  const [shouldAgentStop, setShouldAgentStop] = React.useState(false);
-
-  const [messages, setMessages] = React.useState<Message[]>([]);
-
-  const [showHelpDialog, setShowHelpDialog] = React.useState(false);
-  const [showSettingsDialog, setShowSettingsDialog] = React.useState(false);
-  const [hasSaved, setHasSaved] = React.useState(false);
-  const [showWeChatDialog, setShowWeChatDialog] = React.useState(false);
-  const [showWeChatPayDialog, setShowWeChatPayDialog] = React.useState(false);
-  const [showQQDialog, setShowQQDialog] = React.useState(false);
+  const [shouldAgentStop, setShouldAgentStop] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [showHelpDialog, setShowHelpDialog] = useState(false);
+  const [showSettingsDialog, setShowSettingsDialog] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
+  const [showWeChatDialog, setShowWeChatDialog] = useState(false);
+  const [showWeChatPayDialog, setShowWeChatPayDialog] = useState(false);
+  const [showQQDialog, setShowQQDialog] = useState(false);
   const [showKnowlegePlanetDialog, setShowKnowlegePlanetDialog] =
-    React.useState(false);
-  const { t } = useTranslation();
+    useState(false);
+  const { t, i18n } = useTranslation();
+  const [customLanguage, setCustomLanguage] = React.useState<string>(
+    i18n.language
+  );
+
+  const router = useRouter();
 
   const agentUtils = useAgent();
 
@@ -90,7 +93,13 @@ const Home: NextPage = () => {
       goalInput,
       handleAddMessage,
       () => setAgent(null),
-      { customApiKey, customModelName, customTemperature, customMaxLoops },
+      {
+        customApiKey,
+        customModelName,
+        customTemperature,
+        customMaxLoops,
+        customLanguage,
+      },
       session ?? undefined
     );
     setAgent(agent);
@@ -108,6 +117,15 @@ const Home: NextPage = () => {
   const handleStopAgent = () => {
     setShouldAgentStop(true);
     agent?.stopAgent();
+  };
+
+  const handleLanguageChange = () => {
+    const { pathname, asPath, query, locale } = router;
+    const lng = locale === "en" ? "zh" : "en";
+    router.push({ pathname, query }, asPath, {
+      locale: lng,
+    });
+    setCustomLanguage(lng);
   };
 
   const proTitle = (
@@ -162,6 +180,7 @@ const Home: NextPage = () => {
           showWeChat={() => setShowWeChatDialog(true)}
           showQQ={() => setShowQQDialog(true)}
           showKnowledgePlanet={() => setShowKnowlegePlanetDialog(true)}
+          handleLanguageChange={handleLanguageChange}
         />
         <div
           id="content"
