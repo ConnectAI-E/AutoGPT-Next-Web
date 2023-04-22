@@ -1,9 +1,17 @@
 import React from "react";
 import { Document, Page, Text, StyleSheet, Font } from "@react-pdf/renderer";
+import type { I18n } from "next-i18next";
 
 Font.register({
-  family: "Roboto",
-  src: "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxP.ttf",
+  family: "Roboto,SourceHanSansCN",
+  fonts: [
+    {
+      src: "/fonts/SourceHanSansCN-Regular.otf",
+    },
+    {
+      src: "/fonts/Roboto-Regular.ttf",
+    },
+  ],
 });
 
 const styles = StyleSheet.create({
@@ -14,7 +22,7 @@ const styles = StyleSheet.create({
   },
   section: {
     fontSize: 12,
-    fontFamily: "Roboto",
+    fontFamily: "Roboto,SourceHanSansCN",
     marginBottom: 20,
     lineHeight: 1.5,
   },
@@ -24,12 +32,14 @@ interface MyDocumentProps {
   content: string;
 }
 
-const MyDocument: React.FC<MyDocumentProps> = ({ content }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <Text style={styles.section}>{content}</Text>
-    </Page>
-  </Document>
-);
+const MyDocument: React.FC<MyDocumentProps> = ({ content }) => {
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <Text style={styles.section}>{content}</Text>
+      </Page>
+    </Document>
+  );
+};
 
 export default MyDocument;
