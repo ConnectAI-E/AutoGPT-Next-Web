@@ -18,5 +18,6 @@
   "task-marked-as-complete": "任务已标记为已完成！",
   "new-goal": "开始追寻一个新的目标：",
   "added-task": "已添加任务。",
-  "thinking": "思考中..."
+  "thinking": "思考中...",
+  "executing": "执行任务："
 }

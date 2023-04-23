@@ -318,7 +318,7 @@ const getMessageIcon = (message: Message) => {
 };
 
 const getMessagePrefix = (message: Message) => {
-  const { t } = useTranslation(["chat", "common"]);
+  const { t } = useTranslation("chat");
 
   switch (message.type) {
     case "goal":
@@ -328,7 +328,7 @@ const getMessagePrefix = (message: Message) => {
     case "thinking":
       return t("thinking");
     case "action":
-      return message.info ? message.info : "Executing:";
+      return message.info ? t(message.info) : t("executing");
   }
 };
 
