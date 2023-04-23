@@ -23,6 +23,7 @@ const Button = forwardRef(
       try {
         void Promise.resolve(props.onClick?.(e)).then();
       } catch (e) {
+        console.error(e);
         setLoading(false);
       }
     };

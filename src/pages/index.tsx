@@ -25,6 +25,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
+  const { t, i18n } = useTranslation();
   const { session, status } = useAuth();
   const [name, setName] = useState<string>("");
   const [goalInput, setGoalInput] = useState<string>("");
@@ -45,10 +46,7 @@ const Home: NextPage = () => {
   const [showQQDialog, setShowQQDialog] = useState(false);
   const [showKnowlegePlanetDialog, setShowKnowlegePlanetDialog] =
     useState(false);
-  const { t, i18n } = useTranslation();
-  const [customLanguage, setCustomLanguage] = React.useState<string>(
-    i18n.language
-  );
+  const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
 
   const router = useRouter();
 
@@ -298,7 +296,7 @@ const Home: NextPage = () => {
                     <span className="ml-2">{t("stopping")}</span>
                   </>
                 ) : (
-                  t("stop-agent")
+                  <span>{t("stop-agent")}</span>
                 )}
               </Button>
             </Expand>

@@ -117,7 +117,7 @@ const Drawer = ({
               />
             ))}
 
-            {status === "unauthenticated" && <div>{t("sign-in")}</div>}
+            {status === "unauthenticated" && <div>{t("sign-in-tips")}</div>}
             {status === "authenticated" && userAgents.length === 0 && (
               <div>{t("create-agent")}</div>
             )}
@@ -248,7 +248,7 @@ const AuthItem: React.FC<{
   signOut: () => void;
 }> = ({ signIn, signOut, session }) => {
   const icon = session?.user ? <FaSignInAlt /> : <FaSignOutAlt />;
-  const text = session?.user ? "Sign Out" : "Sign In";
+  const text = session?.user ? "sign-out" : "sign-in";
   const onClick = session?.user ? signOut : signIn;
 
   return <DrawerItem icon={icon} text={text} onClick={onClick} />;
