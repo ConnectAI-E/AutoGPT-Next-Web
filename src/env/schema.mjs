@@ -33,7 +33,6 @@ export const serverSchema = z.object({
     process.env.VERCEL ? z.string() : z.string().url()
   ),
   OPENAI_API_KEY: z.string(),
-
   GOOGLE_CLIENT_ID: requiredAuthEnabledForProduction(),
   GOOGLE_CLIENT_SECRET: requiredAuthEnabledForProduction(),
   GITHUB_CLIENT_ID: requiredAuthEnabledForProduction(),

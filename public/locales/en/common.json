@@ -3,7 +3,7 @@
   "help": "Help",
   "settings": "Settings",
   "new-agent": "New Agent",
-  "sign-in": "Sign in to be able to save agents and manage your account!",
+  "sign-in-tips": "Sign in to be able to save agents and manage your account!",
   "create-agent": "You need to create and save your first agent before anything shows up here!",
   "my-agents": " My Agent(s)",
   "close": "Close",
@@ -25,5 +25,7 @@
   "back": "Back",
   "image": "Image",
   "delete": "Delete",
-  "share": "Share"
+  "share": "Share",
+  "sign-in": "Sign In",
+  "sign-out": "Sign Out"
 }

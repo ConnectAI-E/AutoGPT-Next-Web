@@ -256,7 +256,7 @@ const ChatMessage = ({ message }: { message: Message }) => {
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeHighlight]}
           >
-            {message.value}
+            {t(message.value)}
           </ReactMarkdown>
         </div>
       ) : (
