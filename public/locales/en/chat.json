@@ -18,5 +18,6 @@
   "task-marked-as-complete": "Task marked as complete!",
   "new-goal": "Embarking on a new goal:",
   "added-task": "Added task:",
-  "thinking": "Thinking..."
+  "thinking": "Thinking...",
+  "executing": "Executing:"
 }
