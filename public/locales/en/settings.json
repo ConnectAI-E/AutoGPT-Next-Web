@@ -12,5 +12,6 @@
   "loop-tips": "Controls the maximum number of loops that the agent will run (higher value will make more API calls).",
   "api-key-notice": "<0>NOTE: To get a key, sign up for an OpenAI account and visit the following <1>link.</1>,This key is only used in the current browser session</0>",
   "tokens-tips": "Controls the maximum number of tokens used in each API call (higher value will make responses more detailed but cost more).",
-  "tokens": "Tokens: "
+  "tokens": "Tokens: ",
+  "guest-key": "Guest Key: "
 }

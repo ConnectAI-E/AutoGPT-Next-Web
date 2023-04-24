@@ -11,7 +11,9 @@
     "accessing-apis": "ERROR accessing OpenAI APIs. Please check your API key or try again later",
     "accessing-using-apis": "ERROR using your OpenAI API key. You've exceeded your current quota, please check your plan and billing details.",
     "accessing-gtp4": "ERROR your API key does not have GPT-4 access. You must first join OpenAI's wait-list. (This is different from ChatGPT Plus)",
-    "initial-tasks": "ERROR retrieving initial tasks array. Retry, make your goal more clear, or revise your goal such that it is within our model's policies to run. Shutting Down."
+    "initial-tasks": "ERROR retrieving initial tasks array. Retry, make your goal more clear, or revise your goal such that it is within our model's policies to run. Shutting Down.",
+    "rate-limit": "Rate limit exceeded. Please slow down. 😅",
+    "invalid-guest-key": "Invalid Guest Key"
   },
   "all-tasks-completed": "All tasks completed. Shutting down.",
   "manually-shutdown": "The agent has been manually shutdown.",

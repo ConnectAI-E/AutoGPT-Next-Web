@@ -9,7 +9,6 @@ import {
   FaRocket,
   FaSignInAlt,
   FaSignOutAlt,
-  FaTwitter,
   FaUser,
   FaLanguage,
   FaWeixin,

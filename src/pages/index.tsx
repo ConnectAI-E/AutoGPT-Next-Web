@@ -1,13 +1,11 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { type NextPage, type GetStaticProps } from "next";
-import Badge from "../components/Badge";
 import DefaultLayout from "../layout/default";
 import ChatWindow from "../components/ChatWindow";
 import Drawer from "../components/Drawer";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { FaRobot, FaStar } from "react-icons/fa";
-import PopIn from "../components/motions/popin";
 import { VscLoading } from "react-icons/vsc";
 import AutonomousAgent from "../components/AutonomousAgent";
 import Expand from "../components/motions/expand";
@@ -26,14 +24,14 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { isEmptyOrBlank } from "../utils/whitespace";
 import { useSettings } from "../hooks/useSettings";
+import { useGuestMode } from "../hooks/useGuestMode";
 
 const Home: NextPage = () => {
-  const {t,i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const { session, status } = useAuth();
   const [name, setName] = useState<string>("");
   const [goalInput, setGoalInput] = useState<string>("");
   const [agent, setAgent] = useState<AutonomousAgent | null>(null);
-  const { settings, saveSettings } = useSettings();
   const [shouldAgentStop, setShouldAgentStop] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -45,6 +43,8 @@ const Home: NextPage = () => {
   const [showKnowlegePlanetDialog, setShowKnowlegePlanetDialog] =
     useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
+  const { settings, saveSettings } = useSettings({ customLanguage });
+  const { isValidGuest } = useGuestMode(settings.guestKey);
 
   const router = useRouter();
   const agentUtils = useAgent();
@@ -90,6 +90,7 @@ const Home: NextPage = () => {
       handleAddMessage,
       () => setAgent(null),
       settings,
+      isValidGuest,
       session ?? undefined
     );
     setAgent(agent);
