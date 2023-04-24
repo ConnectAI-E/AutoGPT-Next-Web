@@ -27,5 +27,6 @@
   "delete": "Delete",
   "share": "Share",
   "sign-in": "Sign In",
-  "sign-out": "Sign Out"
+  "sign-out": "Sign Out",
+  "export": "Export"
 }

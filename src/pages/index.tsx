@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef,useState } from "react";
 import { type NextPage, type GetStaticProps } from "next";
+import Badge from "../components/Badge";
 import DefaultLayout from "../layout/default";
 import ChatWindow from "../components/ChatWindow";
 import Drawer from "../components/Drawer";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { FaRobot, FaStar } from "react-icons/fa";
+import PopIn from "../components/motions/popin";
 import { VscLoading } from "react-icons/vsc";
 import AutonomousAgent from "../components/AutonomousAgent";
 import Expand from "../components/motions/expand";
 import HelpDialog from "../components/HelpDialog";
-import SettingsDialog from "../components/SettingsDialog";
-import { GPT_35_TURBO, DEFAULT_MAX_LOOPS_FREE } from "../utils/constants";
+import { SettingsDialog } from "../components/SettingsDialog";
 import { TaskWindow } from "../components/TaskWindow";
 import { useAuth } from "../hooks/useAuth";
 import type { Message } from "../types/agentTypes";
@@ -23,19 +24,16 @@ import QQDialog from "../components/QQDialog";
 import KnowlegePlanetDialog from "../components/KnowlegePlanetDialog";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { isEmptyOrBlank } from "../utils/whitespace";
+import { useSettings } from "../hooks/useSettings";
 
 const Home: NextPage = () => {
-  const { t, i18n } = useTranslation();
+  const {t,i18n} = useTranslation();
   const { session, status } = useAuth();
   const [name, setName] = useState<string>("");
   const [goalInput, setGoalInput] = useState<string>("");
   const [agent, setAgent] = useState<AutonomousAgent | null>(null);
-  const [customApiKey, setCustomApiKey] = useState<string>("");
-  const [customModelName, setCustomModelName] = useState<string>(GPT_35_TURBO);
-  const [customTemperature, setCustomTemperature] = useState<number>(0.9);
-  const [customMaxLoops, setCustomMaxLoops] = useState<number>(
-    DEFAULT_MAX_LOOPS_FREE
-  );
+  const { settings, saveSettings } = useSettings();
   const [shouldAgentStop, setShouldAgentStop] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
@@ -49,7 +47,6 @@ const Home: NextPage = () => {
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
 
   const router = useRouter();
-
   const agentUtils = useAgent();
 
   useEffect(() => {
@@ -83,21 +80,16 @@ const Home: NextPage = () => {
 
   const tasks = messages.filter((message) => message.type === "task");
 
-  const disableDeployAgent = agent != null || name === "" || goalInput === "";
+  const disableDeployAgent =
+    agent != null || isEmptyOrBlank(name) || isEmptyOrBlank(goalInput);
 
   const handleNewGoal = () => {
     const agent = new AutonomousAgent(
-      name,
-      goalInput,
+      name.trim(),
+      goalInput.trim(),
       handleAddMessage,
       () => setAgent(null),
-      {
-        customApiKey,
-        customModelName,
-        customTemperature,
-        customMaxLoops,
-        customLanguage,
-      },
+      settings,
       session ?? undefined
     );
     setAgent(agent);
@@ -106,9 +98,16 @@ const Home: NextPage = () => {
     agent.run().then(console.log).catch(console.error);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (
+    e:
+      | React.KeyboardEvent<HTMLInputElement>
+      | React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     if (e.key === "Enter" && !disableDeployAgent) {
-      handleNewGoal();
+      if (!e.shiftKey) {
+        // Only Enter is pressed, execute the function
+        handleNewGoal();
+      }
     }
   };
 
@@ -145,16 +144,7 @@ const Home: NextPage = () => {
         close={() => setShowHelpDialog(false)}
       />
       <SettingsDialog
-        reactModelStates={{
-          customApiKey,
-          setCustomApiKey,
-          customModelName,
-          setCustomModelName,
-          customTemperature,
-          setCustomTemperature,
-          customMaxLoops,
-          setCustomMaxLoops,
-        }}
+        customSettings={[settings, saveSettings]}
         show={showSettingsDialog}
         close={() => setShowSettingsDialog(false)}
       />
@@ -221,8 +211,8 @@ const Home: NextPage = () => {
                     ? (format) => {
                         setHasSaved(true);
                         agentUtils.saveAgent({
-                          goal: goalInput,
-                          name: name,
+                          goal: goalInput.trim(),
+                          name: name.trim(),
                           tasks: messages,
                         });
                       }
