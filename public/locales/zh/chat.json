@@ -11,7 +11,9 @@
     "accessing-apis": "访问OpenAI API出错。请检查您的API密钥或稍后重试。",
     "accessing-using-apis": "使用OpenAI API密钥出错。您已超出当前限额，请检查您的计划和账单详情。",
     "accessing-gtp4": "您的API密钥没有GPT-4访问权限。您必须先加入OpenAI的候补名单。（这与ChatGPT Plus不同）",
-    "initial-tasks": "无法检索初始任务数组。请重试，更清晰地表达您的目标，或修订您的目标，使其符合我们模型运行的政策。正在关闭。"
+    "initial-tasks": "无法检索初始任务数组。请重试，更清晰地表达您的目标，或修订您的目标，使其符合我们模型运行的政策。正在关闭。",
+    "rate-limit": "速率限制已超过。请减慢速率。😅",
+    "invalid-guest-key": "访问码无效"
   },
   "all-tasks-completed": "所有任务已完成。正在关闭...",
   "manually-shutdown": "代理已被手动关闭。",

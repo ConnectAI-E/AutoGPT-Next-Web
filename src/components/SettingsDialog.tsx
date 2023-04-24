@@ -8,12 +8,14 @@ import {
   FaExclamationCircle,
   FaSyncAlt,
   FaCoins,
+  FaCode,
 } from "react-icons/fa";
 import Dialog from "./Dialog";
 import Input from "./Input";
 import { GPT_MODEL_NAMES, GPT_4 } from "../utils/constants";
 import Accordion from "./Accordion";
 import type { ModelSettings } from "../utils/types";
+import { isGuestMode } from "../utils/helpers";
 
 export const SettingsDialog: React.FC<{
   show: boolean;
@@ -44,11 +46,12 @@ export const SettingsDialog: React.FC<{
   }
 
   const handleSave = () => {
-    if (!keyIsValid(settings.customApiKey)) {
-      alert(t("invalid-key"));
-      return;
+    if (!isGuestMode()) {
+      if (!keyIsValid(settings.customApiKey)) {
+        alert(t("invalid-key"));
+        return;
+      }
     }
-
     setCustomSettings(settings);
     close();
     return;
@@ -190,6 +193,19 @@ export const SettingsDialog: React.FC<{
           attributes={{ options: GPT_MODEL_NAMES }}
           disabled={disabled}
         />
+        <br className="md:inline" />
+        {isGuestMode() && (
+          <Input
+            left={
+              <>
+                <FaCode />
+                <span className="ml-2">{t("guest-key")}</span>
+              </>
+            }
+            value={settings.guestKey}
+            onChange={(e) => updateSettings("guestKey", e.target.value)}
+          />
+        )}
         <br className="hidden md:inline" />
         <Accordion
           child={advancedSettings}

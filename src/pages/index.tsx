@@ -24,6 +24,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { isEmptyOrBlank } from "../utils/whitespace";
 import { useSettings } from "../hooks/useSettings";
+import { useGuestMode } from "../hooks/useGuestMode";
 
 const Home: NextPage = () => {
   const { t, i18n } = useTranslation();
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
     useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
   const { settings, saveSettings } = useSettings({ customLanguage });
+  const { isValidGuest } = useGuestMode(settings.guestKey);
 
   const router = useRouter();
   const agentUtils = useAgent();
@@ -88,6 +90,7 @@ const Home: NextPage = () => {
       handleAddMessage,
       () => setAgent(null),
       settings,
+      isValidGuest,
       session ?? undefined
     );
     setAgent(agent);

@@ -5,6 +5,7 @@ import {
   DEFAULT_MAX_LOOPS_FREE,
   GPT_35_TURBO,
 } from "../utils/constants";
+import { useGuestMode } from "./useGuestMode"
 
 const SETTINGS_KEY = "AGENTGPT_SETTINGS";
 const DEFAULT_SETTINGS: ModelSettings = {
@@ -14,6 +15,7 @@ const DEFAULT_SETTINGS: ModelSettings = {
   customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
   customLanguage: "",
   maxTokens: 400,
+  guestKey:""
 };
 
 const loadSettings = () => {
@@ -48,14 +50,25 @@ const loadSettings = () => {
 
 export function useSettings({ customLanguage }: { customLanguage: string }) {
   const [settings, setSettings] = useState<ModelSettings>(loadSettings);
+  const { isValidGuest } = useGuestMode(settings.guestKey);
+
+  const rewriteSettings = (settings: ModelSettings) => {
+    const rewriteSettings = {
+      ...settings,
+      customLanguage,
+      isValidGuest
+    };
+
+    return rewriteSettings;
+  };
 
   const saveSettings = (settings: ModelSettings) => {
-    setSettings(settings);
+    setSettings(rewriteSettings(settings));
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   };
 
   return {
-    settings: { ...settings, customLanguage },
+    settings,
     saveSettings,
   };
 }

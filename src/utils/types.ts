@@ -5,4 +5,5 @@ export type ModelSettings = {
   customMaxLoops: number;
   customLanguage: string;
   maxTokens?: number;
+  guestKey?: string;
 };
