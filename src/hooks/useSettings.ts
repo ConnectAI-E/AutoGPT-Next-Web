@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: ModelSettings = {
   customModelName: GPT_35_TURBO,
   customTemperature: 0.9,
   customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
+  customLanguage: "",
   maxTokens: 400,
 };
 
@@ -45,7 +46,7 @@ const loadSettings = () => {
   return DEFAULT_SETTINGS;
 };
 
-export function useSettings() {
+export function useSettings({ customLanguage }: { customLanguage: string }) {
   const [settings, setSettings] = useState<ModelSettings>(loadSettings);
 
   const saveSettings = (settings: ModelSettings) => {
@@ -54,7 +55,7 @@ export function useSettings() {
   };
 
   return {
-    settings,
+    settings: { ...settings, customLanguage },
     saveSettings,
   };
 }

@@ -15,6 +15,7 @@ async function startGoalAgent(modelSettings: ModelSettings, goal: string) {
     prompt: startGoalPrompt,
   }).call({
     goal,
+    customLanguage: modelSettings.customLanguage,
   });
   console.log("Completion:" + (completion.text as string));
   return extractTasks(completion.text as string, []);
@@ -31,6 +32,7 @@ async function executeTaskAgent(
   }).call({
     goal,
     task,
+    customLanguage: modelSettings.customLanguage,
   });
 
   return completion.text as string;
@@ -52,6 +54,7 @@ async function createTasksAgent(
     tasks,
     lastTask,
     result,
+    customLanguage: modelSettings.customLanguage,
   });
 
   return extractTasks(completion.text as string, completedTasks || []);
