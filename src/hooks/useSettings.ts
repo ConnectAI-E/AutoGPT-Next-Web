@@ -8,7 +8,7 @@ import {
 
 const SETTINGS_KEY = "AGENTGPT_SETTINGS";
 const DEFAULT_SETTINGS: ModelSettings = {
-  customApiKey: undefined,
+  customApiKey: "",
   customModelName: GPT_35_TURBO,
   customTemperature: 0.9,
   customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
