@@ -16,7 +16,9 @@ const requiredAuthEnabledForProduction = () => {
 function stringToBoolean() {
   return z.preprocess((str) => str === "true", z.boolean());
 }
-
+function stringToNumber() {
+  return z.preprocess((str) => Number(str), z.number());
+}
 /**
  * Specify your server-side environment variables schema here.
  * This way you can ensure the app isn't built with invalid env vars.
@@ -43,6 +45,10 @@ export const serverSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_SUBSCRIPTION_PRICE_ID: z.string().optional(),
+
+  UPSTASH_REDIS_REST_URL: z.string().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  RATE_LIMITER_REQUESTS_PER_MINUTE: stringToNumber().optional(),
 });
 
 /**
@@ -66,6 +72,11 @@ export const serverEnv = {
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
   STRIPE_SUBSCRIPTION_PRICE_ID: process.env.STRIPE_SUBSCRIPTION_PRICE_ID,
+
+  // Rate limiter
+  UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+  UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+  RATE_LIMITER_REQUESTS_PER_MINUTE: process.env.RATE_LIMITER_REQUESTS_PER_MINUTE,
 };
 
 /**

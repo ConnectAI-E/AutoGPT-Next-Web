@@ -4,4 +4,5 @@ export type ModelSettings = {
   customTemperature: number;
   customMaxLoops: number;
   customLanguage: string;
+  maxTokens?: number;
 };

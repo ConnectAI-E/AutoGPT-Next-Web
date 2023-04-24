@@ -1,6 +1,5 @@
 import React from "react";
 import { Document, Page, Text, StyleSheet, Font } from "@react-pdf/renderer";
-import type { I18n } from "next-i18next";
 
 Font.register({
   family: "Roboto,SourceHanSansCN",
@@ -32,14 +31,12 @@ interface MyDocumentProps {
   content: string;
 }
 
-const MyDocument: React.FC<MyDocumentProps> = ({ content }) => {
-  return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <Text style={styles.section}>{content}</Text>
-      </Page>
-    </Document>
-  );
-};
+const MyDocument: React.FC<MyDocumentProps> = ({ content }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.section}>{content}</Text>
+    </Page>
+  </Document>
+);
 
 export default MyDocument;

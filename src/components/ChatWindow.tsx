@@ -4,7 +4,6 @@ import {
   FaBrain,
   FaClipboard,
   FaCopy,
-  FaDatabase,
   FaImage,
   FaListAlt,
   FaPlayCircle,
@@ -24,6 +23,7 @@ import { useTranslation, Trans } from "next-i18next";
 import WindowButton from "./WindowButton";
 import PDFButton from "./pdf/PDFButton";
 import FadeIn from "./motions/FadeIn";
+import Menu from "./Menu";
 import type { Message } from "../types/agentTypes";
 import clsx from "clsx";
 
@@ -57,11 +57,8 @@ const ChatWindow = ({
     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
 
     // Use has scrolled if we have scrolled up at all from the bottom
-    if (scrollTop < scrollHeight - clientHeight - 10) {
-      setHasUserScrolled(true);
-    } else {
-      setHasUserScrolled(false);
-    }
+    const hasUserScrolled = scrollTop < scrollHeight - clientHeight - 10;
+    setHasUserScrolled(hasUserScrolled);
   };
 
   useEffect(() => {
@@ -171,8 +168,26 @@ const MacWindowHeader = (props: HeaderProps) => {
     void navigator.clipboard.writeText(text);
   };
 
+  const exportOptions = [
+    <WindowButton
+      key="Image"
+      delay={0.1}
+      onClick={(): void => saveElementAsImage(messageListId)}
+      icon={<FaImage size={12} />}
+      name={t("common:image")}
+    />,
+    <WindowButton
+      key="Copy"
+      delay={0.15}
+      onClick={(): void => copyElementText(messageListId)}
+      icon={<FaClipboard size={12} />}
+      name={t("common:copy")}
+    />,
+    <PDFButton key="PDF" name="PDF" messages={props.messages} />,
+  ];
+
   return (
-    <div className="flex items-center gap-1 overflow-hidden rounded-t-3xl p-3">
+    <div className="flex items-center gap-1 overflow-visible rounded-t-3xl p-3">
       <PopIn delay={0.4}>
         <div className="h-3 w-3 rounded-full bg-red-500" />
       </PopIn>
@@ -190,23 +205,19 @@ const MacWindowHeader = (props: HeaderProps) => {
           delay={0.8}
           onClick={() => props.onSave?.("db")}
           icon={<FaSave size={12} />}
-          text={t("common:save") as string}
+          name={t("common:save") as string}
         />
       )}
-      <WindowButton
-        delay={0.7}
-        onClick={(): void => saveElementAsImage(messageListId)}
-        icon={<FaImage size={12} />}
-        text={t("common:image") as string}
+      <Menu
+        name={t("common:export")}
+        onChange={() => null}
+        items={exportOptions}
+        styleClass={{
+          container: "relative",
+          input: `bg-[#3a3a3a] w-28 animation-duration text-left px-4 text-sm p-1 font-mono rounded-lg text-gray/50 border-[2px] border-white/30 font-bold transition-all sm:py-0.5 hover:border-[#1E88E5]/40 hover:bg-[#6b6b6b] focus-visible:outline-none focus:border-[#1E88E5]`,
+          option: "w-full py-[1px] md:py-0.5",
+        }}
       />
-
-      <WindowButton
-        delay={0.8}
-        onClick={(): void => copyElementText(messageListId)}
-        icon={<FaClipboard size={12} />}
-        text={t("common:copy") as string}
-      />
-      <PDFButton messages={props.messages} />
     </div>
   );
 };

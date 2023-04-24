@@ -9,6 +9,8 @@ import {
 import type { Session } from "next-auth";
 import type { Message } from "../types/agentTypes";
 import { env } from "../env/client.mjs";
+import { v4 } from "uuid";
+import type { RequestBody } from "../utils/interfaces";
 
 const TIMEOUT_LONG = 1000;
 const TIMOUT_SHORT = 800;
@@ -24,6 +26,7 @@ class AutonomousAgent {
   shutdown: () => void;
   numLoops = 0;
   session?: Session;
+  _id: string;
 
   constructor(
     name: string,
@@ -39,6 +42,7 @@ class AutonomousAgent {
     this.shutdown = shutdown;
     this.modelSettings = modelSettings;
     this.session = session;
+    this._id = v4();
   }
 
   async run() {
@@ -142,10 +146,11 @@ class AutonomousAgent {
       return await AgentService.startGoalAgent(this.modelSettings, this.goal);
     }
 
-    const res = await axios.post(`/api/start`, {
+    const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
-    });
+    };
+    const res = await this.post(`/api/agent/start`, data);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
     return res.data.newTasks as string[];
@@ -166,14 +171,15 @@ class AutonomousAgent {
       );
     }
 
-    const res = await axios.post(`/api/create`, {
+    const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
       tasks: this.tasks,
       lastTask: currentTask,
       result: result,
       completedTasks: this.completedTasks,
-    });
+    };
+    const res = await this.post(`/api/agent/create`, data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     return res.data.newTasks as string[];
   }
@@ -187,17 +193,32 @@ class AutonomousAgent {
       );
     }
 
-    const res = await axios.post(`/api/execute`, {
+    const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
       task: task,
-    });
+    };
+    const res = await this.post("/api/agent/execute", data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
     return res.data.response as string;
   }
 
+  private async post(url: string, data: RequestBody) {
+    try {
+      return await axios.post(url, data);
+    } catch (e) {
+      this.shutdown();
+
+      if (axios.isAxiosError(e) && e.response?.status === 429) {
+        this.sendErrorMessage("Rate limit exceeded. Please slow down. 😅");
+      }
+
+      throw e;
+    }
+  }
+
   private shouldRunClientSide() {
-    return this.modelSettings.customApiKey != "";
+    return !!this.modelSettings.customApiKey;
   }
 
   stopAgent() {
@@ -284,7 +305,7 @@ const testConnection = async (modelSettings: ModelSettings) => {
     {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${modelSettings.customApiKey}`,
+        Authorization: `Bearer ${modelSettings.customApiKey ?? ""}`,
       },
     }
   );

@@ -27,5 +27,6 @@
   "delete": "删除",
   "share": "分享",
   "sign-in": "登录",
-  "sign-out": "登出"
+  "sign-out": "登出",
+  "export": "导出"
 }
