@@ -24,10 +24,28 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## Features
 
-- Free one-click deployment with Vercel in 1 minute
-- UI designed to match AgentGPT, responsive design, and support for dark mode
-- Extremely fast first screen loading speed
-- Have your own domain? Even better, after binding, you can quickly access it anywhere without barriers.
+1. Free one-click deployment with Vercel in 1 minute
+2. Improved local support: After typing in Chinese, the content will be displayed in Chinese instead of English
+3. UI designed to match AgentGPT, responsive design, and support for dark mode
+4. Have your own domain? Even better, after binding, you can quickly access it anywhere without barriers
+5. Support access code control, only you or trusted individuals can use the website
+
+## Roadmap
+
+1. Add support for Docker and Docker Compose
+2. Add support for Endpoint URL 
+3. Add support for Azure OpenAI API
+4. Optimize the display of running results for easier viewing
+5. Add support for WeChat login
+
+## FAQ
+
+Q: What is the difference between this project and AgentGPT?
+
+A: The project originated from AgentGPT. Our goal is to continuously provide user-friendly features, interfaces, and various deployment solutions for domestic users, helping everyone to easily build their own "AutoGPT" website. And the i18n ability and Vercel deployment ability in the AgentGPT project also come from our contributions.
+
+
+## Docker Deployment
 
 ### Docker Setup
 
