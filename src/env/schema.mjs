@@ -33,7 +33,7 @@ const validateNextUrl = () => {
         // VERCEL_URL doesn't include `https` so it cant be validated as a URL
         process.env.VERCEL ? z.string() : z.string().url()
       )
-    : z.string().url().optional();
+    : z.string().url();
 };
 
 /**
