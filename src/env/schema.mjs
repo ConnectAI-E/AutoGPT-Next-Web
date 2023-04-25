@@ -24,7 +24,7 @@ const stringToNumber = () => {
  * This way you can ensure the app isn't built with invalid env vars.
  */
 export const serverSchema = z.object({
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.string().url().optional(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXTAUTH_SECRET: requiredAuthEnabledForProduction(),
   NEXTAUTH_URL: z.preprocess(
