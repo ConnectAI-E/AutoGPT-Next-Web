@@ -1,9 +1,12 @@
 // @ts-check
 import { z } from "zod";
 
+const isProdutionAndAuthEnabled =
+  process.env.NODE_ENV === "production" &&
+  process.env.NEXT_PUBLIC_FF_AUTH_ENABLED === "true";
+
 const requiredAuthEnabledForProduction = () => {
-  return process.env.NODE_ENV === "production" &&
-    process.env.NEXT_PUBLIC_FF_AUTH_ENABLED === "true"
+  return isProdutionAndAuthEnabled
     ? z.string().min(1).trim()
     : z.string().min(1).trim().optional();
 };
@@ -16,15 +19,13 @@ const stringToNumber = () => {
 };
 
 const validateDataBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_FF_AUTH_ENABLED === "true" &&
-    process.env.NODE_ENV === "production"
+  return isProdutionAndAuthEnabled
     ? z.string().url()
     : z.string().url().optional();
 };
 
 const validateNextUrl = () => {
-  return process.env.NEXT_PUBLIC_FF_AUTH_ENABLED === "true" &&
-    process.env.NODE_ENV === "production"
+  return isProdutionAndAuthEnabled
     ? z.preprocess(
         // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
         // Since NextAuth.js automatically uses the VERCEL_URL if present.
@@ -67,10 +68,10 @@ export const serverSchema = z.object({
  * @type {{ [k in keyof z.input<typeof serverSchema>]: string | undefined }}
  */
 export const serverEnv = {
-  DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE_URL: process.env.DATABASE_URL ?? "file:./db.sqlite",
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL ?? "http://localhost:3000",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
@@ -98,10 +99,7 @@ export const serverEnv = {
 export const clientSchema = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string(),
   NEXT_PUBLIC_VERCEL_ENV: z.enum(["production", "preview", "development"]),
-  NEXT_PUBLIC_STRIPE_DONATION_ENABLED: z
-    .string()
-    .transform((str) => str === "true")
-    .optional(),
+  NEXT_PUBLIC_STRIPE_DONATION_ENABLED: stringToBoolean().optional(),
   NEXT_PUBLIC_FF_AUTH_ENABLED: stringToBoolean(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   NEXT_PUBLIC_FF_SUB_ENABLED: stringToBoolean(),
