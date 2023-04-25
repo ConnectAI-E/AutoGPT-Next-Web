@@ -13,12 +13,12 @@ const requiredAuthEnabledForProduction = () => {
     : z.string().min(1).trim().optional();
 };
 
-function stringToBoolean() {
+const stringToBoolean = () => {
   return z.preprocess((str) => str === "true", z.boolean());
-}
-function stringToNumber() {
+};
+const stringToNumber = () => {
   return z.preprocess((str) => Number(str), z.number());
-}
+};
 /**
  * Specify your server-side environment variables schema here.
  * This way you can ensure the app isn't built with invalid env vars.
@@ -26,7 +26,7 @@ function stringToNumber() {
 export const serverSchema = z.object({
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
-  NEXTAUTH_SECRET: requiredForProduction(),
+  NEXTAUTH_SECRET: requiredAuthEnabledForProduction(),
   NEXTAUTH_URL: z.preprocess(
     // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
     // Since NextAuth.js automatically uses the VERCEL_URL if present.
