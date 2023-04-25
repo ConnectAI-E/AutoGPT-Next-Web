@@ -78,12 +78,12 @@ NODE_ENV=development
 
 # Next Auth config:
 # Generate a secret with `openssl rand -base64 32` or visit https://generate-secret.vercel.app/
-NEXTAUTH_SECRET=changeme
+NEXTAUTH_SECRET=''
 NEXTAUTH_URL=http://localhost:3000
 DATABASE_URL=file:./db.sqlite
 
 # Your open api key
-OPENAI_API_KEY=changeme
+OPENAI_API_KEY=''
 ```
 
 5. Modify prisma schema to use sqlite:
