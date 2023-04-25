@@ -60,8 +60,3 @@ export const realTasksFilter = (input: string): boolean => {
     !doNothingRegex.test(input)
   );
 };
-
-export const isGuestMode = () => {
-  const guestKey = env.NEXT_PUBLIC_GUEST_KEY;
-  return guestKey && guestKey.split(",").filter((key) => !!key).length > 0;
-};

@@ -7,3 +7,8 @@ export type ModelSettings = {
   maxTokens?: number;
   guestKey?: string;
 };
+
+export type GuestSettings = {
+  isValidGuest: boolean;
+  isGuestMode: boolean;
+};

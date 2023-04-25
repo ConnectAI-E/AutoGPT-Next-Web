@@ -44,7 +44,7 @@ const Home: NextPage = () => {
     useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
   const { settings, saveSettings } = useSettings({ customLanguage });
-  const { isValidGuest } = useGuestMode(settings.guestKey);
+  const { isValidGuest, isGuestMode } = useGuestMode(settings.guestKey);
 
   const router = useRouter();
   const agentUtils = useAgent();
@@ -90,7 +90,7 @@ const Home: NextPage = () => {
       handleAddMessage,
       () => setAgent(null),
       settings,
-      isValidGuest,
+      { isValidGuest, isGuestMode },
       session ?? undefined
     );
     setAgent(agent);

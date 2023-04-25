@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ModelSettings } from "../utils/types";
+import type { ModelSettings, GuestSettings } from "../utils/types";
 import AgentService from "../services/agent-service";
 import {
   DEFAULT_MAX_LOOPS_CUSTOM_API_KEY,
@@ -27,14 +27,14 @@ class AutonomousAgent {
   numLoops = 0;
   session?: Session;
   _id: string;
-  isValidGuest = false;
+  guestSettings: GuestSettings;
   constructor(
     name: string,
     goal: string,
     renderMessage: (message: Message) => void,
     shutdown: () => void,
     modelSettings: ModelSettings,
-    isValidGuest: boolean,
+    guestSettings: GuestSettings,
     session?: Session
   ) {
     this.name = name;
@@ -44,11 +44,12 @@ class AutonomousAgent {
     this.modelSettings = modelSettings;
     this.session = session;
     this._id = v4();
-    this.isValidGuest = isValidGuest;
+    this.guestSettings = guestSettings;
   }
 
   async run() {
-    if (!this.isValidGuest && !this.modelSettings.customApiKey) {
+    const { isGuestMode, isValidGuest } = this.guestSettings;
+    if (isGuestMode && !isValidGuest && !this.modelSettings.customApiKey) {
       this.sendErrorMessage("errors.invalid-guest-key");
       this.stopAgent();
       return;
