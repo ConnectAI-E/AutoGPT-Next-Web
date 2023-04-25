@@ -10,10 +10,10 @@ export const createModel = (settings: ModelSettings) =>
       settings.customApiKey === ""
         ? process.env.OPENAI_API_KEY
         : settings.customApiKey,
-    temperature: 0.9,
+    temperature: settings.customTemperature === null ? 0.9 : settings.customTemperature,
     modelName:
       settings.customModelName === "" ? GPT_35_TURBO : settings.customModelName,
-    maxTokens: 750,
+    maxTokens: settings.maxTokens === null ? 750 : settings.maxTokens,
   });
 
 const startGoalPrompt = new PromptTemplate({
