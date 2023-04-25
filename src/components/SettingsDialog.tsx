@@ -15,7 +15,7 @@ import Input from "./Input";
 import { GPT_MODEL_NAMES, GPT_4 } from "../utils/constants";
 import Accordion from "./Accordion";
 import type { ModelSettings } from "../utils/types";
-import { isGuestMode } from "../utils/helpers";
+import { useGuestMode } from "../hooks/useGuestMode";
 
 export const SettingsDialog: React.FC<{
   show: boolean;
@@ -25,6 +25,7 @@ export const SettingsDialog: React.FC<{
   const [settings, setSettings] = React.useState<ModelSettings>({
     ...customSettings,
   });
+  const { isGuestMode } = useGuestMode(settings.guestKey);
   const { t } = useTranslation(["settings", "common"]);
 
   useEffect(() => {
@@ -40,18 +41,7 @@ export const SettingsDialog: React.FC<{
     });
   };
 
-  function keyIsValid(key: string | undefined) {
-    const pattern = /^sk-[a-zA-Z0-9]{48}$/;
-    return key && pattern.test(key);
-  }
-
   const handleSave = () => {
-    if (!isGuestMode()) {
-      if (!keyIsValid(settings.customApiKey)) {
-        alert(t("invalid-key"));
-        return;
-      }
-    }
     setCustomSettings(settings);
     close();
     return;
@@ -194,7 +184,7 @@ export const SettingsDialog: React.FC<{
           disabled={disabled}
         />
         <br className="md:inline" />
-        {isGuestMode() && (
+        {isGuestMode && (
           <Input
             left={
               <>

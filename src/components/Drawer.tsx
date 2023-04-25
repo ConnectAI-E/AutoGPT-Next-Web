@@ -44,15 +44,6 @@ const Drawer = ({
   const router = useRouter();
   const { t } = useTranslation();
 
-  // TODO: enable for crud
-  // const [animationParent] = useAutoAnimate();s
-  // const query = api.agent.getAll.useQuery(undefined, {
-  //   enabled:
-  //     status == "authenticated" && env.NEXT_PUBLIC_VERCEL_ENV != "production",
-  // });
-  // const router = useRouter();
-  //
-
   const sub = api.account.subscribe.useMutation({
     onSuccess: async (url) => {
       if (!url) return;
@@ -77,6 +68,8 @@ const Drawer = ({
 
   const userAgents = query.data ?? [];
 
+  const authEnabled = env.NEXT_PUBLIC_FF_AUTH_ENABLED;
+
   return (
     <>
       <button
@@ -97,7 +90,7 @@ const Drawer = ({
       >
         <div className="flex flex-col gap-1 overflow-hidden">
           <div className="mb-2 flex justify-center gap-2">
-            {t("my-agents")}
+            {authEnabled ? t("my-agents") : t("create-agent")}
             <button
               className="z-40 rounded-md border-2 border-white/20 bg-zinc-900 p-2 text-white hover:bg-zinc-700 md:hidden"
               onClick={toggleDrawer}
@@ -116,10 +109,12 @@ const Drawer = ({
               />
             ))}
 
-            {status === "unauthenticated" && <div>{t("sign-in-tips")}</div>}
-            {status === "authenticated" && userAgents.length === 0 && (
-              <div>{t("create-agent")}</div>
+            {authEnabled && status === "unauthenticated" && (
+              <div>{t("sign-in-tips")}</div>
             )}
+            {authEnabled &&
+              status === "authenticated" &&
+              userAgents.length === 0 && <div>{t("create-agent")}</div>}
           </ul>
         </div>
 
