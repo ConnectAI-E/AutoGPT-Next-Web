@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-English / [简体中文](./README_CN.md)
+English / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md)
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
@@ -20,14 +20,39 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## Discuss with us
 
-![cover](https://user-images.githubusercontent.com/38354472/232792153-683125c9-33bf-492f-ac6b-fbaab8c7b46e.png)
+![cover](https://user-images.githubusercontent.com/20209191/234480921-0a8f754e-1110-47bf-9c40-25e3daed2c05.png)
+
 
 ## Features
 
-- Free one-click deployment with Vercel in 1 minute
-- UI designed to match AgentGPT, responsive design, and support for dark mode
-- Extremely fast first screen loading speed
-- Have your own domain? Even better, after binding, you can quickly access it anywhere without barriers.
+1. Free one-click deployment with Vercel in 1 minute
+2. Improved local support: After typing in Chinese, the content will be displayed in Chinese instead of English
+3. UI designed to match AgentGPT, responsive design, and support for dark mode
+4. Have your own domain? Even better, after binding, you can quickly access it anywhere without barriers
+5. Support access code control, only you or trusted individuals can use the website
+
+## Roadmap
+
+1. Add support for Docker and Docker Compose
+2. Add support for Endpoint URL
+3. Add support for Azure OpenAI API
+4. Optimize the display of running results for easier viewing
+5. Add support for WeChat login
+
+## Get Started
+
+[Click me to view the detailed tutorial](https://autogpt-next-web.gitbook.io/autogpt-next-web/) 
+1. Prepare the OpenAI  API Key;
+2. Click the deploy button and follow the prompts
+3. We support access control capabilities, see the tutorial above for a detailed tutorial
+
+## FAQ
+
+Q: What is the difference between this project and AgentGPT?
+
+A: The project originated from AgentGPT. Our goal is to continuously provide user-friendly features, interfaces, and various deployment solutions for domestic users, helping everyone to easily build their own "AutoGPT" website. And the i18n ability and Vercel deployment ability in the AgentGPT project also come from our contributions.
+
+## Docker Deployment
 
 ### Docker Setup
 
@@ -36,6 +61,13 @@ A convenient setup script is provided to help you get started.
 
 ```bash
 ./setup.sh --docker
+```
+
+### Docker-compose
+
+Using `docker-compose` deploy
+```bash
+./setup.sh --docker-compose
 ```
 
 ### Local Development Setup

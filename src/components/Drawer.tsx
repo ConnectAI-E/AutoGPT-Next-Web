@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import {
   FaBars,
   FaCog,
@@ -23,6 +23,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
 import { signIn } from "next-auth/react";
+import { authEnabled } from "../utils/env-helper";
 
 const Drawer = ({
   showHelp,
@@ -67,8 +68,6 @@ const Drawer = ({
   };
 
   const userAgents = query.data ?? [];
-
-  const authEnabled = env.NEXT_PUBLIC_FF_AUTH_ENABLED;
 
   return (
     <>
@@ -126,7 +125,7 @@ const Drawer = ({
           {/*  onClick={() => setAgents([])}*/}
           {/*/>*/}
 
-          {env.NEXT_PUBLIC_FF_AUTH_ENABLED && (
+          {authEnabled && (
             <AuthItem session={session} signIn={signIn} signOut={signOut} />
           )}
 
@@ -136,30 +135,34 @@ const Drawer = ({
             onClick={showHelp}
           />
           <DrawerItem icon={<FaCog />} text="settings" onClick={showSettings} />
-          <DrawerItem
-            icon={<FaWeixin />}
-            text="weChat"
-            target="_blank"
-            onClick={showWeChat}
-          />
-          <DrawerItem
-            icon={<FaQq />}
-            text="QQ"
-            target="_blank"
-            onClick={showQQ}
-          />
-          <DrawerItem
-            icon={<FaGlobe />}
-            text="knowlege-planet"
-            target="_blank"
-            onClick={showKnowledgePlanet}
-          />
-          <DrawerItem
-            icon={<FaDiscord />}
-            text="Discord"
-            href="https://discord.gg/Xnsbhg6Uvd"
-            target="_blank"
-          />
+          {authEnabled && (
+            <Fragment>
+              <DrawerItem
+                icon={<FaWeixin />}
+                text="weChat"
+                target="_blank"
+                onClick={showWeChat}
+              />
+              <DrawerItem
+                icon={<FaQq />}
+                text="QQ"
+                target="_blank"
+                onClick={showQQ}
+              />
+              <DrawerItem
+                icon={<FaGlobe />}
+                text="knowlege-planet"
+                target="_blank"
+                onClick={showKnowledgePlanet}
+              />
+              <DrawerItem
+                icon={<FaDiscord />}
+                text="Discord"
+                href="https://discord.gg/Xnsbhg6Uvd"
+                target="_blank"
+              />
+            </Fragment>
+          )}
           <DrawerItem
             icon={<FaGithub />}
             text="GitHub"
@@ -223,7 +226,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       <button
         type="button"
         className={clsx(
-          "flex cursor-pointer flex-row items-center rounded-md rounded-md p-2 hover:bg-white/5",
+          "flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
           `${className || ""}`
         )}
