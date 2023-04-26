@@ -3,7 +3,7 @@ name: Comments、Suggestions、Tucao、Encouragement / 意见、建议、吐槽�
 about: Say what you want to say / 畅所欲言
 title: ''
 labels: ''
-assignees: LiuElric
+assignees: ''
 
 ---
 
