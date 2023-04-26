@@ -1,7 +1,8 @@
 import React from "react";
-import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
+import { FaDiscord, FaGithub } from "react-icons/fa";
 import Dialog from "./Dialog";
 import { useTranslation } from "next-i18next";
+import { authEnabled } from "../utils/env-helper";
 
 export default function HelpDialog({
   show,
@@ -34,14 +35,16 @@ export default function HelpDialog({
           <p className="mt-2">{t("follow-the-journey-below")}</p>
         </div>
         <div className="mt-4 flex w-full items-center justify-center gap-5">
-          <div
-            className="cursor-pointer rounded-full bg-black/30 p-3 hover:bg-black/70"
-            onClick={() =>
-              window.open("https://discord.gg/Xnsbhg6Uvd", "_blank")
-            }
-          >
-            <FaDiscord size={30} />
-          </div>
+          {authEnabled && (
+            <div
+              className="cursor-pointer rounded-full bg-black/30 p-3 hover:bg-black/70"
+              onClick={() =>
+                window.open("https://discord.gg/Xnsbhg6Uvd", "_blank")
+              }
+            >
+              <FaDiscord size={30} />
+            </div>
+          )}
           <div
             className="cursor-pointer rounded-full bg-black/30 p-3 hover:bg-black/70"
             onClick={() =>

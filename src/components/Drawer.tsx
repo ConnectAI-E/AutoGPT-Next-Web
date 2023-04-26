@@ -23,6 +23,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
 import { signIn } from "next-auth/react";
+import { authEnabled } from "../utils/env-helper";
 
 const Drawer = ({
   showHelp,
@@ -67,8 +68,6 @@ const Drawer = ({
   };
 
   const userAgents = query.data ?? [];
-
-  const authEnabled = env.NEXT_PUBLIC_FF_AUTH_ENABLED;
 
   return (
     <>
@@ -227,7 +226,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       <button
         type="button"
         className={clsx(
-          "flex cursor-pointer flex-row items-center rounded-md rounded-md p-2 hover:bg-white/5",
+          "flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
           `${className || ""}`
         )}

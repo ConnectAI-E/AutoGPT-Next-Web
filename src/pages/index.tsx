@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { isEmptyOrBlank } from "../utils/whitespace";
 import { useSettings } from "../hooks/useSettings";
 import { useGuestMode } from "../hooks/useGuestMode";
+import { authEnabled } from "../utils/env-helper";
 
 const Home: NextPage = () => {
   const { t, i18n } = useTranslation();
@@ -138,6 +139,9 @@ const Home: NextPage = () => {
     messages.length &&
     !hasSaved;
 
+  const showDonation =
+    authEnabled && status !== "loading" && !session?.user.subscriptionId;
+
   return (
     <DefaultLayout>
       <HelpDialog
@@ -204,9 +208,7 @@ const Home: NextPage = () => {
                 className="sm:mt-4"
                 messages={messages}
                 title={session?.user.subscriptionId ? proTitle : "AutoGPT"}
-                showDonation={
-                  status != "loading" && !session?.user.subscriptionId
-                }
+                showDonation={showDonation}
                 onSave={
                   shouldShowSave
                     ? (format) => {
