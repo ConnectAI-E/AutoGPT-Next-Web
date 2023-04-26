@@ -253,8 +253,8 @@ const Home: NextPage = () => {
                   disabled={agent != null}
                   value={goalInput}
                   onChange={(e) => setGoalInput(e.target.value)}
-                  onKeyDown={(e) => handleKeyPress(e)}
                   placeholder="Make the world a better place."
+                  type="textarea"
                 />
               </Expand>
             </div>
