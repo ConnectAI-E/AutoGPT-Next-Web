@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-[English](./README.md) / 简体中文
+[English](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/README.md) / 简体中文
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
@@ -24,27 +24,28 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## 特点
 
-1. 1分钟内使用 Vercel 免费一键部署，搭建个人的 AutoGPT 网站
+1. 1 分钟内使用 Vercel 免费一键部署，搭建个人的 AutoGPT 网站
 2. 更好的本地支持，输入中文后内容将以中文展示，而不是英文
-3. 源自 AgentGPT 优秀的响应式UI设计，支持深色模式，
+3. 源自 AgentGPT 优秀的响应式 UI 设计，支持深色模式，
 4. 支持绑定自有域名，绑定后，你可以无障碍快速访问
 5. 支持访问码控制，只有你或者受信的人才可以使用网站
 
 ## 路线图
 
-1. 增加Docker 和 Docker Compose 支持
+1. 增加 Docker 和 Docker Compose 支持
 2. 增加 Endpoint URL 支持
 3. 增加 Azure OpenAI API 的支持
 4. 运行结果展示优化，更方便的查看结果
 5. 增加微信登录支持
 
 ## 常见问题
+
 Q：你们和 AgentGPT 有什么区别？
 
 A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好的功能和界面及部署方案，帮助大家更方便的搭建自己的“AutoGPT”网站。同时 AgentGPT 项目中的 i18n 多语言能力以及 Vercel 部署能力也源自我们的贡献 :)
 
-
 ## 开始使用
+
 [点我查看详细教程（简体中文版）](https://egqz2y6eul.feishu.cn/docx/DhIfdwJIyoCKcnxQye2cqoUgnof)
 
 1. 准备好 OpenAI API Key；

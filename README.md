@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-English / [简体中文](./README_CN.md)
+English / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md)
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
@@ -33,7 +33,7 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 ## Roadmap
 
 1. Add support for Docker and Docker Compose
-2. Add support for Endpoint URL 
+2. Add support for Endpoint URL
 3. Add support for Azure OpenAI API
 4. Optimize the display of running results for easier viewing
 5. Add support for WeChat login
@@ -43,7 +43,6 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 Q: What is the difference between this project and AgentGPT?
 
 A: The project originated from AgentGPT. Our goal is to continuously provide user-friendly features, interfaces, and various deployment solutions for domestic users, helping everyone to easily build their own "AutoGPT" website. And the i18n ability and Vercel deployment ability in the AgentGPT project also come from our contributions.
-
 
 ## Docker Deployment
 
