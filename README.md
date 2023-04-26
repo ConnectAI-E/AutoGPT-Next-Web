@@ -20,7 +20,8 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## Discuss with us
 
-![cover](https://user-images.githubusercontent.com/38354472/232792153-683125c9-33bf-492f-ac6b-fbaab8c7b46e.png)
+![cover](https://user-images.githubusercontent.com/20209191/234480921-0a8f754e-1110-47bf-9c40-25e3daed2c05.png)
+
 
 ## Features
 
