@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import {
   FaBars,
   FaCog,
@@ -126,7 +126,7 @@ const Drawer = ({
           {/*  onClick={() => setAgents([])}*/}
           {/*/>*/}
 
-          {env.NEXT_PUBLIC_FF_AUTH_ENABLED && (
+          {authEnabled && (
             <AuthItem session={session} signIn={signIn} signOut={signOut} />
           )}
 
@@ -136,30 +136,34 @@ const Drawer = ({
             onClick={showHelp}
           />
           <DrawerItem icon={<FaCog />} text="settings" onClick={showSettings} />
-          <DrawerItem
-            icon={<FaWeixin />}
-            text="weChat"
-            target="_blank"
-            onClick={showWeChat}
-          />
-          <DrawerItem
-            icon={<FaQq />}
-            text="QQ"
-            target="_blank"
-            onClick={showQQ}
-          />
-          <DrawerItem
-            icon={<FaGlobe />}
-            text="knowlege-planet"
-            target="_blank"
-            onClick={showKnowledgePlanet}
-          />
-          <DrawerItem
-            icon={<FaDiscord />}
-            text="Discord"
-            href="https://discord.gg/Xnsbhg6Uvd"
-            target="_blank"
-          />
+          {authEnabled && (
+            <Fragment>
+              <DrawerItem
+                icon={<FaWeixin />}
+                text="weChat"
+                target="_blank"
+                onClick={showWeChat}
+              />
+              <DrawerItem
+                icon={<FaQq />}
+                text="QQ"
+                target="_blank"
+                onClick={showQQ}
+              />
+              <DrawerItem
+                icon={<FaGlobe />}
+                text="knowlege-planet"
+                target="_blank"
+                onClick={showKnowledgePlanet}
+              />
+              <DrawerItem
+                icon={<FaDiscord />}
+                text="Discord"
+                href="https://discord.gg/Xnsbhg6Uvd"
+                target="_blank"
+              />
+            </Fragment>
+          )}
           <DrawerItem
             icon={<FaGithub />}
             text="GitHub"
