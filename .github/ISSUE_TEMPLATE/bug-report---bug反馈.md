@@ -2,8 +2,8 @@
 name: Bug report / Bug反馈
 about: " Create a report to help us improve / 创建报告以帮助我们改进"
 title: "[BUG]"
-labels: bug
-assignees: Dogtiti
+labels: ''
+assignees: ''
 
 ---
 

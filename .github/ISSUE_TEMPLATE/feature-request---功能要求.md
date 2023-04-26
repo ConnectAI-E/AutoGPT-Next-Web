@@ -2,8 +2,8 @@
 name: Feature request / 功能要求
 about: Suggest an idea for this project / 为这个项目提出一个创意
 title: "[FEAT]"
-labels: enhancement
-assignees: LiuElric
+labels: ''
+assignees: ''
 
 ---
 
