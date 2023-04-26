@@ -61,6 +61,12 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 ```bash
 ./setup.sh --docker
 ```
+### Docker-compose
+
+使用 `docker-compose` 部署
+```bash
+./setup.sh --docker-compose
+```
 
 ### 本地开发环境配置
 
