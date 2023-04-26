@@ -38,6 +38,13 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 4. Optimize the display of running results for easier viewing
 5. Add support for WeChat login
 
+## Get Started
+
+[Click me to view the detailed tutorial](https://autogpt-next-web.gitbook.io/autogpt-next-web/) 
+1. Prepare the OpenAI  API Key;
+2. Click the deploy button and follow the prompts
+3. We support access control capabilities, see the tutorial above for a detailed tutorial
+
 ## FAQ
 
 Q: What is the difference between this project and AgentGPT?
