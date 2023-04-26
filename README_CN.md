@@ -45,6 +45,7 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 
 
 ## 开始使用
+[点我查看详细教程（简体中文版）](https://egqz2y6eul.feishu.cn/docx/DhIfdwJIyoCKcnxQye2cqoUgnof)
 
 1. 准备好 OpenAI API Key；
 2. 点击 deploy 按钮，然后根据提示进行操作即可
