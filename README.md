@@ -34,7 +34,7 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 ## Roadmap
 
 - [x] 1. Add support for Docker and Docker Compose 
-- [ ] 2. Add support for Endpoint URL 
+- [x] 2. Add support for Endpoint URL 
 - [ ] 3. Add support for Azure OpenAI API 
 - [ ] 4. Optimize the display of running results for easier viewing 
 - [ ] 5. Add support for WeChat login 
