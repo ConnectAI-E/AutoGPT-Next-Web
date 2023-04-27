@@ -15,8 +15,6 @@ import type { RequestBody } from "../utils/interfaces";
 const TIMEOUT_LONG = 1000;
 const TIMOUT_SHORT = 800;
 
-const OPENAI_API_BASE_URL = process.env.OPENAI_API_BASE_URL;
-
 class AutonomousAgent {
   name: string;
   goal: string;
@@ -151,6 +149,7 @@ class AutonomousAgent {
 
   async getInitialTasks(): Promise<string[]> {
     if (this.shouldRunClientSide()) {
+      const OPENAI_API_BASE_URL = process.env.OPENAI_API_BASE_URL;
       if (!env.NEXT_PUBLIC_FF_MOCK_MODE_ENABLED && !OPENAI_API_BASE_URL) {
         await testConnection(this.modelSettings);
       }
