@@ -32,11 +32,11 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## 路线图
 
-1. 增加 Docker 和 Docker Compose 支持
-2. 增加 Endpoint URL 支持
-3. 增加 Azure OpenAI API 的支持
-4. 运行结果展示优化，更方便的查看结果
-5. 增加微信登录支持
+- [x] 1. 增加 Docker 和 Docker Compose 支持
+- [ ] 2. 增加 Endpoint URL 支持
+- [ ] 3. 增加 Azure OpenAI API 的支持
+- [ ] 4. 运行结果展示优化，更方便的查看结果
+- [ ] 5. 增加微信登录支持
 
 ## 常见问题
 
