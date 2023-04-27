@@ -17,7 +17,7 @@ export const createModel = (settings: ModelSettings) => {
       maxTokens: _settings?.maxTokens || 400,
     },
     {
-      basePath: process.env.OPENAI_API_BASE_URL,
+      basePath: process.env.OPENAI_API_BASE_URL || undefined,
     }
   );
 };
