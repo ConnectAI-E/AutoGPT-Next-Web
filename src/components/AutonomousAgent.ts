@@ -150,7 +150,7 @@ class AutonomousAgent {
   async getInitialTasks(): Promise<string[]> {
     if (this.shouldRunClientSide()) {
       const OPENAI_API_BASE_URL = process.env.OPENAI_API_BASE_URL;
-      if (!env.NEXT_PUBLIC_FF_MOCK_MODE_ENABLED && !OPENAI_API_BASE_URL) {
+      if (!env.NEXT_PUBLIC_FF_MOCK_MODE_ENABLED || !OPENAI_API_BASE_URL) {
         await testConnection(this.modelSettings);
       }
       return await AgentService.startGoalAgent(this.modelSettings, this.goal);
