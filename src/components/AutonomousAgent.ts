@@ -119,7 +119,7 @@ class AutonomousAgent {
         currentTask as string,
         result
       );
-      this.tasks = this.tasks.concat(newTasks);
+      this.tasks = newTasks.concat(this.tasks);
       for (const task of newTasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
         this.sendTaskMessage(task);
