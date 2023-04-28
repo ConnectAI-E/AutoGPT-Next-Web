@@ -19,6 +19,7 @@ class AutonomousAgent {
   name: string;
   goal: string;
   tasks: string[] = [];
+  taskIds: {[key: string]: string} = {};
   completedTasks: string[] = [];
   modelSettings: ModelSettings;
   isRunning = true;
@@ -61,9 +62,10 @@ class AutonomousAgent {
     // Initialize by getting tasks
     try {
       this.tasks = await this.getInitialTasks();
+      this.genTaskId();
       for (const task of this.tasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
-        this.sendTaskMessage(task);
+        this.sendTaskMessage(task, this.taskIds[task]);
       }
     } catch (e) {
       console.log(e);
@@ -73,6 +75,10 @@ class AutonomousAgent {
     }
 
     await this.loop();
+  }
+
+  genTaskId() {
+    this.tasks.forEach(task => this.taskIds[task] = this.taskIds[task] || v4())
   }
 
   async loop() {
@@ -104,14 +110,15 @@ class AutonomousAgent {
     // Get and remove first task
     this.completedTasks.push(this.tasks[0] || "");
     const currentTask = this.tasks.shift();
-    this.sendThinkingMessage();
+    const currentTaskId = this.taskIds[currentTask]
+    this.sendThinkingMessage(currentTaskId);
 
     const result = await this.executeTask(currentTask as string);
-    this.sendExecutionMessage(currentTask as string, result);
+    this.sendExecutionMessage(currentTask as string, result, currentTaskId);
 
     // Wait before adding tasks
     await new Promise((r) => setTimeout(r, TIMEOUT_LONG));
-    this.sendThinkingMessage();
+    this.sendThinkingMessage(currentTaskId);
 
     // Add new tasks
     try {
@@ -120,18 +127,19 @@ class AutonomousAgent {
         result
       );
       this.tasks = newTasks.concat(this.tasks);
+      this.genTaskId();
       for (const task of newTasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
-        this.sendTaskMessage(task);
+        this.sendTaskMessage(task, this.taskIds[task], currentTaskId);
       }
 
       if (newTasks.length == 0) {
-        this.sendActionMessage("task-marked-as-complete");
+        this.sendActionMessage("task-marked-as-complete", currentTaskId);
       }
     } catch (e) {
       console.log(e);
       this.sendErrorMessage(`errors.adding-additional-task`);
-      this.sendActionMessage("task-marked-as-complete");
+      this.sendActionMessage("task-marked-as-complete",  currentTaskId);
     }
 
     await this.loop();
@@ -271,31 +279,33 @@ class AutonomousAgent {
     });
   }
 
-  sendThinkingMessage() {
-    this.sendMessage({ type: "thinking", value: "" });
+  sendThinkingMessage(taskId?: string) {
+    this.sendMessage({ type: "thinking", value: "", taskId });
   }
 
-  sendTaskMessage(task: string) {
-    this.sendMessage({ type: "task", value: task });
+  sendTaskMessage(task: string, taskId: string, parentTaskId?: string) {
+    this.sendMessage({ type: "task", value: task, taskId, parentTaskId });
   }
 
   sendErrorMessage(error: string) {
     this.sendMessage({ type: "system", value: error });
   }
 
-  sendExecutionMessage(task: string, execution: string) {
+  sendExecutionMessage(task: string, execution: string, taskId: string) {
     this.sendMessage({
       type: "action",
       info: `Executing "${task}"`,
       value: execution,
+      taskId,
     });
   }
 
-  sendActionMessage(message: string) {
+  sendActionMessage(message: string, taskId: string) {
     this.sendMessage({
       type: "action",
       info: message,
       value: "",
+      taskId,
     });
   }
 }

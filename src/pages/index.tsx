@@ -76,7 +76,11 @@ const Home: NextPage = () => {
   }, [agent]);
 
   const handleAddMessage = (message: Message) => {
-    setMessages((prev) => [...prev, message]);
+    setMessages((prev) => {
+      const index = prev.findLastIndex(i => i.taskId && i.taskId === message.taskId)
+      prev.splice(index > -1 ? index + 1 : prev.length, 0, message)
+      return [...prev]
+    });
   };
 
   const tasks = messages.filter((message) => message.type === "task");
