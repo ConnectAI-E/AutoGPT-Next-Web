@@ -86,7 +86,6 @@ const ChatWindow = ({
     }
     return depth
   }
-  console.log('messages', messages)
 
   return (
     <div
