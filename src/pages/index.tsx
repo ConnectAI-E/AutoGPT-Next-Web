@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { type NextPage, type GetStaticProps } from "next";
 import DefaultLayout from "../layout/default";
 import ChatWindow from "../components/ChatWindow";
@@ -75,13 +75,11 @@ const Home: NextPage = () => {
     }
   }, [agent]);
 
-  const handleAddMessage = (message: Message) => {
-    setMessages((prev) => {
-      const index = prev.findLastIndex(i => i.taskId && i.taskId === message.taskId)
-      prev.splice(index > -1 ? index + 1 : prev.length, 0, message)
-      return [...prev]
-    });
-  };
+  const handleAddMessage = useCallback((message: Message) => {
+    const index = messages.findLastIndex(i => i.taskId && i.taskId === message.taskId)
+    messages.splice(index > -1 ? index + 1 : messages.length, 0, message)
+    setMessages([...messages])
+  }, [messages]);
 
   const tasks = messages.filter((message) => message.type === "task");
 
