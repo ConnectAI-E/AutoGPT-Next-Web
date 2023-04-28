@@ -4,8 +4,9 @@ export type ModelSettings = {
   customTemperature: number;
   customMaxLoops: number;
   customLanguage: string;
-  maxTokens?: number;
-  guestKey?: string;
+  customEndPoint?: string;
+  customMaxTokens?: number;
+  customGuestKey?: string;
 };
 
 export type GuestSettings = {

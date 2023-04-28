@@ -9,6 +9,7 @@ import {
   FaSyncAlt,
   FaCoins,
   FaCode,
+  FaServer,
 } from "react-icons/fa";
 import Dialog from "./Dialog";
 import Input from "./Input";
@@ -16,6 +17,7 @@ import { GPT_MODEL_NAMES, GPT_4 } from "../utils/constants";
 import Accordion from "./Accordion";
 import type { ModelSettings } from "../utils/types";
 import { useGuestMode } from "../hooks/useGuestMode";
+import { DEFAULT_SETTINGS } from "../hooks/useSettings";
 
 export const SettingsDialog: React.FC<{
   show: boolean;
@@ -25,7 +27,7 @@ export const SettingsDialog: React.FC<{
   const [settings, setSettings] = React.useState<ModelSettings>({
     ...customSettings,
   });
-  const { isGuestMode } = useGuestMode(settings.guestKey);
+  const { isGuestMode } = useGuestMode(settings.customGuestKey);
   const { t } = useTranslation(["settings", "common"]);
 
   useEffect(() => {
@@ -37,6 +39,22 @@ export const SettingsDialog: React.FC<{
     value: ModelSettings[Key]
   ) => {
     setSettings((prev) => {
+      if (key === "customApiKey" && !value) {
+        const {
+          customTemperature,
+          customMaxLoops,
+          customEndPoint,
+          customMaxTokens,
+        } = DEFAULT_SETTINGS;
+        return {
+          ...prev,
+          [key]: value,
+          customTemperature,
+          customMaxLoops,
+          customEndPoint,
+          customMaxTokens,
+        };
+      }
       return { ...prev, [key]: value };
     });
   };
@@ -50,6 +68,18 @@ export const SettingsDialog: React.FC<{
   const disabled = !settings.customApiKey;
   const advancedSettings = (
     <>
+      <Input
+        left={
+          <>
+            <FaServer />
+            <span className="ml-2">{t("endPoint")}</span>
+          </>
+        }
+        disabled={disabled}
+        value={settings.customEndPoint}
+        onChange={(e) => updateSettings("customEndPoint", e.target.value)}
+      />
+      <br />
       <Input
         left={
           <>
@@ -104,10 +134,10 @@ export const SettingsDialog: React.FC<{
             <span className="ml-2">{t("tokens")}</span>
           </>
         }
-        value={settings.maxTokens ?? 400}
+        value={settings.customMaxTokens ?? 400}
         disabled={disabled}
         onChange={(e) =>
-          updateSettings("maxTokens", parseFloat(e.target.value))
+          updateSettings("customMaxTokens", parseFloat(e.target.value))
         }
         type="range"
         toolTipProperties={{
@@ -192,8 +222,8 @@ export const SettingsDialog: React.FC<{
                 <span className="ml-2">{t("guest-key")}</span>
               </>
             }
-            value={settings.guestKey}
-            onChange={(e) => updateSettings("guestKey", e.target.value)}
+            value={settings.customGuestKey}
+            onChange={(e) => updateSettings("customGuestKey", e.target.value)}
           />
         )}
         <br className="hidden md:inline" />

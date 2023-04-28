@@ -45,7 +45,7 @@ const Home: NextPage = () => {
     useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
   const { settings, saveSettings } = useSettings({ customLanguage });
-  const { isValidGuest, isGuestMode } = useGuestMode(settings.guestKey);
+  const { isValidGuest, isGuestMode } = useGuestMode(settings.customGuestKey);
 
   const router = useRouter();
   const agentUtils = useAgent();
