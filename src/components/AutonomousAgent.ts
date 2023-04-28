@@ -18,8 +18,7 @@ const TIMOUT_SHORT = 800;
 class AutonomousAgent {
   name: string;
   goal: string;
-  tasks: string[] = [];
-  taskIds: {[key: string]: string} = {};
+  tasks: {task: string; taskId: string, parentTaskId?: string}[] = [];
   completedTasks: string[] = [];
   modelSettings: ModelSettings;
   isRunning = true;
@@ -61,11 +60,11 @@ class AutonomousAgent {
 
     // Initialize by getting tasks
     try {
-      this.tasks = await this.getInitialTasks();
-      this.genTaskId();
+      const tasks = await this.getInitialTasks();
+      this.tasks = tasks.map(task => ({ taskId: v4(), task }))
       for (const task of this.tasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
-        this.sendTaskMessage(task, this.taskIds[task]);
+        this.sendTaskMessage(task.task, task.taskId);
       }
     } catch (e) {
       console.log(e);
@@ -75,10 +74,6 @@ class AutonomousAgent {
     }
 
     await this.loop();
-  }
-
-  genTaskId() {
-    this.tasks.forEach(task => this.taskIds[task] = this.taskIds[task] || v4())
   }
 
   async loop() {
@@ -108,9 +103,8 @@ class AutonomousAgent {
 
     // Execute first task
     // Get and remove first task
-    this.completedTasks.push(this.tasks[0] || "");
-    const currentTask = this.tasks.shift();
-    const currentTaskId = this.taskIds[currentTask]
+    this.completedTasks.push(this.tasks[0].task || "");
+    const { task: currentTask, taskId: currentTaskId  }= this.tasks.shift();
     this.sendThinkingMessage(currentTaskId);
 
     const result = await this.executeTask(currentTask as string);
@@ -122,15 +116,15 @@ class AutonomousAgent {
 
     // Add new tasks
     try {
-      const newTasks = await this.getAdditionalTasks(
+      console.log('newTasks', currentTask, result)
+      const newTasks = (await this.getAdditionalTasks(
         currentTask as string,
         result
-      );
+      )).map(task => ({ parentTaskId: currentTaskId, taskId: v4(), task }));
       this.tasks = newTasks.concat(this.tasks);
-      this.genTaskId();
       for (const task of newTasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
-        this.sendTaskMessage(task, this.taskIds[task], currentTaskId);
+        this.sendTaskMessage(task.task, task.taskId, currentTaskId);
       }
 
       if (newTasks.length == 0) {
@@ -181,7 +175,7 @@ class AutonomousAgent {
       return await AgentService.createTasksAgent(
         this.modelSettings,
         this.goal,
-        this.tasks,
+        this.tasks.map(task => task.task),
         currentTask,
         result,
         this.completedTasks
@@ -191,7 +185,7 @@ class AutonomousAgent {
     const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
-      tasks: this.tasks,
+      tasks: this.tasks.map(task => task.task),
       lastTask: currentTask,
       result: result,
       completedTasks: this.completedTasks,
