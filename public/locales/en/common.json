@@ -28,5 +28,6 @@
   "share": "Share",
   "sign-in": "Sign In",
   "sign-out": "Sign Out",
-  "export": "Export"
+  "export": "Export",
+  "reset": "Reset"
 }

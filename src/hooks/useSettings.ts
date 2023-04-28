@@ -8,7 +8,7 @@ import {
 import { useGuestMode } from "./useGuestMode";
 
 const SETTINGS_KEY = "AGENTGPT_SETTINGS";
-export const DEFAULT_SETTINGS: ModelSettings = {
+const DEFAULT_SETTINGS: ModelSettings = {
   customApiKey: "",
   customModelName: GPT_35_TURBO,
   customTemperature: 0.9,
@@ -20,34 +20,33 @@ export const DEFAULT_SETTINGS: ModelSettings = {
 };
 
 const loadSettings = () => {
-  const defaultSettions = DEFAULT_SETTINGS;
   if (typeof window === "undefined") {
-    return defaultSettions;
+    return DEFAULT_SETTINGS;
   }
 
   const data = localStorage.getItem(SETTINGS_KEY);
   if (!data) {
-    return defaultSettions;
+    return DEFAULT_SETTINGS;
   }
 
   try {
     const obj = JSON.parse(data) as ModelSettings;
     Object.entries(obj).forEach(([key, value]) => {
-      if (defaultSettions.hasOwnProperty(key)) {
+      if (DEFAULT_SETTINGS.hasOwnProperty(key)) {
         // @ts-ignore
-        defaultSettions[key] = value;
+        DEFAULT_SETTINGS[key] = value;
       }
     });
   } catch (error) {}
 
   if (
-    defaultSettions.customApiKey &&
-    defaultSettions.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
+    DEFAULT_SETTINGS.customApiKey &&
+    DEFAULT_SETTINGS.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
   ) {
-    defaultSettions.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
+    DEFAULT_SETTINGS.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
   }
 
-  return defaultSettions;
+  return DEFAULT_SETTINGS;
 };
 
 export function useSettings({ customLanguage }: { customLanguage: string }) {
@@ -69,8 +68,14 @@ export function useSettings({ customLanguage }: { customLanguage: string }) {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   };
 
+  const resetSettings = () => {
+    localStorage.removeItem(SETTINGS_KEY);
+    setSettings(rewriteSettings(DEFAULT_SETTINGS));
+  };
+
   return {
     settings,
     saveSettings,
+    resetSettings,
   };
 }

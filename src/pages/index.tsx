@@ -44,8 +44,10 @@ const Home: NextPage = () => {
   const [showKnowlegePlanetDialog, setShowKnowlegePlanetDialog] =
     useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
-  const { settings, saveSettings } = useSettings({ customLanguage });
-  const { isValidGuest, isGuestMode } = useGuestMode(settings.customGuestKey);
+  const settingsModel = useSettings({ customLanguage });
+  const { isValidGuest, isGuestMode } = useGuestMode(
+    settingsModel.settings.customGuestKey
+  );
 
   const router = useRouter();
   const agentUtils = useAgent();
@@ -90,7 +92,7 @@ const Home: NextPage = () => {
       goalInput.trim(),
       handleAddMessage,
       () => setAgent(null),
-      settings,
+      settingsModel.settings,
       { isValidGuest, isGuestMode },
       session ?? undefined
     );
@@ -149,7 +151,7 @@ const Home: NextPage = () => {
         close={() => setShowHelpDialog(false)}
       />
       <SettingsDialog
-        customSettings={[settings, saveSettings]}
+        customSettings={settingsModel}
         show={showSettingsDialog}
         close={() => setShowSettingsDialog(false)}
       />

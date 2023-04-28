@@ -13,3 +13,9 @@ export type GuestSettings = {
   isValidGuest: boolean;
   isGuestMode: boolean;
 };
+
+export type SettingModel = {
+  settings: ModelSettings;
+  saveSettings: (settings: ModelSettings) => void;
+  resetSettings: () => void;
+};
