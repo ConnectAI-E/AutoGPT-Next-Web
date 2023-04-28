@@ -9,27 +9,29 @@ import {
   FaSyncAlt,
   FaCoins,
   FaCode,
+  FaServer,
 } from "react-icons/fa";
 import Dialog from "./Dialog";
 import Input from "./Input";
 import { GPT_MODEL_NAMES, GPT_4 } from "../utils/constants";
 import Accordion from "./Accordion";
-import type { ModelSettings } from "../utils/types";
+import type { ModelSettings, SettingModel } from "../utils/types";
 import { useGuestMode } from "../hooks/useGuestMode";
+import clsx from "clsx";
 
 export const SettingsDialog: React.FC<{
   show: boolean;
   close: () => void;
-  customSettings: [ModelSettings, (settings: ModelSettings) => void];
-}> = ({ show, close, customSettings: [customSettings, setCustomSettings] }) => {
+  customSettings: SettingModel;
+}> = ({ show, close, customSettings }) => {
   const [settings, setSettings] = React.useState<ModelSettings>({
-    ...customSettings,
+    ...customSettings.settings,
   });
-  const { isGuestMode } = useGuestMode(settings.guestKey);
+  const { isGuestMode } = useGuestMode(settings.customGuestKey);
   const { t } = useTranslation(["settings", "common"]);
 
   useEffect(() => {
-    setSettings(customSettings);
+    setSettings(customSettings.settings);
   }, [customSettings, close]);
 
   const updateSettings = <Key extends keyof ModelSettings>(
@@ -41,15 +43,53 @@ export const SettingsDialog: React.FC<{
     });
   };
 
+  function urlIsValid(url: string | undefined) {
+    if (url) {
+      const pattern = /^(https?:\/\/)?[\w.-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
+      return pattern.test(url);
+    }
+    return true;
+  }
+
   const handleSave = () => {
-    setCustomSettings(settings);
+    if (!urlIsValid(settings.customEndPoint)) {
+      alert(
+        t(
+          "Endpoint URL is invalid. Please ensure that you have set a correct URL."
+        )
+      );
+      return;
+    }
+
+    if (!settings.customApiKey) {
+      customSettings.resetSettings();
+    } else {
+      customSettings.saveSettings(settings);
+    }
     close();
     return;
   };
 
+  const handleReset = () => {
+    customSettings.resetSettings();
+    updateSettings("customApiKey", "");
+    close();
+  };
+
   const disabled = !settings.customApiKey;
   const advancedSettings = (
-    <>
+    <div className="flex flex-col gap-2">
+      <Input
+        left={
+          <>
+            <FaServer />
+            <span className="ml-2">{t("endPoint")}</span>
+          </>
+        }
+        disabled={disabled}
+        value={settings.customEndPoint}
+        onChange={(e) => updateSettings("customEndPoint", e.target.value)}
+      />
       <Input
         left={
           <>
@@ -72,7 +112,6 @@ export const SettingsDialog: React.FC<{
           step: 0.01,
         }}
       />
-      <br />
       <Input
         left={
           <>
@@ -96,7 +135,6 @@ export const SettingsDialog: React.FC<{
           step: 1,
         }}
       />
-      <br />
       <Input
         left={
           <>
@@ -104,10 +142,10 @@ export const SettingsDialog: React.FC<{
             <span className="ml-2">{t("tokens")}</span>
           </>
         }
-        value={settings.maxTokens ?? 400}
+        value={settings.customMaxTokens ?? 400}
         disabled={disabled}
         onChange={(e) =>
-          updateSettings("maxTokens", parseFloat(e.target.value))
+          updateSettings("customMaxTokens", parseFloat(e.target.value))
         }
         type="range"
         toolTipProperties={{
@@ -120,7 +158,7 @@ export const SettingsDialog: React.FC<{
           step: 100,
         }}
       />
-    </>
+    </div>
   );
 
   return (
@@ -128,16 +166,23 @@ export const SettingsDialog: React.FC<{
       header={`${t("settings")} ⚙`}
       isShown={show}
       close={close}
-      footerButton={<Button onClick={handleSave}>{t("common:save")}</Button>}
+      footerButton={
+        <>
+          <Button className="bg-red-400 hover:bg-red-500" onClick={handleReset}>
+            {t("common:reset")}
+          </Button>
+          <Button onClick={handleSave}>{t("common:save")}</Button>
+        </>
+      }
+      contentClassName="text-md relative flex flex-col gap-2 p-2 leading-relaxed"
     >
       <p>{t("usage")}</p>
-      <br />
       <p
-        className={
-          settings.customModelName === GPT_4
-            ? "rounded-md border-[2px] border-white/10 bg-yellow-300 text-black"
-            : ""
-        }
+        className={clsx(
+          "my-2",
+          settings.customModelName === GPT_4 &&
+            "rounded-md border-[2px] border-white/10 bg-yellow-300 text-black"
+        )}
       >
         <FaExclamationCircle className="inline-block" />
         &nbsp;
@@ -155,67 +200,60 @@ export const SettingsDialog: React.FC<{
           </b>
         </Trans>
       </p>
-      <br />
-      <div className="text-md relative flex-auto p-2 leading-relaxed">
+      <Input
+        left={
+          <>
+            <FaKey />
+            <span className="ml-2">{t("key")}</span>
+          </>
+        }
+        placeholder={"sk-..."}
+        value={settings.customApiKey}
+        onChange={(e) => updateSettings("customApiKey", e.target.value)}
+      />
+      <Input
+        left={
+          <>
+            <FaMicrochip />
+            <span className="ml-2">{t("model")}</span>
+          </>
+        }
+        type="combobox"
+        value={settings.customModelName}
+        onChange={() => null}
+        setValue={(e) => updateSettings("customModelName", e)}
+        attributes={{ options: GPT_MODEL_NAMES }}
+        disabled={disabled}
+      />
+      {isGuestMode && (
         <Input
           left={
             <>
-              <FaKey />
-              <span className="ml-2">{t("key")}</span>
+              <FaCode />
+              <span className="ml-2">{t("guest-key")}</span>
             </>
           }
-          placeholder={"sk-..."}
-          value={settings.customApiKey}
-          onChange={(e) => updateSettings("customApiKey", e.target.value)}
+          value={settings.customGuestKey}
+          onChange={(e) => updateSettings("customGuestKey", e.target.value)}
         />
-        <br className="md:inline" />
-        <Input
-          left={
-            <>
-              <FaMicrochip />
-              <span className="ml-2">{t("model")}</span>
-            </>
-          }
-          type="combobox"
-          value={settings.customModelName}
-          onChange={() => null}
-          setValue={(e) => updateSettings("customModelName", e)}
-          attributes={{ options: GPT_MODEL_NAMES }}
-          disabled={disabled}
-        />
-        <br className="md:inline" />
-        {isGuestMode && (
-          <Input
-            left={
-              <>
-                <FaCode />
-                <span className="ml-2">{t("guest-key")}</span>
-              </>
-            }
-            value={settings.guestKey}
-            onChange={(e) => updateSettings("guestKey", e.target.value)}
-          />
-        )}
-        <br className="hidden md:inline" />
-        <Accordion
-          child={advancedSettings}
-          name={t("advanced-settings")}
-        ></Accordion>
-        <br />
-        <Trans i18nKey="api-key-notice" ns="settings">
-          <strong className="mt-10">
-            NOTE: To get a key, sign up for an OpenAI account and visit the
-            following
-            <a
-              href="https://platform.openai.com/account/api-keys"
-              className="text-blue-500"
-            >
-              link.
-            </a>
-            This key is only used in the current browser session
-          </strong>
-        </Trans>
-      </div>
+      )}
+      <Accordion
+        child={advancedSettings}
+        name={t("advanced-settings")}
+      ></Accordion>
+      <Trans i18nKey="api-key-notice" ns="settings">
+        <strong className="mt-10">
+          NOTE: To get a key, sign up for an OpenAI account and visit the
+          following
+          <a
+            href="https://platform.openai.com/account/api-keys"
+            className="text-blue-500"
+          >
+            link.
+          </a>
+          This key is only used in the current browser session
+        </strong>
+      </Trans>
     </Dialog>
   );
 };

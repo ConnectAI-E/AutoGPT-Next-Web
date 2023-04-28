@@ -4,11 +4,18 @@ export type ModelSettings = {
   customTemperature: number;
   customMaxLoops: number;
   customLanguage: string;
-  maxTokens?: number;
-  guestKey?: string;
+  customEndPoint?: string;
+  customMaxTokens?: number;
+  customGuestKey?: string;
 };
 
 export type GuestSettings = {
   isValidGuest: boolean;
   isGuestMode: boolean;
+};
+
+export type SettingModel = {
+  settings: ModelSettings;
+  saveSettings: (settings: ModelSettings) => void;
+  resetSettings: () => void;
 };
