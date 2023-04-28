@@ -13,7 +13,7 @@ export const createModel = (settings: ModelSettings) => {
     openAIApiKey: _settings?.customApiKey || process.env.OPENAI_API_KEY,
     temperature: _settings?.customTemperature || 0.9,
     modelName: _settings?.customModelName || GPT_35_TURBO,
-    maxTokens: _settings?.customMaxLoops || 400,
+    maxTokens: _settings?.customMaxTokens || 400,
   };
 
   const baseOptions = {
