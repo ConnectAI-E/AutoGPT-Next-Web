@@ -19,7 +19,6 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import Button from "./Button";
 import { useTranslation, Trans } from "next-i18next";
-
 import WindowButton from "./WindowButton";
 import PDFButton from "./pdf/PDFButton";
 import FadeIn from "./motions/FadeIn";
@@ -70,6 +69,31 @@ const ChatWindow = ({
     }
   });
 
+  const messageDepth = (messages: Message[], message: Message, depth = 0) => {
+    if (depth > 5) {
+      return depth;
+    }
+    const index = messages.findLastIndex(
+      (i: Message) => i.parentTaskId && i.taskId === message.taskId
+    );
+    if (index > -1) {
+      const { parentTaskId } = messages[index] as Message;
+      if (parentTaskId) {
+        const parentIndex = messages.findLastIndex(
+          (i: Message) => i.taskId && i.taskId === parentTaskId
+        );
+        if (parentIndex > -1) {
+          return messageDepth(
+            messages,
+            messages[parentIndex] as Message,
+            depth + 1
+          );
+        }
+      }
+    }
+    return depth;
+  };
+
   return (
     <div
       className={
@@ -90,7 +114,10 @@ const ChatWindow = ({
       >
         {messages.map((message, index) => (
           <FadeIn key={`${index}-${message.type}`}>
-            <ChatMessage message={message} />
+            <ChatMessage
+              message={message}
+              depth={messageDepth(messages, message, 0)}
+            />
           </FadeIn>
         ))}
         {children}
@@ -221,7 +248,13 @@ const MacWindowHeader = (props: HeaderProps) => {
     </div>
   );
 };
-const ChatMessage = ({ message }: { message: Message }) => {
+const ChatMessage = ({
+  message,
+  depth = 0,
+}: {
+  message: Message;
+  depth?: number;
+}) => {
   const { t } = useTranslation(["chat", "common"]);
   const [showCopy, setShowCopy] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -243,6 +276,7 @@ const ChatMessage = ({ message }: { message: Message }) => {
   return (
     <div
       className="mx-2 my-1 rounded-lg border-[2px] border-white/10 bg-white/20 p-1 font-mono text-sm hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base"
+      style={{ marginLeft: `${depth * 40 + 20}px` }}
       onMouseEnter={() => setShowCopy(true)}
       onMouseLeave={() => setShowCopy(false)}
       onClick={handleCopyClick}
