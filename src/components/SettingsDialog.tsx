@@ -72,7 +72,6 @@ export const SettingsDialog: React.FC<{
 
   const handleReset = () => {
     customSettings.resetSettings();
-    updateSettings("customApiKey", "");
     close();
   };
 
