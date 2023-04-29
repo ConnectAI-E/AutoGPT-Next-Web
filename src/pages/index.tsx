@@ -75,11 +75,20 @@ const Home: NextPage = () => {
     }
   }, [agent]);
 
-  const handleAddMessage = useCallback((message: Message) => {
-    const index = messages.findLastIndex(i => i.taskId && i.taskId === message.taskId)
-    messages.splice(index > -1 ? index + 1 : messages.length, 0, message)
-    setMessages([...messages])
-  }, [messages]);
+  const handleAddMessage = useCallback((newMessage: Message) => {
+    setMessages((preMessages) => {
+      const index = preMessages.findLastIndex(
+        (message) => message?.taskId === newMessage?.taskId
+      );
+      const messagesCopy = [...preMessages];
+      messagesCopy.splice(
+        index > -1 ? index + 1 : messagesCopy.length,
+        0,
+        newMessage
+      );
+      return messagesCopy;
+    });
+  }, []);
 
   const tasks = messages.filter((message) => message.type === "task");
 

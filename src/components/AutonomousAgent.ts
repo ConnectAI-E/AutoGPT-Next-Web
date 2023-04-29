@@ -15,10 +15,16 @@ import type { RequestBody } from "../utils/interfaces";
 const TIMEOUT_LONG = 1000;
 const TIMOUT_SHORT = 800;
 
+interface Task {
+  task: string;
+  taskId: string;
+  parentTaskId?: string;
+}
+
 class AutonomousAgent {
   name: string;
   goal: string;
-  tasks: {task: string; taskId: string, parentTaskId?: string}[] = [];
+  tasks: Task[] = [];
   completedTasks: string[] = [];
   modelSettings: ModelSettings;
   isRunning = true;
@@ -61,7 +67,7 @@ class AutonomousAgent {
     // Initialize by getting tasks
     try {
       const tasks = await this.getInitialTasks();
-      this.tasks = tasks.map(task => ({ taskId: v4(), task }))
+      this.tasks = tasks.map((task) => ({ taskId: v4(), task }));
       for (const task of this.tasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
         this.sendTaskMessage(task.task, task.taskId);
@@ -103,8 +109,9 @@ class AutonomousAgent {
 
     // Execute first task
     // Get and remove first task
-    this.completedTasks.push(this.tasks[0].task || "");
-    const { task: currentTask, taskId: currentTaskId  }= this.tasks.shift();
+    this.completedTasks.push(this.tasks[0]?.task || "");
+    const { task: currentTask, taskId: currentTaskId } =
+      this.tasks.shift() as Task;
     this.sendThinkingMessage(currentTaskId);
 
     const result = await this.executeTask(currentTask as string);
@@ -116,11 +123,10 @@ class AutonomousAgent {
 
     // Add new tasks
     try {
-      console.log('newTasks', currentTask, result)
-      const newTasks = (await this.getAdditionalTasks(
-        currentTask as string,
-        result
-      )).map(task => ({ parentTaskId: currentTaskId, taskId: v4(), task }));
+      console.log("newTasks", currentTask, result);
+      const newTasks: Task[] = (
+        await this.getAdditionalTasks(currentTask as string, result)
+      ).map((task) => ({ parentTaskId: currentTaskId, taskId: v4(), task }));
       this.tasks = newTasks.concat(this.tasks);
       for (const task of newTasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
@@ -133,7 +139,7 @@ class AutonomousAgent {
     } catch (e) {
       console.log(e);
       this.sendErrorMessage(`errors.adding-additional-task`);
-      this.sendActionMessage("task-marked-as-complete",  currentTaskId);
+      this.sendActionMessage("task-marked-as-complete", currentTaskId);
     }
 
     await this.loop();
@@ -175,7 +181,7 @@ class AutonomousAgent {
       return await AgentService.createTasksAgent(
         this.modelSettings,
         this.goal,
-        this.tasks.map(task => task.task),
+        this.tasks.map((task) => task.task),
         currentTask,
         result,
         this.completedTasks
@@ -185,7 +191,7 @@ class AutonomousAgent {
     const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
-      tasks: this.tasks.map(task => task.task),
+      tasks: this.tasks.map((task) => task.task),
       lastTask: currentTask,
       result: result,
       completedTasks: this.completedTasks,
