@@ -29,10 +29,8 @@ import clsx from "clsx";
 interface ChatWindowProps extends HeaderProps {
   children?: ReactNode;
   className?: string;
-  showDonation: boolean;
   fullscreen?: boolean;
   scrollToBottom?: boolean;
-  showWeChatPay?: () => void;
 }
 
 const messageListId = "chat-window-message-list";
@@ -42,11 +40,9 @@ const ChatWindow = ({
   children,
   className,
   title,
-  showDonation,
   onSave,
   fullscreen,
   scrollToBottom,
-  showWeChatPay,
 }: ChatWindowProps) => {
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -139,11 +135,6 @@ const ChatWindow = ({
                   value: `📢 ${t("provide-api-key-via-settings")}`,
                 }}
               />
-              {showDonation && (
-                <Expand delay={0.7} type="spring">
-                  <DonationMessage showWeChatPay={showWeChatPay} />
-                </Expand>
-              )}
             </Expand>
           </>
         )}

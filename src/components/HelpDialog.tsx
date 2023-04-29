@@ -32,7 +32,7 @@ export default function HelpDialog({
             <li>{t("interaction-with-websites-and-people")} 👨‍👩‍👦</li>
           </ul>
           <br />
-          <p className="mt-2">{t("follow-the-journey-below")}</p>
+          <p className="mt-2">{t("follow-our-footsteps")}</p>
         </div>
         <div className="mt-4 flex w-full items-center justify-center gap-5">
           {authEnabled && (

@@ -209,6 +209,7 @@ export const SettingsDialog: React.FC<{
         placeholder={"sk-..."}
         value={settings.customApiKey}
         onChange={(e) => updateSettings("customApiKey", e.target.value)}
+        type="password"
       />
       <Input
         left={
@@ -234,6 +235,7 @@ export const SettingsDialog: React.FC<{
           }
           value={settings.customGuestKey}
           onChange={(e) => updateSettings("customGuestKey", e.target.value)}
+          type="password"
         />
       )}
       <Accordion

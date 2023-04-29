@@ -16,10 +16,8 @@ import { useAuth } from "../hooks/useAuth";
 import type { Message } from "../types/agentTypes";
 import { useAgent } from "../hooks/useAgent";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import WeChatDialog from "../components/WeChatDialog";
 import WeChatPayDialog from "../components/WeChatPayDialog";
 import QQDialog from "../components/QQDialog";
-import KnowlegePlanetDialog from "../components/KnowlegePlanetDialog";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { isEmptyOrBlank } from "../utils/whitespace";
@@ -38,11 +36,8 @@ const Home: NextPage = () => {
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
-  const [showWeChatDialog, setShowWeChatDialog] = useState(false);
   const [showWeChatPayDialog, setShowWeChatPayDialog] = useState(false);
   const [showQQDialog, setShowQQDialog] = useState(false);
-  const [showKnowlegePlanetDialog, setShowKnowlegePlanetDialog] =
-    useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
   const settingsModel = useSettings({ customLanguage });
   const { isValidGuest, isGuestMode } = useGuestMode(
@@ -166,27 +161,19 @@ const Home: NextPage = () => {
         show={showSettingsDialog}
         close={() => setShowSettingsDialog(false)}
       />
-      <WeChatDialog
-        show={showWeChatDialog}
-        close={() => setShowWeChatDialog(false)}
-      />
       <WeChatPayDialog
         show={showWeChatPayDialog}
         close={() => setShowWeChatPayDialog(false)}
       />
       <QQDialog show={showQQDialog} close={() => setShowQQDialog(false)} />
-      <KnowlegePlanetDialog
-        show={showKnowlegePlanetDialog}
-        close={() => setShowKnowlegePlanetDialog(false)}
-      />
       <main className="flex min-h-screen flex-row">
         <Drawer
           showHelp={() => setShowHelpDialog(true)}
           showSettings={() => setShowSettingsDialog(true)}
-          showWeChat={() => setShowWeChatDialog(true)}
           showQQ={() => setShowQQDialog(true)}
-          showKnowledgePlanet={() => setShowKnowlegePlanetDialog(true)}
+          showWeChatPay={() => setShowWeChatPayDialog(true)}
           handleLanguageChange={handleLanguageChange}
+          showDonation={showDonation}
         />
         <div
           id="content"
@@ -221,7 +208,6 @@ const Home: NextPage = () => {
                 className="sm:mt-4"
                 messages={messages}
                 title={session?.user.subscriptionId ? proTitle : "AutoGPT"}
-                showDonation={showDonation}
                 onSave={
                   shouldShowSave
                     ? (format) => {
@@ -235,7 +221,6 @@ const Home: NextPage = () => {
                     : undefined
                 }
                 scrollToBottom
-                showWeChatPay={() => setShowWeChatPayDialog(true)}
               />
               {tasks.length > 0 && <TaskWindow tasks={tasks} />}
             </Expand>
