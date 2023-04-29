@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import {
   FaBars,
   FaCog,
@@ -11,9 +11,8 @@ import {
   FaSignOutAlt,
   FaUser,
   FaLanguage,
-  FaWeixin,
   FaQq,
-  FaGlobe,
+  FaDonate,
 } from "react-icons/fa";
 import clsx from "clsx";
 import { useAuth } from "../hooks/useAuth";
@@ -28,22 +27,38 @@ import { authEnabled } from "../utils/env-helper";
 const Drawer = ({
   showHelp,
   showSettings,
-  showWeChat,
   showQQ,
-  showKnowledgePlanet,
+  showWeChatPay,
   handleLanguageChange,
+  showDonation,
 }: {
   showHelp: () => void;
   showSettings: () => void;
-  showWeChat: () => void;
   showQQ: () => void;
-  showKnowledgePlanet: () => void;
+  showWeChatPay: () => void;
   handleLanguageChange: () => void;
+  showDonation: boolean;
 }) => {
   const [showDrawer, setShowDrawer] = useState(false);
   const { session, signIn, signOut, status } = useAuth();
   const router = useRouter();
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 768) {
+        setShowDrawer(true);
+      } else {
+        setShowDrawer(false);
+      }
+    };
+    checkScreenWidth();
+    window.addEventListener("resize", checkScreenWidth);
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
 
   const sub = api.account.subscribe.useMutation({
     onSuccess: async (url) => {
@@ -71,27 +86,24 @@ const Drawer = ({
 
   return (
     <>
-      <button
-        hidden={showDrawer}
-        className="fixed left-2 top-2 z-40 rounded-md border-2 border-white/20 bg-zinc-900 p-2 text-white hover:bg-zinc-700 md:hidden"
-        onClick={toggleDrawer}
-      >
-        <FaBars />
-      </button>
       <div
         id="drawer"
         className={clsx(
-          showDrawer ? "translate-x-0" : "-translate-x-full",
-          "z-30 m-0 h-screen w-72 flex-col justify-between bg-zinc-900 p-3 font-mono text-white shadow-3xl transition-all",
-          "fixed top-0 md:sticky",
-          "flex md:translate-x-0"
+          showDrawer ? "translate-x-0 md:sticky" : "-translate-x-full",
+          "z-30 m-0 flex h-screen w-72 flex-col justify-between bg-zinc-900 p-3 font-mono text-white shadow-3xl transition-all",
+          "fixed top-0 "
         )}
       >
         <div className="flex flex-col gap-1 overflow-hidden">
           <div className="mb-2 flex justify-center gap-2">
             {authEnabled ? t("my-agents") : t("create-agent")}
             <button
-              className="z-40 rounded-md border-2 border-white/20 bg-zinc-900 p-2 text-white hover:bg-zinc-700 md:hidden"
+              className={clsx(
+                showDrawer
+                  ? "-translate-x-2"
+                  : "translate-x-12 border-2 border-white/20",
+                "absolute right-0 top-2 z-40 rounded-md bg-zinc-900 p-2 text-white transition-all hover:bg-zinc-700 "
+              )}
               onClick={toggleDrawer}
             >
               <FaBars />
@@ -119,41 +131,29 @@ const Drawer = ({
 
         <div className="flex flex-col gap-1">
           <hr className="my-5 border-white/20" />
-          {/*<DrawerItem*/}
-          {/*  icon={<FaTrashAlt />}*/}
-          {/*  text="Clear Agents"*/}
-          {/*  onClick={() => setAgents([])}*/}
-          {/*/>*/}
-
           {authEnabled && (
             <AuthItem session={session} signIn={signIn} signOut={signOut} />
           )}
-
           <DrawerItem
             icon={<FaQuestionCircle />}
             text="help"
             onClick={showHelp}
           />
           <DrawerItem icon={<FaCog />} text="settings" onClick={showSettings} />
+          {showDonation && (
+            <DrawerItem
+              icon={<FaDonate />}
+              text="donation"
+              onClick={showWeChatPay}
+            />
+          )}
           {authEnabled && (
             <Fragment>
-              <DrawerItem
-                icon={<FaWeixin />}
-                text="weChat"
-                target="_blank"
-                onClick={showWeChat}
-              />
               <DrawerItem
                 icon={<FaQq />}
                 text="QQ"
                 target="_blank"
                 onClick={showQQ}
-              />
-              <DrawerItem
-                icon={<FaGlobe />}
-                text="knowlege-planet"
-                target="_blank"
-                onClick={showKnowledgePlanet}
               />
               <DrawerItem
                 icon={<FaDiscord />}
