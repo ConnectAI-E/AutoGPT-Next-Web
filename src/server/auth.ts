@@ -67,6 +67,7 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers,
+  secret: serverEnv.NEXTAUTH_SECRET,
   theme: {
     colorScheme: "dark",
     logo: "https://auto-agentgpt.com/logo-white.svg",
