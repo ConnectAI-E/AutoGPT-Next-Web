@@ -1,5 +1,6 @@
 // @ts-check
 import { z } from "zod";
+import { v4 } from "uuid";
 
 const isProdutionAndAuthEnabled =
   process.env.NODE_ENV === "production" &&
@@ -70,7 +71,7 @@ export const serverSchema = z.object({
 export const serverEnv = {
   DATABASE_URL: process.env.DATABASE_URL ?? "file:./db.sqlite",
   NODE_ENV: process.env.NODE_ENV,
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ?? v4(),
   NEXTAUTH_URL: process.env.NEXTAUTH_URL ?? "http://localhost:3000",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
