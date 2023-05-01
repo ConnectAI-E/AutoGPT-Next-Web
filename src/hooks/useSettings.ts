@@ -1,77 +1,73 @@
 import { useState } from "react";
 import type { ModelSettings } from "../utils/types";
 import {
+  GPT_35_TURBO,
   DEFAULT_MAX_LOOPS_CUSTOM_API_KEY,
   DEFAULT_MAX_LOOPS_FREE,
-  GPT_35_TURBO,
+  DEFAULT_MAX_TOKENS,
+  DEFAULT_TEMPERATURE,
 } from "../utils/constants";
-import { useGuestMode } from "./useGuestMode";
 
-const SETTINGS_KEY = "AGENTGPT_SETTINGS";
-const DEFAULT_SETTINGS: ModelSettings = {
+const SETTINGS_KEY = "AUTOGPT_SETTINGS";
+
+export const DEFAULT_SETTINGS: ModelSettings = {
   customApiKey: "",
   customModelName: GPT_35_TURBO,
-  customTemperature: 0.9,
+  customTemperature: DEFAULT_TEMPERATURE,
   customMaxLoops: DEFAULT_MAX_LOOPS_FREE,
-  customLanguage: "",
+  customMaxTokens: DEFAULT_MAX_TOKENS,
   customEndPoint: "",
-  customMaxTokens: 400,
   customGuestKey: "",
 };
 
-const loadSettings = () => {
-  const defaultSettions = { ...DEFAULT_SETTINGS };
+const loadSettings = (): ModelSettings => {
+  const defaultSettings = { ...DEFAULT_SETTINGS };
   if (typeof window === "undefined") {
-    return defaultSettions;
+    return defaultSettings;
   }
 
   const data = localStorage.getItem(SETTINGS_KEY);
   if (!data) {
-    return defaultSettions;
+    return defaultSettings;
   }
 
   try {
     const obj = JSON.parse(data) as ModelSettings;
     Object.entries(obj).forEach(([key, value]) => {
-      if (defaultSettions.hasOwnProperty(key)) {
-        // @ts-ignore
-        defaultSettions[key] = value;
+      if (key in defaultSettings) {
+        defaultSettings[key] = value;
       }
     });
   } catch (error) {}
 
   if (
-    defaultSettions.customApiKey &&
-    defaultSettions.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
+    defaultSettings.customApiKey &&
+    defaultSettings.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
   ) {
-    defaultSettions.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
+    defaultSettings.customMaxLoops = DEFAULT_MAX_LOOPS_CUSTOM_API_KEY;
   }
 
-  return defaultSettions;
+  return { ...defaultSettings };
 };
 
-export function useSettings({ customLanguage }: { customLanguage: string }) {
-  const [settings, setSettings] = useState<ModelSettings>(loadSettings);
-  const { isValidGuest } = useGuestMode(settings.customGuestKey);
-
-  const rewriteSettings = (settings: ModelSettings) => {
-    const rewriteSettings = {
-      ...settings,
-      customLanguage,
-      isValidGuest,
-    };
-
-    return rewriteSettings;
-  };
-
+export function useSettings() {
+  const [settings, setSettings] = useState<ModelSettings>(() => loadSettings());
   const saveSettings = (settings: ModelSettings) => {
-    setSettings(rewriteSettings(settings));
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    let newSettings = settings;
+    const { customGuestKey } = settings;
+    if (!settings.customApiKey) {
+      newSettings = {
+        ...DEFAULT_SETTINGS,
+        customGuestKey,
+      };
+    }
+    setSettings(newSettings);
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(newSettings));
   };
 
   const resetSettings = () => {
     localStorage.removeItem(SETTINGS_KEY);
-    setSettings(rewriteSettings(DEFAULT_SETTINGS));
+    setSettings(DEFAULT_SETTINGS);
   };
 
   return {

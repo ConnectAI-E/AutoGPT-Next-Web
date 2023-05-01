@@ -9,13 +9,17 @@ import { env } from "../env/client.mjs";
 import { LLMChain } from "langchain/chains";
 import { extractTasks } from "../utils/helpers";
 
-async function startGoalAgent(modelSettings: ModelSettings, goal: string) {
+async function startGoalAgent(
+  modelSettings: ModelSettings,
+  goal: string,
+  customLanguage: string
+) {
   const completion = await new LLMChain({
     llm: createModel(modelSettings),
     prompt: startGoalPrompt,
   }).call({
     goal,
-    customLanguage: modelSettings.customLanguage,
+    customLanguage,
   });
   console.log("Completion:" + (completion.text as string));
   return extractTasks(completion.text as string, []);
@@ -24,7 +28,8 @@ async function startGoalAgent(modelSettings: ModelSettings, goal: string) {
 async function executeTaskAgent(
   modelSettings: ModelSettings,
   goal: string,
-  task: string
+  task: string,
+  customLanguage: string
 ) {
   const completion = await new LLMChain({
     llm: createModel(modelSettings),
@@ -32,7 +37,7 @@ async function executeTaskAgent(
   }).call({
     goal,
     task,
-    customLanguage: modelSettings.customLanguage,
+    customLanguage,
   });
 
   return completion.text as string;
@@ -44,7 +49,8 @@ async function createTasksAgent(
   tasks: string[],
   lastTask: string,
   result: string,
-  completedTasks: string[] | undefined
+  completedTasks: string[] | undefined,
+  customLanguage: string
 ) {
   const completion = await new LLMChain({
     llm: createModel(modelSettings),
@@ -54,7 +60,7 @@ async function createTasksAgent(
     tasks,
     lastTask,
     result,
-    customLanguage: modelSettings.customLanguage,
+    customLanguage,
   });
 
   return extractTasks(completion.text as string, completedTasks || []);
@@ -63,12 +69,14 @@ async function createTasksAgent(
 interface AgentService {
   startGoalAgent: (
     modelSettings: ModelSettings,
-    goal: string
+    goal: string,
+    customLanguage: string
   ) => Promise<string[]>;
   executeTaskAgent: (
     modelSettings: ModelSettings,
     goal: string,
-    task: string
+    task: string,
+    customLanguage: string
   ) => Promise<string>;
   createTasksAgent: (
     modelSettings: ModelSettings,
@@ -76,7 +84,8 @@ interface AgentService {
     tasks: string[],
     lastTask: string,
     result: string,
-    completedTasks: string[] | undefined
+    completedTasks: string[] | undefined,
+    customLanguage: string
   ) => Promise<string[]>;
 }
 
