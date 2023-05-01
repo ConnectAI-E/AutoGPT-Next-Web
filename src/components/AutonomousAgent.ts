@@ -176,6 +176,7 @@ class AutonomousAgent {
     const data = {
       modelSettings: this.modelSettings,
       goal: this.goal,
+      customLanguage: this.customLanguage,
     };
     const res = await this.post(`/api/agent/start`, data);
 
@@ -206,6 +207,7 @@ class AutonomousAgent {
       lastTask: currentTask,
       result: result,
       completedTasks: this.completedTasks,
+      customLanguage: this.customLanguage,
     };
     const res = await this.post(`/api/agent/create`, data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
@@ -226,6 +228,7 @@ class AutonomousAgent {
       modelSettings: this.modelSettings,
       goal: this.goal,
       task: task,
+      customLanguage: this.customLanguage,
     };
     const res = await this.post("/api/agent/execute", data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
