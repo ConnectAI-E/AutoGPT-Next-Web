@@ -43,15 +43,29 @@ export const SettingsDialog: React.FC<{
     });
   };
 
-  function urlIsValid(url: string | undefined) {
+  const keyIsValid = (key: string | undefined) => {
+    const pattern = /^sk-[a-zA-Z0-9]{48}$/;
+    return key && pattern.test(key);
+  };
+
+  const urlIsValid = (url: string | undefined) => {
     if (url) {
       const pattern = /^(https?:\/\/)?[\w.-]+\.[a-zA-Z]{2,}(\/\S*)?$/;
       return pattern.test(url);
     }
     return true;
-  }
+  };
 
   const handleSave = () => {
+    if (!isGuestMode && !keyIsValid(settings.customApiKey)) {
+      alert(
+        t(
+          "Key is invalid, please ensure that you have set up billing in your OpenAI account!"
+        )
+      );
+      return;
+    }
+
     if (!urlIsValid(settings.customEndPoint)) {
       alert(
         t(
@@ -70,7 +84,7 @@ export const SettingsDialog: React.FC<{
     close();
   };
 
-  const disabled = !settings.customApiKey;
+  const disabled = !isGuestMode && !settings.customApiKey;
   const advancedSettings = (
     <div className="flex flex-col gap-2">
       <Input

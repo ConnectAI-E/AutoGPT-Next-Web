@@ -7,6 +7,7 @@ import {
   DEFAULT_MAX_TOKENS,
   DEFAULT_TEMPERATURE,
 } from "../utils/constants";
+import { isGuestMode } from "../utils/env-helper";
 
 const SETTINGS_KEY = "AUTOGPT_SETTINGS";
 
@@ -40,6 +41,10 @@ const loadSettings = (): ModelSettings => {
     });
   } catch (error) {}
 
+  if (!isGuestMode() && !defaultSettings.customApiKey) {
+    return { ...DEFAULT_SETTINGS };
+  }
+
   if (
     defaultSettings.customApiKey &&
     defaultSettings.customMaxLoops === DEFAULT_MAX_LOOPS_FREE
@@ -55,7 +60,7 @@ export function useSettings() {
   const saveSettings = (settings: ModelSettings) => {
     let newSettings = settings;
     const { customGuestKey } = settings;
-    if (!settings.customApiKey) {
+    if (!settings.customApiKey && !isGuestMode()) {
       newSettings = {
         ...DEFAULT_SETTINGS,
         customGuestKey,
