@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { env } from "../env/client.mjs";
 
 export function useGuestMode(customGuestKey = "") {
-  const [isValidGuest, setIsValidGuest] = useState(false);
-  const [isGuestMode, setIsGuestMode] = useState(false);
+  const [guestData, setGuestData] = useState({
+    isValidGuest: false,
+    isGuestMode: false,
+  });
 
   useEffect(() => {
     const publicGuestKey = env.NEXT_PUBLIC_GUEST_KEY ?? "";
@@ -11,12 +13,8 @@ export function useGuestMode(customGuestKey = "") {
     const isGuestMode = keys.length > 0;
     const isMatchedGuestKey = !!keys.find((key) => key === customGuestKey);
     const isValidGuest = isMatchedGuestKey;
-    setIsValidGuest(isValidGuest);
-    setIsGuestMode(isGuestMode);
+    setGuestData({ isValidGuest, isGuestMode });
   }, [customGuestKey]);
 
-  return {
-    isValidGuest,
-    isGuestMode,
-  };
+  return guestData;
 }
