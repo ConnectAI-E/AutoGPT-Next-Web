@@ -60,12 +60,7 @@ export const SettingsDialog: React.FC<{
       );
       return;
     }
-
-    if (!settings.customApiKey) {
-      customSettings.resetSettings();
-    } else {
-      customSettings.saveSettings(settings);
-    }
+    customSettings.saveSettings(settings);
     close();
     return;
   };

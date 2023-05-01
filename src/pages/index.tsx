@@ -39,7 +39,7 @@ const Home: NextPage = () => {
   const [showWeChatPayDialog, setShowWeChatPayDialog] = useState(false);
   const [showQQDialog, setShowQQDialog] = useState(false);
   const [customLanguage, setCustomLanguage] = useState<string>(i18n.language);
-  const settingsModel = useSettings({ customLanguage });
+  const settingsModel = useSettings();
   const { isValidGuest, isGuestMode } = useGuestMode(
     settingsModel.settings.customGuestKey
   );
@@ -99,6 +99,7 @@ const Home: NextPage = () => {
       handleAddMessage,
       () => setAgent(null),
       settingsModel.settings,
+      customLanguage,
       { isValidGuest, isGuestMode },
       session ?? undefined
     );

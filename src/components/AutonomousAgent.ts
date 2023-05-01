@@ -24,22 +24,26 @@ interface Task {
 class AutonomousAgent {
   name: string;
   goal: string;
-  tasks: Task[] = [];
-  completedTasks: string[] = [];
-  modelSettings: ModelSettings;
-  isRunning = true;
   renderMessage: (message: Message) => void;
   shutdown: () => void;
-  numLoops = 0;
+  modelSettings: ModelSettings;
+  customLanguage: string;
+  guestSettings: GuestSettings;
   session?: Session;
   _id: string;
-  guestSettings: GuestSettings;
+
+  tasks: Task[] = [];
+  completedTasks: string[] = [];
+  isRunning = true;
+  numLoops = 0;
+
   constructor(
     name: string,
     goal: string,
     renderMessage: (message: Message) => void,
     shutdown: () => void,
     modelSettings: ModelSettings,
+    customLanguage: string,
     guestSettings: GuestSettings,
     session?: Session
   ) {
@@ -48,9 +52,10 @@ class AutonomousAgent {
     this.renderMessage = renderMessage;
     this.shutdown = shutdown;
     this.modelSettings = modelSettings;
+    this.customLanguage = customLanguage;
+    this.guestSettings = guestSettings;
     this.session = session;
     this._id = v4();
-    this.guestSettings = guestSettings;
   }
 
   async run() {
@@ -161,7 +166,11 @@ class AutonomousAgent {
       // if (!env.NEXT_PUBLIC_FF_MOCK_MODE_ENABLED) {
       //   await testConnection(this.modelSettings);
       // }
-      return await AgentService.startGoalAgent(this.modelSettings, this.goal);
+      return await AgentService.startGoalAgent(
+        this.modelSettings,
+        this.goal,
+        this.customLanguage
+      );
     }
 
     const data = {
@@ -185,7 +194,8 @@ class AutonomousAgent {
         this.tasks.map((task) => task.task),
         currentTask,
         result,
-        this.completedTasks
+        this.completedTasks,
+        this.customLanguage
       );
     }
 
@@ -207,7 +217,8 @@ class AutonomousAgent {
       return await AgentService.executeTaskAgent(
         this.modelSettings,
         this.goal,
-        task
+        task,
+        this.customLanguage
       );
     }
 
