@@ -127,8 +127,7 @@ const Home: NextPage = () => {
     agent != null || isEmptyOrBlank(name) || isEmptyOrBlank(goalInput);
 
   const handleNewGoal = () => {
-    // Do not force login locally for people that don't have auth setup
-    if (session === null && process.env.NODE_ENV === "production") {
+    if (session === null && process.env.NODE_ENV === "production"&&authEnabled) {
       setShowSignInDialog(true);
       return;
     }

@@ -83,7 +83,7 @@ const ChatWindow = ({
     // Change this value when we can no longer support web search
     const WEB_SEARCH_ALLOWED = env.NEXT_PUBLIC_WEB_SEARCH_ENABLED as boolean;
 
-    if (WEB_SEARCH_ALLOWED === true) {
+    if (WEB_SEARCH_ALLOWED) {
       setIsWebSearchEnabled(value);
     } else {
       openSorryDialog?.();
