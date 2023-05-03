@@ -13,7 +13,7 @@ type Props = {
 };
 
 const Toast = (props: Props) => {
-  const [ t ] = useTranslation();
+  const {t} = useTranslation();
   const [open, setOpen] = props.model;
 
   return (

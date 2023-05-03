@@ -61,7 +61,7 @@ const Drawer = ({
   }, []);
 
   const sub = api.account.subscribe.useMutation({
-    onSuccess: async (url) => {
+    onSuccess: async (url: any) => {
       if (!url) return;
       await router.push(url);
     },
@@ -210,7 +210,7 @@ const DrawerItem = (props: DrawerItemProps) => {
     return (
       <a
         className={clsx(
-          "flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
+          "group flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
           `${className || ""}`
         )}
@@ -226,7 +226,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       <button
         type="button"
         className={clsx(
-          "flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
+          "group flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
           `${className || ""}`
         )}

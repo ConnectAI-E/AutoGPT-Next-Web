@@ -47,6 +47,7 @@ export const serverSchema = z.object({
   NEXTAUTH_SECRET: requiredAuthEnabledForProduction(),
   NEXTAUTH_URL: validateNextUrl(),
   OPENAI_API_KEY: z.string(),
+
   GOOGLE_CLIENT_ID: requiredAuthEnabledForProduction(),
   GOOGLE_CLIENT_SECRET: requiredAuthEnabledForProduction(),
   GITHUB_CLIENT_ID: requiredAuthEnabledForProduction(),
@@ -107,6 +108,7 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_FF_MOCK_MODE_ENABLED: stringToBoolean(),
   NEXT_PUBLIC_VERCEL_URL: z.string().optional(),
   NEXT_PUBLIC_GUEST_KEY: z.string().optional(),
+  NEXT_PUBLIC_WEB_SEARCH_ENABLED: stringToBoolean(),
 });
 
 /**
@@ -128,4 +130,5 @@ export const clientEnv = {
   NEXT_PUBLIC_FF_MOCK_MODE_ENABLED:
     process.env.NEXT_PUBLIC_FF_MOCK_MODE_ENABLED,
   NEXT_PUBLIC_GUEST_KEY: process.env.NEXT_PUBLIC_GUEST_KEY ?? "",
+  NEXT_PUBLIC_WEB_SEARCH_ENABLED: process.env.NEXT_PUBLIC_WEB_SEARCH_ENABLED,
 };
