@@ -8,21 +8,21 @@ describe("createModel", () => {
       customApiKey: "test_api_key",
       customTemperature: 0.222,
       customModelName: "Custom_Model",
-      maxTokens: 1234,
+      customMaxTokens: 1234,
     };
 
     const model = createModel(customSettings);
 
     expect(model.temperature).toBe(customSettings.customTemperature);
     expect(model.modelName).toBe(customSettings.customModelName);
-    expect(model.maxTokens).toBe(customSettings.maxTokens);
+    expect(model.maxTokens).toBe(customSettings.customMaxTokens);
   });
 
   test("should use default settings when API key is not provided", () => {
     const customSettings = {
       customTemperature: 0.222,
       customModelName: "Custom_Model",
-      maxTokens: 1234,
+      customMaxTokens: 1234,
     };
 
     const model = createModel(customSettings);

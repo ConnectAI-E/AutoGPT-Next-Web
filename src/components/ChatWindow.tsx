@@ -96,7 +96,7 @@ const ChatWindow = ({
       return depth;
     }
     const index = messages.findLastIndex(
-      (i) => i.parentTaskId && i.taskId === message.taskId
+      (i: Message) => i.parentTaskId && i.taskId === message.taskId
     );
     if (index > -1) {
       const { parentTaskId } = messages[index] as Message;

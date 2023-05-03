@@ -196,11 +196,10 @@ class AutonomousAgent {
         };
         return task;
       });
-      //FIXME
-      // this.tasks = newTasks.concat(this.tasks);
+      this.tasks = newTasks.concat(this.tasks);
       for (const task of newTasks) {
         await new Promise((r) => setTimeout(r, TIMOUT_SHORT));
-        this.tasks.push(task);
+        // this.tasks.push(task);
         this.sendMessage(task);
       }
 
@@ -436,8 +435,6 @@ class AutonomousAgent {
   sendErrorMessage(error: string) {
     this.sendMessage({ type: MESSAGE_TYPE_SYSTEM, value: error });
   }
-
-
 }
 
 const testConnection = async (modelSettings: ModelSettings) => {
