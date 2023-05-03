@@ -5,7 +5,7 @@ import ChatWindow from "../components/ChatWindow";
 import Drawer from "../components/Drawer";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { FaRobot, FaStar } from "react-icons/fa";
+import { FaRobot, FaStar, FaPlay } from "react-icons/fa";
 import { VscLoading } from "react-icons/vsc";
 import AutonomousAgent from "../components/AutonomousAgent";
 import Expand from "../components/motions/expand";
@@ -13,28 +13,48 @@ import HelpDialog from "../components/HelpDialog";
 import { SettingsDialog } from "../components/SettingsDialog";
 import { TaskWindow } from "../components/TaskWindow";
 import { useAuth } from "../hooks/useAuth";
-import type { Message } from "../types/agentTypes";
+import type { AgentPlaybackControl, Message } from "../types/agentTypes";
 import { useAgent } from "../hooks/useAgent";
+import { isEmptyOrBlank } from "../utils/whitespace";
+import {
+  useMessageStore,
+  useAgentStore,
+  resetAllMessageSlices,
+} from "../components/stores";
+import { isTask, AGENT_PLAY } from "../types/agentTypes";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useSettings } from "../hooks/useSettings";
+import { SorryDialog } from "../components/SorryDialog";
+import { SignInDialog } from "../components/SignInDialog";
 import WeChatPayDialog from "../components/WeChatPayDialog";
 import QQDialog from "../components/QQDialog";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { isEmptyOrBlank } from "../utils/whitespace";
-import { useSettings } from "../hooks/useSettings";
 import { useGuestMode } from "../hooks/useGuestMode";
 import { authEnabled } from "../utils/env-helper";
 
 const Home: NextPage = () => {
   const { t, i18n } = useTranslation();
+  const addMessage = useMessageStore.use.addMessage();
+  const messages = useMessageStore.use.messages();
+  const tasks = useMessageStore.use.tasks();
+  const updateTaskStatus = useMessageStore.use.updateTaskStatus();
+
+  const setAgent = useAgentStore.use.setAgent();
+  const isAgentStopped = useAgentStore.use.isAgentStopped();
+  const isAgentPaused = useAgentStore.use.isAgentPaused();
+  const updateIsAgentPaused = useAgentStore.use.updateIsAgentPaused();
+  const updateIsAgentStopped = useAgentStore.use.updateIsAgentStopped();
+  const agentMode = useAgentStore.use.agentMode();
+  const agent = useAgentStore.use.agent();
+
   const { session, status } = useAuth();
   const [name, setName] = useState<string>("");
   const [goalInput, setGoalInput] = useState<string>("");
-  const [agent, setAgent] = useState<AutonomousAgent | null>(null);
-  const [shouldAgentStop, setShouldAgentStop] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
+  const [showSorryDialog, setShowSorryDialog] = React.useState(false);
+  const [showSignInDialog, setShowSignInDialog] = React.useState(false);
   const [hasSaved, setHasSaved] = useState(false);
   const [showWeChatPayDialog, setShowWeChatPayDialog] = useState(false);
   const [showQQDialog, setShowQQDialog] = useState(false);
@@ -56,7 +76,7 @@ const Home: NextPage = () => {
       if (savedModalData == null) {
         setShowHelpDialog(true);
       }
-    }, 3000);
+    }, 1800);
 
     localStorage.setItem(key, JSON.stringify(true));
   }, []);
@@ -67,45 +87,64 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    if (agent == null) {
-      setShouldAgentStop(false);
+    updateIsAgentStopped();
+  }, [agent, updateIsAgentStopped]);
+
+  const handleAddMessage = (newMessage: Message) => {
+    if (isTask(newMessage)) {
+      updateTaskStatus(newMessage);
     }
-  }, [agent]);
 
-  const handleAddMessage = useCallback((newMessage: Message) => {
-    setMessages((preMessages) => {
-      const index = preMessages.findLastIndex(
-        (message) => message?.taskId === newMessage?.taskId
-      );
-      const messagesCopy = [...preMessages];
-      messagesCopy.splice(
-        index > -1 ? index + 1 : messagesCopy.length,
-        0,
-        newMessage
-      );
-      return messagesCopy;
-    });
-  }, []);
+    addMessage(newMessage);
+  };
 
-  const tasks = messages.filter((message) => message.type === "task");
+  const handlePause = (opts: {
+    agentPlaybackControl?: AgentPlaybackControl;
+  }) => {
+    if (opts.agentPlaybackControl !== undefined) {
+      updateIsAgentPaused(opts.agentPlaybackControl);
+    }
+  };
 
   const disableDeployAgent =
     agent != null || isEmptyOrBlank(name) || isEmptyOrBlank(goalInput);
 
   const handleNewGoal = () => {
+    if (
+      session === null &&
+      process.env.NODE_ENV === "production" &&
+      authEnabled
+    ) {
+      setShowSignInDialog(true);
+      return;
+    }
+
     const agent = new AutonomousAgent(
       name.trim(),
       goalInput.trim(),
       handleAddMessage,
+      handlePause,
       () => setAgent(null),
       settingsModel.settings,
+      agentMode,
       customLanguage,
       { isValidGuest, isGuestMode },
       session ?? undefined
     );
     setAgent(agent);
     setHasSaved(false);
-    setMessages([]);
+    resetAllMessageSlices();
+    agent.run().then(console.log).catch(console.error);
+  };
+
+  const handleContinue = () => {
+    if (!agent) {
+      return;
+    }
+
+    agent.updatePlayBackControl(AGENT_PLAY);
+    updateIsAgentPaused(agent.playbackControl);
+    agent.updateIsRunning(true);
     agent.run().then(console.log).catch(console.error);
   };
 
@@ -114,17 +153,18 @@ const Home: NextPage = () => {
       | React.KeyboardEvent<HTMLInputElement>
       | React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
-    if (e.key === "Enter" && !disableDeployAgent) {
-      if (!e.shiftKey) {
-        // Only Enter is pressed, execute the function
-        handleNewGoal();
+    // Only Enter is pressed, execute the function
+    if (e.key === "Enter" && !disableDeployAgent && !e.shiftKey) {
+      if (isAgentPaused) {
+        handleContinue();
       }
+      handleNewGoal();
     }
   };
 
   const handleStopAgent = () => {
-    setShouldAgentStop(true);
     agent?.stopAgent();
+    updateIsAgentStopped();
   };
 
   const handleLanguageChange = () => {
@@ -144,12 +184,31 @@ const Home: NextPage = () => {
 
   const shouldShowSave =
     status === "authenticated" &&
-    !agent?.isRunning &&
+    isAgentStopped &&
     messages.length &&
     !hasSaved;
 
   const showDonation =
     authEnabled && status !== "loading" && !session?.user.subscriptionId;
+
+  const firstButton =
+    isAgentPaused && !isAgentStopped ? (
+      <Button ping disabled={!isAgentPaused} onClick={handleContinue}>
+        <FaPlay size={20} />
+        <span className="ml-2">{t("continue")}</span>
+      </Button>
+    ) : (
+      <Button disabled={disableDeployAgent} onClick={handleNewGoal}>
+        {agent == null ? (
+          t("deploy-agent")
+        ) : (
+          <>
+            <VscLoading className="animate-spin" size={20} />
+            <span className="ml-2">{t("running")}</span>
+          </>
+        )}
+      </Button>
+    );
 
   return (
     <DefaultLayout>
@@ -161,6 +220,14 @@ const Home: NextPage = () => {
         customSettings={settingsModel}
         show={showSettingsDialog}
         close={() => setShowSettingsDialog(false)}
+      />
+      <SorryDialog
+        show={showSorryDialog}
+        close={() => setShowSorryDialog(false)}
+      />
+      <SignInDialog
+        show={showSignInDialog}
+        close={() => setShowSignInDialog(false)}
       />
       <WeChatPayDialog
         show={showWeChatPayDialog}
@@ -222,8 +289,10 @@ const Home: NextPage = () => {
                     : undefined
                 }
                 scrollToBottom
+                displaySettings
+                openSorryDialog={() => setShowSorryDialog(true)}
               />
-              {tasks.length > 0 && <TaskWindow tasks={tasks} />}
+              {tasks.length > 0 && <TaskWindow />}
             </Expand>
 
             <div className="flex w-full flex-col gap-2 sm:mt-4 md:mt-10">
@@ -241,6 +310,7 @@ const Home: NextPage = () => {
                   onChange={(e) => setName(e.target.value)}
                   onKeyDown={(e) => handleKeyPress(e)}
                   placeholder="AutoGPT"
+                  type="text"
                 />
               </Expand>
               <Expand delay={1.3}>
@@ -255,40 +325,26 @@ const Home: NextPage = () => {
                   value={goalInput}
                   onChange={(e) => setGoalInput(e.target.value)}
                   onKeyDown={(e) => handleKeyPress(e)}
-                  placeholder="Make the world a better place."
+                  placeholder={t("placeholder-agent-goal") as string}
+                  type="textarea"
                 />
               </Expand>
             </div>
 
             <Expand delay={1.4} className="flex gap-2">
+              {firstButton}
               <Button
-                disabled={disableDeployAgent}
-                onClick={handleNewGoal}
-                className="sm:mt-10"
-              >
-                {agent == null ? (
-                  t("deploy-agent")
-                ) : (
-                  <>
-                    <VscLoading className="animate-spin" size={20} />
-                    <span className="ml-2">{t("running")}</span>
-                  </>
-                )}
-              </Button>
-
-              <Button
-                disabled={agent == null}
+                disabled={agent === null}
                 onClick={handleStopAgent}
-                className="sm:mt-10"
                 enabledClassName={"bg-red-600 hover:bg-red-400"}
               >
-                {shouldAgentStop ? (
+                {!isAgentStopped && agent === null ? (
                   <>
                     <VscLoading className="animate-spin" size={20} />
                     <span className="ml-2">{t("stopping")}</span>
                   </>
                 ) : (
-                  <span>{t("stop-agent")}</span>
+                  t("stop-agent")
                 )}
               </Button>
             </Expand>

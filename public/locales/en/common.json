@@ -30,5 +30,8 @@
   "sign-out": "Sign Out",
   "export": "Export",
   "reset": "Reset",
-  "donation": "Donation"
+  "donation": "Donation",
+  "continue": "Continue",
+  "placeholder-agent-goal": "Make the world a better place.",
+  "paused": "Paused"
 }

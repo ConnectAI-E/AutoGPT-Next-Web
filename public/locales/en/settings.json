@@ -14,5 +14,7 @@
   "tokens-tips": "Controls the maximum number of tokens used in each API call (higher value will make responses more detailed but cost more).",
   "tokens": "Tokens: ",
   "guest-key": "Guest Key: ",
-  "endPoint": "Endpoint: "
+  "endPoint": "Endpoint: ",
+  "mode": "Mode: ",
+  "mode-tips": "Automatic Mode (Default): Agent automatically executes every task. \n\nPause Mode: Agent pauses after every set of task(s)"
 }

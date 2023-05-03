@@ -14,9 +14,9 @@ import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const AgentPage: NextPage = () => {
+  const { t } = useTranslation();
   const [showCopied, setShowCopied] = useState(false);
   const router = useRouter();
-  const { t } = useTranslation();
 
   const agentId = typeof router.query.id === "string" ? router.query.id : "";
 
@@ -42,22 +42,14 @@ const AgentPage: NextPage = () => {
       centered
     >
       <ChatWindow
-        messages={messages}
+        messages={messages.filter((m) => m.type !== "thinking")}
         title={getAgent?.data?.name}
         className="min-h-[80vh] md:w-[80%]"
         fullscreen
       />
       <div className="flex flex-row gap-2">
-        <Button
-          icon={<FaShare />}
-          onClick={() => {
-            void window.navigator.clipboard
-              .writeText(shareLink())
-              .then(() => setShowCopied(true));
-          }}
-          enabledClassName={"bg-green-600 hover:bg-green-400"}
-        >
-          {t("share")}
+        <Button icon={<FaBackspace />} onClick={() => void router.push("/")}>
+          {t("back")}
         </Button>
         <Button
           icon={<FaTrash />}
@@ -68,8 +60,16 @@ const AgentPage: NextPage = () => {
         >
           {t("delete")}
         </Button>
-        <Button icon={<FaBackspace />} onClick={() => void router.push("/")}>
-          {t("back")}
+        <Button
+          icon={<FaShare />}
+          onClick={() => {
+            void window.navigator.clipboard
+              .writeText(shareLink())
+              .then(() => setShowCopied(true));
+          }}
+          enabledClassName={"bg-green-600 hover:bg-green-400"}
+        >
+          {t("share")}
         </Button>
       </div>
       <Toast

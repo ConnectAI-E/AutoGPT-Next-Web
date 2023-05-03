@@ -1,36 +1,43 @@
 import type { ReactNode } from "react";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FaBrain,
-  FaClipboard,
-  FaCopy,
-  FaImage,
-  FaListAlt,
-  FaPlayCircle,
-  FaSave,
-  FaStar,
-} from "react-icons/fa";
+import { FaClipboard, FaImage, FaSave, FaPlay, FaPause } from "react-icons/fa";
 import PopIn from "./motions/popin";
 import Expand from "./motions/expand";
 import * as htmlToImage from "html-to-image";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css";
-import Button from "./Button";
-import { useTranslation, Trans } from "next-i18next";
 import WindowButton from "./WindowButton";
 import PDFButton from "./pdf/PDFButton";
 import FadeIn from "./motions/FadeIn";
 import Menu from "./Menu";
 import type { Message } from "../types/agentTypes";
+import {
+  isAction,
+  getTaskStatus,
+  MESSAGE_TYPE_GOAL,
+  MESSAGE_TYPE_THINKING,
+  MESSAGE_TYPE_SYSTEM,
+  TASK_STATUS_STARTED,
+  TASK_STATUS_EXECUTING,
+  TASK_STATUS_COMPLETED,
+  TASK_STATUS_FINAL,
+  PAUSE_MODE,
+} from "../types/agentTypes";
 import clsx from "clsx";
+import { getMessageContainerStyle, getTaskStatusIcon } from "./utils/helpers";
+import { useAgentStore } from "./stores";
+import { AnimatePresence } from "framer-motion";
+import { CgExport } from "react-icons/cg";
+import MarkdownRenderer from "./MarkdownRenderer";
+import { Switch } from "./Switch";
+import { env } from "../env/client.mjs";
+import { useTranslation, Trans } from "next-i18next";
 
 interface ChatWindowProps extends HeaderProps {
   children?: ReactNode;
   className?: string;
   fullscreen?: boolean;
   scrollToBottom?: boolean;
+  displaySettings?: boolean;
+  openSorryDialog?: () => void;
 }
 
 const messageListId = "chat-window-message-list";
@@ -43,10 +50,17 @@ const ChatWindow = ({
   onSave,
   fullscreen,
   scrollToBottom,
+  displaySettings,
+  openSorryDialog,
 }: ChatWindowProps) => {
+  const { t } = useTranslation(["chat", "common"]);
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation(["chat", "common"]);
+  const isAgentPaused = useAgentStore.use.isAgentPaused();
+  const agentMode = useAgentStore.use.agentMode();
+  const agent = useAgentStore.use.agent();
+  const isWebSearchEnabled = useAgentStore.use.isWebSearchEnabled();
+  const setIsWebSearchEnabled = useAgentStore.use.setIsWebSearchEnabled();
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
@@ -64,6 +78,18 @@ const ChatWindow = ({
       }
     }
   });
+
+  const handleChangeWebSearch = (value: boolean) => {
+    // Change this value when we can no longer support web search
+    const WEB_SEARCH_ALLOWED = env.NEXT_PUBLIC_WEB_SEARCH_ENABLED as boolean;
+
+    if (WEB_SEARCH_ALLOWED) {
+      setIsWebSearchEnabled(value);
+    } else {
+      openSorryDialog?.();
+      setIsWebSearchEnabled(false);
+    }
+  };
 
   const messageDepth = (messages: Message[], message: Message, depth = 0) => {
     if (depth > 5) {
@@ -108,14 +134,26 @@ const ChatWindow = ({
         onScroll={handleScroll}
         id={messageListId}
       >
-        {messages.map((message, index) => (
-          <FadeIn key={`${index}-${message.type}`}>
-            <ChatMessage
-              message={message}
-              depth={messageDepth(messages, message, 0)}
-            />
-          </FadeIn>
-        ))}
+        {agent !== null && agentMode === PAUSE_MODE && isAgentPaused && (
+          <FaPause className="animation-hide absolute left-1/2 top-1/2 text-lg md:text-3xl" />
+        )}
+        {agent !== null && agentMode === PAUSE_MODE && !isAgentPaused && (
+          <FaPlay className="animation-hide absolute left-1/2 top-1/2 text-lg md:text-3xl" />
+        )}
+        {messages.map((message, index) => {
+          if (getTaskStatus(message) === TASK_STATUS_EXECUTING) {
+            return null;
+          }
+
+          return (
+            <FadeIn key={`${index}-${message.type}`}>
+              <ChatMessage
+                message={message}
+                depth={messageDepth(messages, message, 0)}
+              />
+            </FadeIn>
+          );
+        })}
         {children}
 
         {messages.length === 0 && (
@@ -123,7 +161,7 @@ const ChatWindow = ({
             <Expand delay={0.8} type="spring">
               <ChatMessage
                 message={{
-                  type: "system",
+                  type: MESSAGE_TYPE_SYSTEM,
                   value: t("create-agent-and-deploy"),
                 }}
               />
@@ -131,7 +169,7 @@ const ChatWindow = ({
             <Expand delay={0.9} type="spring">
               <ChatMessage
                 message={{
-                  type: "system",
+                  type: MESSAGE_TYPE_SYSTEM,
                   value: `📢 ${t("provide-api-key-via-settings")}`,
                 }}
               />
@@ -139,6 +177,17 @@ const ChatWindow = ({
           </>
         )}
       </div>
+      {displaySettings && (
+        <div className="flex items-center justify-center">
+          <div className="m-1 flex items-center gap-2 rounded-lg border-[2px] border-white/20 bg-zinc-700 px-2 py-1">
+            <p className="font-mono text-sm">{t("web-search")}</p>
+            <Switch
+              value={isWebSearchEnabled}
+              onChange={handleChangeWebSearch}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -151,7 +200,9 @@ interface HeaderProps {
 
 const MacWindowHeader = (props: HeaderProps) => {
   const { t } = useTranslation(["chat", "common"]);
-
+  const isAgentPaused = useAgentStore.use.isAgentPaused();
+  const agent = useAgentStore.use.agent();
+  const agentMode = useAgentStore.use.agentMode();
   const saveElementAsImage = (elementId: string) => {
     const element = document.getElementById(elementId);
     if (!element) {
@@ -183,20 +234,32 @@ const MacWindowHeader = (props: HeaderProps) => {
     }
 
     const text = element.innerText;
-    void navigator.clipboard.writeText(text);
+    if (navigator.clipboard) {
+      void navigator.clipboard.writeText(text);
+    } else {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand("copy");
+      } catch (err) {}
+
+      document.body.removeChild(textArea);
+    }
   };
 
   const exportOptions = [
     <WindowButton
       key="Image"
-      delay={0.1}
       onClick={(): void => saveElementAsImage(messageListId)}
       icon={<FaImage size={12} />}
       name={t("common:image")}
     />,
     <WindowButton
       key="Copy"
-      delay={0.15}
       onClick={(): void => copyElementText(messageListId)}
       icon={<FaClipboard size={12} />}
       name={t("common:copy")}
@@ -215,24 +278,56 @@ const MacWindowHeader = (props: HeaderProps) => {
       <PopIn delay={0.6}>
         <div className="h-3 w-3 rounded-full bg-green-500" />
       </PopIn>
-      <div className="flex flex-grow font-mono text-sm font-bold text-gray-600 sm:ml-2">
+      <Expand
+        delay={1}
+        className="invisible flex flex-grow font-mono text-sm font-bold text-gray-500 sm:ml-2 md:visible"
+      >
         {props.title}
-      </div>
-      {props.onSave && (
-        <WindowButton
-          delay={0.8}
-          onClick={() => props.onSave?.("db")}
-          icon={<FaSave size={12} />}
-          name={t("common:save") as string}
-        />
+      </Expand>
+
+      <AnimatePresence>
+        {props.onSave && (
+          <PopIn>
+            <WindowButton
+              ping
+              key="Agent"
+              onClick={() => props.onSave?.("db")}
+              icon={<FaSave size={12} />}
+              name={t("common:save")}
+              styleClass={{
+                container: `relative bg-[#3a3a3a] md:w-20 text-center font-mono rounded-lg text-gray/50 border-[2px] border-white/30 font-bold transition-all sm:py-0.5 hover:border-[#1E88E5]/40 hover:bg-[#6b6b6b] focus-visible:outline-none focus:border-[#1E88E5]`,
+              }}
+            />
+          </PopIn>
+        )}
+      </AnimatePresence>
+
+      {agentMode === PAUSE_MODE && agent !== null && (
+        <div
+          className={`animation-duration text-gray/50 flex items-center gap-2 px-2 py-1 text-left font-mono text-sm font-bold transition-all sm:py-0.5`}
+        >
+          {isAgentPaused ? (
+            <>
+              <FaPause />
+              <p className="font-mono">{t("common:paused")}</p>
+            </>
+          ) : (
+            <>
+              <FaPlay />
+              <p className="font-mono">{t("common:running")}</p>
+            </>
+          )}
+        </div>
       )}
+
       <Menu
+        icon={<CgExport />}
         name={t("common:export")}
         onChange={() => null}
         items={exportOptions}
         styleClass={{
           container: "relative",
-          input: `bg-[#3a3a3a] w-28 animation-duration text-left px-4 text-sm p-1 font-mono rounded-lg text-gray/50 border-[2px] border-white/30 font-bold transition-all sm:py-0.5 hover:border-[#1E88E5]/40 hover:bg-[#6b6b6b] focus-visible:outline-none focus:border-[#1E88E5]`,
+          input: `bg-[#3a3a3a] animation-duration text-left py-1 px-2 text-sm font-mono rounded-lg text-gray/50 border-[2px] border-white/30 font-bold transition-all sm:py-0.5 hover:border-[#1E88E5]/40 hover:bg-[#6b6b6b] focus-visible:outline-none focus:border-[#1E88E5]`,
           option: "w-full py-[1px] md:py-0.5",
         }}
       />
@@ -247,12 +342,7 @@ const ChatMessage = ({
   depth?: number;
 }) => {
   const { t } = useTranslation(["chat", "common"]);
-  const [showCopy, setShowCopy] = useState(false);
   const [copied, setCopied] = useState(false);
-  const handleCopyClick = () => {
-    void navigator.clipboard.writeText(message.value);
-    setCopied(true);
-  };
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (copied) {
@@ -266,106 +356,78 @@ const ChatMessage = ({
   }, [copied]);
   return (
     <div
-      className="mx-2 my-1 rounded-lg border-[2px] border-white/10 bg-white/20 p-1 font-mono text-sm hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base"
+      className={`${getMessageContainerStyle(
+        message
+      )} mx-2 my-1 rounded-lg border-[2px] bg-white/20 p-1 font-mono text-sm hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base`}
       style={{ marginLeft: `${depth * 40 + 20}px` }}
-      onMouseEnter={() => setShowCopy(true)}
-      onMouseLeave={() => setShowCopy(false)}
-      onClick={handleCopyClick}
     >
-      {message.type != "system" && (
+      {message.type != MESSAGE_TYPE_SYSTEM && (
         // Avoid for system messages as they do not have an icon and will cause a weird space
         <>
           <div className="mr-2 inline-block h-[0.9em]">
-            {getMessageIcon(message)}
+            {getTaskStatusIcon(message, {})}
           </div>
           <span className="mr-2 font-bold">{getMessagePrefix(message)}</span>
         </>
       )}
 
-      {message.type == "thinking" && (
-        <span className="italic text-zinc-400">({t("restart")})</span>
+      {message.type == MESSAGE_TYPE_THINKING && (
+        <span className="italic text-zinc-400">{t("restart")}</span>
       )}
 
-      {message.type == "action" ? (
-        <div className="prose ml-2 max-w-none">
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
-          >
-            {t(message.value)}
-          </ReactMarkdown>
-        </div>
+      {isAction(message) ? (
+        <>
+          <hr className="my-2 border-[1px] border-white/20" />
+          <div className="prose max-w-none">
+            <MarkdownRenderer>{message.info || ""}</MarkdownRenderer>
+          </div>
+        </>
       ) : (
-        <span>{t(message.value)}</span>
+        <>
+          <span>{t(message.value, { ns: "chat" })}</span>
+          <br />
+          {
+            // Link to the FAQ if it is a shutdown message
+            message.type == MESSAGE_TYPE_SYSTEM &&
+              (message.value.toLowerCase().includes("shut") ||
+                message.value.toLowerCase().includes("error")) && <FAQ />
+          }
+        </>
       )}
-
-      <div className="relative">
-        {copied ? (
-          <span className="absolute bottom-0 right-0 rounded-full border-2 border-white/30 bg-zinc-800 p-1 px-2 text-gray-300">
-            {t("common:copied")}!
-          </span>
-        ) : (
-          <span
-            className={`absolute bottom-0 right-0 rounded-full border-2 border-white/30 bg-zinc-800 p-1 px-2 ${
-              showCopy ? "visible" : "hidden"
-            }`}
-          >
-            <FaCopy className="text-white-300 cursor-pointer" />
-          </span>
-        )}
-      </div>
     </div>
   );
-};
-
-const DonationMessage = ({ showWeChatPay }: { showWeChatPay?: () => void }) => {
-  const { t } = useTranslation(["chat", "common"]);
-  return (
-    <div className="mx-2 my-1 flex flex-col gap-2 rounded-lg border-[2px] border-white/10 bg-blue-500/20 p-1 text-center font-mono hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base md:flex-row">
-      <div className="max-w-none flex-grow">
-        <Trans i18nKey="donate-help" ns="chat">
-          💝️ Help support the advancement of AutoGPT Next Web. 💝 <br /> Please
-          consider donating help fund our high infrastructure costs.
-        </Trans>
-      </div>
-      <div className="flex items-center justify-center">
-        <Button
-          className="sm:text m-0 rounded-full text-sm "
-          onClick={showWeChatPay}
-        >
-          {t("donate-now")} 🚀
-        </Button>
-      </div>
-    </div>
-  );
-};
-
-const getMessageIcon = (message: Message) => {
-  switch (message.type) {
-    case "goal":
-      return <FaStar className="text-yellow-300" />;
-    case "task":
-      return <FaListAlt className="text-gray-300" />;
-    case "thinking":
-      return <FaBrain className="mt-[0.1em] text-pink-400" />;
-    case "action":
-      return <FaPlayCircle className="text-green-500" />;
-  }
 };
 
 const getMessagePrefix = (message: Message) => {
   const { t } = useTranslation("chat");
-
-  switch (message.type) {
-    case "goal":
-      return t("new-goal");
-    case "task":
-      return t("added-task");
-    case "thinking":
-      return t("thinking");
-    case "action":
-      return message.info ? t(message.info) : t("executing");
+  if (message.type === MESSAGE_TYPE_GOAL) {
+    return t("new-goal");
+  } else if (message.type === MESSAGE_TYPE_THINKING) {
+    return t("thinking");
+  } else if (getTaskStatus(message) === TASK_STATUS_STARTED) {
+    return t("added-task");
+  } else if (getTaskStatus(message) === TASK_STATUS_COMPLETED) {
+    return `${t("completing")}${message.value}`;
+  } else if (getTaskStatus(message) === TASK_STATUS_FINAL) {
+    return t("no-more-tasks");
   }
+  return "";
+};
+
+const FAQ = () => {
+  return (
+    <Trans i18nKey="faq" ns="chat">
+      <p>
+        If you are facing issues, please head over to our&nbsp;
+        <a
+          href="https://github.com/Dogtiti/AutoGPT-Next-Web/issues"
+          className="text-sky-500"
+        >
+          Issue
+        </a>
+      </p>
+    </Trans>
+  );
 };
 
 export default ChatWindow;

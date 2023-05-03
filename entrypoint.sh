@@ -18,4 +18,3 @@ fi
 
 # run cmd
 exec "$@"
-

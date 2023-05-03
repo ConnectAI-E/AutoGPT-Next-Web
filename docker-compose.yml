@@ -9,4 +9,3 @@ services:
     volumes:
       - .env.docker:/app/.env
       - ./db:/app/db
-

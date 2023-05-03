@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import type { RequestBody } from "../../../utils/interfaces";
-import AgentService from "../../../services/agent-service";
-import { serverError } from "../reponses";
+import AgentService, { DefaultAnalysis } from "../../../services/agent-service";
+import { serverError } from "../responses";
 
 export const config = {
   runtime: "edge",
@@ -10,7 +10,7 @@ export const config = {
 
 const handler = async (request: NextRequest) => {
   try {
-    const { modelSettings, goal, task, customLanguage } =
+    const { modelSettings, goal, task, analysis, customLanguage } =
       (await request.json()) as RequestBody;
     if (task === undefined) {
       return;
@@ -20,6 +20,7 @@ const handler = async (request: NextRequest) => {
       modelSettings,
       goal,
       task,
+      analysis || DefaultAnalysis,
       customLanguage
     );
     return NextResponse.json({

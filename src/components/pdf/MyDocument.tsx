@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, StyleSheet, Font } from "@react-pdf/renderer";
+import { Document, Page, Text, StyleSheet, Font ,View} from "@react-pdf/renderer";
 
 Font.register({
   family: "Roboto,SourceHanSansCN",
@@ -19,24 +19,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     padding: 40,
   },
+  horizontalRule: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+    borderBottomStyle: "solid",
+  },
   section: {
     fontSize: 12,
     fontFamily: "Roboto,SourceHanSansCN",
-    marginBottom: 20,
+    marginVertical: 10,
     lineHeight: 1.5,
   },
 });
 
-interface MyDocumentProps {
-  content: string;
-}
-
-const MyDocument: React.FC<MyDocumentProps> = ({ content }) => (
+// NOTE: This should only ever be imported dynamically to reduce load times
+const MyDocument: React.FC<{
+  textSections: string[];
+}> = ({ textSections }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.section}>{content}</Text>
+      {textSections.map((text) => (
+        <>
+          <Text style={styles.section}>{text}</Text>
+          <HorizontalRule />
+        </>
+      ))}
     </Page>
   </Document>
 );
+
+const HorizontalRule: React.FC = () => <View style={styles.horizontalRule} />;
 
 export default MyDocument;
