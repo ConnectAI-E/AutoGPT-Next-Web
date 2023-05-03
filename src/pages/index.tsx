@@ -51,9 +51,6 @@ const Home: NextPage = () => {
   const { session, status } = useAuth();
   const [name, setName] = useState<string>("");
   const [goalInput, setGoalInput] = useState<string>("");
-  // const [agent, setAgent] = useState<AutonomousAgent | null>(null);
-  const [shouldAgentStop, setShouldAgentStop] = useState(false);
-  // const [messages, setMessages] = useState<Message[]>([]);
   const [showHelpDialog, setShowHelpDialog] = useState(false);
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [showSorryDialog, setShowSorryDialog] = React.useState(false);
@@ -212,16 +209,16 @@ const Home: NextPage = () => {
     isAgentPaused && !isAgentStopped ? (
       <Button ping disabled={!isAgentPaused} onClick={handleContinue}>
         <FaPlay size={20} />
-        <span className="ml-2">{i18n.t("Continue")}</span>
+        <span className="ml-2">{t("continue")}</span>
       </Button>
     ) : (
       <Button disabled={disableDeployAgent} onClick={handleNewGoal}>
         {agent == null ? (
-          i18n.t("Deploy Agent")
+          t("deploy-agent")
         ) : (
           <>
             <VscLoading className="animate-spin" size={20} />
-            <span className="ml-2">{i18n.t("Running")}</span>
+            <span className="ml-2">{t("running")}</span>
           </>
         )}
       </Button>
@@ -340,7 +337,7 @@ const Home: NextPage = () => {
                   value={goalInput}
                   onChange={(e) => setGoalInput(e.target.value)}
                   onKeyDown={(e) => handleKeyPress(e)}
-                  placeholder="Make the world a better place."
+                  placeholder={t("placeholder-agent-goal") as string}
                   type="textarea"
                 />
               </Expand>
@@ -356,14 +353,10 @@ const Home: NextPage = () => {
                 {!isAgentStopped && agent === null ? (
                   <>
                     <VscLoading className="animate-spin" size={20} />
-                    <span className="ml-2">{`${i18n?.t("BUTTON_STOPPING", {
-                      ns: "indexPage",
-                    })}`}</span>
+                    <span className="ml-2">{t("stopping")}</span>
                   </>
                 ) : (
-                  `${i18n?.t("BUTTON_STOP_AGENT", "BUTTON_STOP_AGENT", {
-                    ns: "indexPage",
-                  })}`
+                  t("stop-agent")
                 )}
               </Button>
             </Expand>

@@ -29,7 +29,7 @@ import { CgExport } from "react-icons/cg";
 import MarkdownRenderer from "./MarkdownRenderer";
 import { Switch } from "./Switch";
 import { env } from "../env/client.mjs";
-import { useTranslation } from "next-i18next";
+import { useTranslation, Trans } from "next-i18next";
 
 interface ChatWindowProps extends HeaderProps {
   children?: ReactNode;
@@ -309,12 +309,12 @@ const MacWindowHeader = (props: HeaderProps) => {
           {isAgentPaused ? (
             <>
               <FaPause />
-              <p className="font-mono">Paused</p>
+              <p className="font-mono">{t("common:paused")}</p>
             </>
           ) : (
             <>
               <FaPlay />
-              <p className="font-mono">Running</p>
+              <p className="font-mono">{t("common:running")}</p>
             </>
           )}
         </div>
@@ -342,12 +342,7 @@ const ChatMessage = ({
   depth?: number;
 }) => {
   const { t } = useTranslation(["chat", "common"]);
-  const [showCopy, setShowCopy] = useState(false);
   const [copied, setCopied] = useState(false);
-  const handleCopyClick = () => {
-    void navigator.clipboard.writeText(message.value);
-    setCopied(true);
-  };
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
     if (copied) {
@@ -376,11 +371,7 @@ const ChatMessage = ({
       )}
 
       {message.type == MESSAGE_TYPE_THINKING && (
-        <span className="italic text-zinc-400">
-          {`${t("RESTART_IF_IT_TAKES_X_SEC", {
-            ns: "chat",
-          })}`}
-        </span>
+        <span className="italic text-zinc-400">{t("restart")}</span>
       )}
 
       {isAction(message) ? (
@@ -393,6 +384,7 @@ const ChatMessage = ({
       ) : (
         <>
           <span>{t(message.value, { ns: "chat" })}</span>
+          <br />
           {
             // Link to the FAQ if it is a shutdown message
             message.type == MESSAGE_TYPE_SYSTEM &&
@@ -414,25 +406,26 @@ const getMessagePrefix = (message: Message) => {
   } else if (getTaskStatus(message) === TASK_STATUS_STARTED) {
     return t("added-task");
   } else if (getTaskStatus(message) === TASK_STATUS_COMPLETED) {
-    return `Completing: ${message.value}`;
+    return `${t("completing")}${message.value}`;
   } else if (getTaskStatus(message) === TASK_STATUS_FINAL) {
-    return "NO_MORE_TASKS";
+    return t("no-more-tasks");
   }
   return "";
 };
 
 const FAQ = () => {
   return (
-    <p>
-      <br />
-      If you are facing issues, please head over to our{" "}
-      <a
-        href="https://github.com/Dogtiti/AutoGPT-Next-Web/issues"
-        className="text-sky-500"
-      >
-        FAQ
-      </a>
-    </p>
+    <Trans i18nKey="faq" ns="chat">
+      <p>
+        If you are facing issues, please head over to our&nbsp;
+        <a
+          href="https://github.com/Dogtiti/AutoGPT-Next-Web/issues"
+          className="text-sky-500"
+        >
+          Issue
+        </a>
+      </p>
+    </Trans>
   );
 };
 

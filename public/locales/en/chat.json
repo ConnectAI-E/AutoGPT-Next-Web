@@ -21,5 +21,8 @@
   "new-goal": "Embarking on a new goal:",
   "added-task": "Added task:",
   "thinking": "Thinking...",
-  "executing": "Executing:"
+  "executing": "Executing: ",
+  "completing": "Completing: ",
+  "no-more-tasks": "No more tasks to complete. Shutting down.",
+  "faq": "<0>If you are facing issues, please head over to our <1>Issue</1>。</0>"
 }

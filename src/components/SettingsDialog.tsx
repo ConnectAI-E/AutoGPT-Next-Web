@@ -188,7 +188,6 @@ export const SettingsDialog: React.FC<{
           <Button onClick={handleSave}>{t("common:save")}</Button>
         </>
       }
-      contentClassName="text-md relative flex flex-col gap-2 p-2 leading-relaxed"
     >
       <p>{t("usage")}</p>
       <p
@@ -253,24 +252,24 @@ export const SettingsDialog: React.FC<{
           type="password"
         />
       )}
-       <Input
-          left={
-            <>
-              <FaTachometerAlt />
-              <span className="ml-2">Mode: </span>
-            </>
-          }
-          value={agentMode}
-          disabled={agent !== null}
-          onChange={() => null}
-          setValue={updateAgentMode as (agentMode: string) => void}
-          type="combobox"
-          toolTipProperties={{
-            message: `${AUTOMATIC_MODE} (Default): Agent automatically executes every task. \n\n${PAUSE_MODE}: Agent pauses after every set of task(s)`,
-            disabled: false,
-          }}
-          attributes={{ options: [AUTOMATIC_MODE, PAUSE_MODE] }}
-        />
+      <Input
+        left={
+          <>
+            <FaTachometerAlt />
+            <span className="ml-2">{t("mode")}</span>
+          </>
+        }
+        value={agentMode}
+        disabled={agent !== null}
+        onChange={() => null}
+        setValue={updateAgentMode as (agentMode: string) => void}
+        type="combobox"
+        toolTipProperties={{
+          message: t("mode-tips") as string,
+          disabled: false,
+        }}
+        attributes={{ options: [AUTOMATIC_MODE, PAUSE_MODE] }}
+      />
       <Accordion
         child={advancedSettings}
         name={t("advanced-settings")}
