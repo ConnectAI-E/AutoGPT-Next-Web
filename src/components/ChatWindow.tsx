@@ -91,30 +91,30 @@ const ChatWindow = ({
     }
   };
 
-  // const messageDepth = (messages: Message[], message: Message, depth = 0) => {
-  //   if (depth > 5) {
-  //     return depth;
-  //   }
-  //   const index = messages.findLastIndex(
-  //     (i: Message) => i.parentTaskId && i.taskId === message.taskId
-  //   );
-  //   if (index > -1) {
-  //     const { parentTaskId } = messages[index] as Message;
-  //     if (parentTaskId) {
-  //       const parentIndex = messages.findLastIndex(
-  //         (i: Message) => i.taskId && i.taskId === parentTaskId
-  //       );
-  //       if (parentIndex > -1) {
-  //         return messageDepth(
-  //           messages,
-  //           messages[parentIndex] as Message,
-  //           depth + 1
-  //         );
-  //       }
-  //     }
-  //   }
-  //   return depth;
-  // };
+  const messageDepth = (messages: Message[], message: Message, depth = 0) => {
+    if (depth > 5) {
+      return depth;
+    }
+    const index = messages.findLastIndex(
+      (i) => i.parentTaskId && i.taskId === message.taskId
+    );
+    if (index > -1) {
+      const { parentTaskId } = messages[index] as Message;
+      if (parentTaskId) {
+        const parentIndex = messages.findLastIndex(
+          (i: Message) => i.taskId && i.taskId === parentTaskId
+        );
+        if (parentIndex > -1) {
+          return messageDepth(
+            messages,
+            messages[parentIndex] as Message,
+            depth + 1
+          );
+        }
+      }
+    }
+    return depth;
+  };
 
   return (
     <div
@@ -149,7 +149,7 @@ const ChatWindow = ({
             <FadeIn key={`${index}-${message.type}`}>
               <ChatMessage
                 message={message}
-                // depth={messageDepth(messages, message, 0)}
+                depth={messageDepth(messages, message, 0)}
               />
             </FadeIn>
           );
@@ -359,6 +359,7 @@ const ChatMessage = ({
       className={`${getMessageContainerStyle(
         message
       )} mx-2 my-1 rounded-lg border-[2px] bg-white/20 p-1 font-mono text-sm hover:border-[#1E88E5]/40 sm:mx-4 sm:p-3 sm:text-base`}
+      style={{ marginLeft: `${depth * 40 + 20}px` }}
     >
       {message.type != MESSAGE_TYPE_SYSTEM && (
         // Avoid for system messages as they do not have an icon and will cause a weird space

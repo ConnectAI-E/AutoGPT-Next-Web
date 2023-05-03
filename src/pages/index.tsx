@@ -90,28 +90,13 @@ const Home: NextPage = () => {
     updateIsAgentStopped();
   }, [agent, updateIsAgentStopped]);
 
-  const handleAddMessage = (message: Message) => {
-    if (isTask(message)) {
-      updateTaskStatus(message);
+  const handleAddMessage = (newMessage: Message) => {
+    if (isTask(newMessage)) {
+      updateTaskStatus(newMessage);
     }
 
-    addMessage(message);
+    addMessage(newMessage);
   };
-
-  // const handleAddMessage = useCallback((newMessage: Message) => {
-  //   setMessages((preMessages) => {
-  //     const index = preMessages.findLastIndex(
-  //       (message) => message?.taskId === newMessage?.taskId
-  //     );
-  //     const messagesCopy = [...preMessages];
-  //     messagesCopy.splice(
-  //       index > -1 ? index + 1 : messagesCopy.length,
-  //       0,
-  //       newMessage
-  //     );
-  //     return messagesCopy;
-  //   });
-  // }, []);
 
   const handlePause = (opts: {
     agentPlaybackControl?: AgentPlaybackControl;
@@ -121,13 +106,15 @@ const Home: NextPage = () => {
     }
   };
 
-  // const tasks = messages.filter((message) => message.type === "task");
-
   const disableDeployAgent =
     agent != null || isEmptyOrBlank(name) || isEmptyOrBlank(goalInput);
 
   const handleNewGoal = () => {
-    if (session === null && process.env.NODE_ENV === "production"&&authEnabled) {
+    if (
+      session === null &&
+      process.env.NODE_ENV === "production" &&
+      authEnabled
+    ) {
       setShowSignInDialog(true);
       return;
     }

@@ -38,14 +38,28 @@ const createMessageSlice: StateCreator<
     addMessage: (newMessage) => {
       const newTask = { ...newMessage };
       newMessage = { ...newMessage };
-      set((state) => ({
-        ...state,
-        messages: [...state.messages, newMessage],
-        tasks:
-          isTask(newTask) && !isExistingTask(newTask)
-            ? [...state.tasks, newTask]
-            : [...state.tasks],
-      }));
+      set((state) => {
+        //FIXME
+        // const preMessages = state.messages;
+        // const index = preMessages.findLastIndex(
+        //   (message) => message?.taskId === newMessage?.parentTaskId
+        // );
+        // const messagesCopy = [...preMessages];
+        // messagesCopy.splice(
+        //   index > -1 ? index + 1 : messagesCopy.length,
+        //   0,
+        //   newMessage
+        // );
+        return {
+          ...state,
+          // messages: messagesCopy,
+          messages: [...state.messages, newMessage],
+          tasks:
+            isTask(newTask) && !isExistingTask(newTask)
+              ? [...state.tasks, newTask]
+              : [...state.tasks],
+        };
+      });
     },
   };
 };
