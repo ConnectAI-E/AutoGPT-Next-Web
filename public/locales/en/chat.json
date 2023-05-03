@@ -24,5 +24,9 @@
   "executing": "Executing: ",
   "completing": "Completing: ",
   "no-more-tasks": "No more tasks to complete. Shutting down.",
-  "faq": "<0>If you are facing issues, please head over to our <1>Issue</1>。</0>"
+  "faq": "<0>If you are facing issues, please head over to our <1>Issue</1>。</0>",
+  "sorry-tips": "<0> Due to costs, we&apos;ve had to momentarily disable web search 🌐.<1></1> <2>But you can still use it on your site.</2>  <4> More Detials </4></0> ",
+  "sorry": "Sorry",
+  "web-search": "Web search",
+  "signin-tips": "<0> Please <1>sign in</1> to deploy an Agent! 🤖 </0> "
 }

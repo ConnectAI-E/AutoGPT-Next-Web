@@ -1,5 +1,6 @@
 import React from "react";
 import Dialog from "./Dialog";
+import { Trans, useTranslation } from "next-i18next";
 
 export interface SorryDialogProps {
   show: boolean;
@@ -7,22 +8,25 @@ export interface SorryDialogProps {
 }
 
 export const SorryDialog = ({ show, close }: SorryDialogProps) => {
+  const { t } = useTranslation("chat");
   return (
-    <Dialog header="Sorry! 😭" isShown={show} close={close}>
-      <p>Due to costs, we&apos;ve had to momentarily disable web search 🌐</p>
-      <br />
-      <p>
-        Please monitor our&nbsp;
-        <a
-          className="link"
-          href="https://reworkd.github.io/AgentGPT-Documentation/docs/roadmap"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Roadmap
-        </a>
-        &nbsp; to understand when it may be back up.
-      </p>
+    <Dialog header={`${t("sorry")} 😭`} isShown={show} close={close}>
+      <Trans i18nKey="sorry-tips" ns="chat">
+        <p>
+          Due to costs, we&apos;ve had to momentarily disable web search 🌐
+          <br />
+          <p>But you can still use it on your site.</p>
+          <br />
+          <a
+            className="link"
+            href="https://autogpt-next-web.gitbook.io/autogpt-next-web/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            More Detials
+          </a>
+        </p>
+      </Trans>
     </Dialog>
   );
 };

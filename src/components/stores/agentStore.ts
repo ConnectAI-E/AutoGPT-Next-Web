@@ -76,7 +76,7 @@ const agentStore = create<AgentSlice>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         agentMode: state.agentMode,
-        // isWebSearchEnabled: state.isWebSearchEnabled
+        // isWebSearchEnabled: state.isWebSearchEnabled,
       }),
     }
   )

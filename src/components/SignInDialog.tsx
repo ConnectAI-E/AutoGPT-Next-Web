@@ -2,6 +2,7 @@ import React from "react";
 import Dialog from "./Dialog";
 import Button from "./Button";
 import { useAuth } from "../hooks/useAuth";
+import { Trans, useTranslation } from "next-i18next";
 
 export interface SignInDialogProps {
   show: boolean;
@@ -10,21 +11,24 @@ export interface SignInDialogProps {
 
 export const SignInDialog = ({ show, close }: SignInDialogProps) => {
   const { signIn } = useAuth();
+  const { t } = useTranslation(['chat','common']);
 
   return (
     <Dialog
-      header="Sign in 🔐"
+      header={`${t('common:sign-in')} 🔐`}
       isShown={show}
       close={close}
-      footerButton={<Button onClick={() => void signIn()}>Sign in</Button>}
+      footerButton={<Button onClick={() => void signIn()}>{t('common:sign-in')}</Button>}
     >
-      <p>
-        Please{" "}
-        <a className="link" onClick={() => void signIn()}>
-          sign in
-        </a>{" "}
-        to deploy an Agent! 🤖
-      </p>
+      <Trans i18nKey="signin-tips" ns="chat">
+        <p>
+          Please
+          <a className="link" onClick={() => void signIn()}>
+            sign in
+          </a>
+          to deploy an Agent! 🤖
+        </p>
+      </Trans>
     </Dialog>
   );
 };

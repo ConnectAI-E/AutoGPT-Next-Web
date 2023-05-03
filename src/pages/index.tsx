@@ -303,6 +303,8 @@ const Home: NextPage = () => {
                     : undefined
                 }
                 scrollToBottom
+                displaySettings
+                openSorryDialog={() => setShowSorryDialog(true)}
               />
               {tasks.length > 0 && <TaskWindow />}
             </Expand>

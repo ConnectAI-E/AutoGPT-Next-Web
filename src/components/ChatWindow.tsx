@@ -180,7 +180,7 @@ const ChatWindow = ({
       {displaySettings && (
         <div className="flex items-center justify-center">
           <div className="m-1 flex items-center gap-2 rounded-lg border-[2px] border-white/20 bg-zinc-700 px-2 py-1">
-            <p className="font-mono text-sm">Web search</p>
+            <p className="font-mono text-sm">{t("web-search")}</p>
             <Switch
               value={isWebSearchEnabled}
               onChange={handleChangeWebSearch}
