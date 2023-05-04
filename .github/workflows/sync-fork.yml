@@ -1,11 +1,11 @@
-name: Upstream Sync
+name: Sync Fork
 
 permissions:
   contents: write
 
 on:
   schedule:
-    - cron: "0 * * * *" # every hour
+    - cron: "0 0 * * *" # every 
   workflow_dispatch:
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
           target_repo_token: ${{ secrets.GITHUB_TOKEN }} # automatically generated, no need to set
 
           # Set test_mode true to run tests instead of the true action!!
-          test_mode: true
+          test_mode: false
 
       - name: Sync check
         if: failure()
