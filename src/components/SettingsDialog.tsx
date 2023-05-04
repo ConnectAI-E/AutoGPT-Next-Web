@@ -213,67 +213,69 @@ export const SettingsDialog: React.FC<{
           </b>
         </Trans>
       </p>
-      <Input
-        left={
-          <>
-            <FaKey />
-            <span className="ml-2">{t("key")}</span>
-          </>
-        }
-        placeholder={"sk-..."}
-        value={settings.customApiKey}
-        onChange={(e) => updateSettings("customApiKey", e.target.value)}
-        type="password"
-      />
-      <Input
-        left={
-          <>
-            <FaMicrochip />
-            <span className="ml-2">{t("model")}</span>
-          </>
-        }
-        type="combobox"
-        value={settings.customModelName}
-        onChange={() => null}
-        setValue={(e) => updateSettings("customModelName", e)}
-        attributes={{ options: GPT_MODEL_NAMES }}
-        disabled={disabled}
-      />
-      {isGuestMode && (
+      <div className="mt-2 flex flex-col gap-2">
         <Input
           left={
             <>
-              <FaCode />
-              <span className="ml-2">{t("guest-key")}</span>
+              <FaKey />
+              <span className="ml-2">{t("key")}</span>
             </>
           }
-          value={settings.customGuestKey}
-          onChange={(e) => updateSettings("customGuestKey", e.target.value)}
+          placeholder={"sk-..."}
+          value={settings.customApiKey}
+          onChange={(e) => updateSettings("customApiKey", e.target.value)}
           type="password"
         />
-      )}
-      <Input
-        left={
-          <>
-            <FaTachometerAlt />
-            <span className="ml-2">{t("mode")}</span>
-          </>
-        }
-        value={agentMode}
-        disabled={agent !== null}
-        onChange={() => null}
-        setValue={updateAgentMode as (agentMode: string) => void}
-        type="combobox"
-        toolTipProperties={{
-          message: t("mode-tips") as string,
-          disabled: false,
-        }}
-        attributes={{ options: [AUTOMATIC_MODE, PAUSE_MODE] }}
-      />
-      <Accordion
-        child={advancedSettings}
-        name={t("advanced-settings")}
-      ></Accordion>
+        <Input
+          left={
+            <>
+              <FaMicrochip />
+              <span className="ml-2">{t("model")}</span>
+            </>
+          }
+          type="combobox"
+          value={settings.customModelName}
+          onChange={() => null}
+          setValue={(e) => updateSettings("customModelName", e)}
+          attributes={{ options: GPT_MODEL_NAMES }}
+          disabled={disabled}
+        />
+        {isGuestMode && (
+          <Input
+            left={
+              <>
+                <FaCode />
+                <span className="ml-2">{t("guest-key")}</span>
+              </>
+            }
+            value={settings.customGuestKey}
+            onChange={(e) => updateSettings("customGuestKey", e.target.value)}
+            type="password"
+          />
+        )}
+        <Input
+          left={
+            <>
+              <FaTachometerAlt />
+              <span className="ml-2">{t("mode")}</span>
+            </>
+          }
+          value={agentMode}
+          disabled={agent !== null}
+          onChange={() => null}
+          setValue={updateAgentMode as (agentMode: string) => void}
+          type="combobox"
+          toolTipProperties={{
+            message: t("mode-tips") as string,
+            disabled: false,
+          }}
+          attributes={{ options: [AUTOMATIC_MODE, PAUSE_MODE] }}
+        />
+        <Accordion
+          child={advancedSettings}
+          name={t("advanced-settings")}
+        ></Accordion>
+      </div>
       <Trans i18nKey="api-key-notice" ns="settings">
         <strong className="mt-10">
           NOTE: To get a key, sign up for an OpenAI account and visit the
