@@ -8,7 +8,6 @@ import {
   DEFAULT_MAX_LOOPS_PAID,
 } from "../utils/constants";
 import type { Session } from "next-auth";
-import { env } from "../env/client.mjs";
 import { v4, v1 } from "uuid";
 import type { RequestBody } from "../utils/interfaces";
 import {
@@ -32,6 +31,7 @@ import type {
   AgentPlaybackControl,
 } from "../types/agentTypes";
 import { useAgentStore } from "./stores";
+import { i18n } from "next-i18next";
 
 const TIMEOUT_LONG = 1000;
 const TIMOUT_SHORT = 800;
@@ -54,6 +54,7 @@ class AutonomousAgent {
   completedTasks: string[] = [];
   isRunning = true;
   numLoops = 0;
+  currentTask?: Task;
 
   constructor(
     name: string,
@@ -83,12 +84,15 @@ class AutonomousAgent {
     this.mode = mode || AUTOMATIC_MODE;
     this.playbackControl =
       playbackControl || this.mode == PAUSE_MODE ? AGENT_PAUSE : AGENT_PLAY;
+    this.currentTask = undefined;
   }
 
   async run() {
     const { isGuestMode, isValidGuest } = this.guestSettings;
     if (isGuestMode && !isValidGuest && !this.modelSettings.customApiKey) {
-      this.sendErrorMessage("errors.invalid-guest-key");
+      this.sendErrorMessage(
+        `${i18n?.t("errors.invalid-guest-key", { ns: "chat" })}`
+      );
       this.stopAgent();
       return;
     }
@@ -153,6 +157,8 @@ class AutonomousAgent {
 
     const currentTask = this.tasks.shift() as Task;
 
+    this.currentTask = currentTask;
+
     this.sendThinkingMessage(currentTask.taskId);
 
     // Default to reasoning
@@ -162,7 +168,7 @@ class AutonomousAgent {
     if (useAgentStore.getState().isWebSearchEnabled) {
       // Analyze how to execute a task: Reason, web search, other tools...
       analysis = await this.analyzeTask(currentTask.value);
-      this.sendAnalysisMessage(analysis);
+      this.sendAnalysisMessage(analysis, currentTask.taskId);
     }
 
     // Execute first task
@@ -208,7 +214,9 @@ class AutonomousAgent {
       }
     } catch (e) {
       console.log(e);
-      this.sendErrorMessage(`errors.adding-additional-task`);
+      this.sendErrorMessage(
+        `${i18n?.t("errors.adding-additional-task", { ns: "chat" })}`
+      );
       this.sendMessage({ ...currentTask, status: TASK_STATUS_FINAL });
     }
 
@@ -346,7 +354,9 @@ class AutonomousAgent {
       this.shutdown();
 
       if (axios.isAxiosError(e) && e.response?.status === 429) {
-        this.sendErrorMessage("rate-limit");
+        this.sendErrorMessage(
+          `${i18n?.t("errors.rate-limit", { ns: "chat" })}`
+        );
       }
 
       throw e;
@@ -391,30 +401,36 @@ class AutonomousAgent {
       type: MESSAGE_TYPE_SYSTEM,
       value:
         this.modelSettings.customApiKey !== ""
-          ? "errors.loop-with-filled-customApiKey"
-          : "errors.loop-with-empty-customApiKey",
+          ? `${i18n?.t("errors.loop-with-filled-customApiKey", { ns: "chat" })}`
+          : `${i18n?.t("errors.loop-with-empty-customApiKey", { ns: "chat" })}`,
+      taskId: this.currentTask?.taskId,
     });
   }
 
   sendManualShutdownMessage() {
     this.sendMessage({
       type: MESSAGE_TYPE_SYSTEM,
-      value: "manually-shutdown",
+      value: `${i18n?.t("manually-shutdown", { ns: "chat" })}`,
+      taskId: this.currentTask?.taskId,
     });
   }
-
   sendCompletedMessage() {
     this.sendMessage({
       type: MESSAGE_TYPE_SYSTEM,
-      value: "all-tasks-completed",
+      value: `${i18n?.t("all-tasks-completed", { ns: "chat" })}`,
+      taskId: this.currentTask?.taskId,
     });
   }
 
   sendAnalysisMessage(analysis: Analysis, taskId?: string) {
     // Hack to send message with generic test. Should use a different type in the future
-    let message = "🧠 Generating response...";
+
+    let message = `${i18n?.t("generating-response", { ns: "chat" })}`;
     if (analysis.action == "search") {
-      message = `🌐 Searching the web for "${analysis.arg}"...`;
+      message = `${i18n?.t("searching-web-for", {
+        ns: "chat",
+        arg: analysis.arg,
+      })}`;
     }
 
     this.sendMessage({
@@ -433,7 +449,11 @@ class AutonomousAgent {
   }
 
   sendErrorMessage(error: string) {
-    this.sendMessage({ type: MESSAGE_TYPE_SYSTEM, value: error });
+    this.sendMessage({
+      type: MESSAGE_TYPE_SYSTEM,
+      value: error,
+      taskId: this.currentTask?.taskId,
+    });
   }
 }
 
@@ -458,17 +478,18 @@ const testConnection = async (modelSettings: ModelSettings) => {
 };
 
 const getMessageFromError = (e: unknown) => {
-  let message = "errors.accessing-apis";
+  let message = `${i18n?.t("errors.accessing-apis", { ns: "chat" })}`;
+
   if (axios.isAxiosError(e)) {
     const axiosError = e;
     if (axiosError.response?.status === 429) {
-      message = "errors.accessing-using-apis";
+      message = `${i18n?.t("errors.accessing-using-apis", { ns: "chat" })}`;
     }
     if (axiosError.response?.status === 404) {
-      message = "errors.accessing-gtp4";
+      message = `${i18n?.t("errors.accessing-gtp4", { ns: "chat" })}`;
     }
   } else {
-    message = "errors.initial-tasks";
+    message = `${i18n?.t("errors.initial-tasks", { ns: "chat" })}`;
   }
   return message;
 };

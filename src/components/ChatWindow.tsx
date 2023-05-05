@@ -384,7 +384,7 @@ const ChatMessage = ({
         </>
       ) : (
         <>
-          <span>{t(message.value, { ns: "chat" })}</span>
+          <span>{message.value}</span>
           <br />
           {
             // Link to the FAQ if it is a shutdown message

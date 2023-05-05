@@ -28,11 +28,6 @@ export const createModel = (settings: ModelSettings) => {
   const baseOptions = {
     basePath: _settings?.customEndPoint || undefined,
   };
-  console.log(
-    "Dogtiti ~ file: prompts.ts:22 ~ createModel ~ options:",
-    options,
-    baseOptions
-  );
 
   return new OpenAI(options, baseOptions);
 };
