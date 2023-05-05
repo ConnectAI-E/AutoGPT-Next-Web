@@ -1,11 +1,14 @@
-version: "3.0"
+version: '3'
+
 services:
-  autogpt:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  agentgpt:
+    container_name: agent-gpt
+    image: vectorzhao/agent-gpt
+    environment:
+      NODE_ENV: development
+      NEXTAUTH_SECRET: '1234'
+      OPENAI_API_KEY: 'sk-xxxxxxxx' # you own openai api key
     ports:
       - "3000:3000"
     volumes:
-      - .env.docker:/app/.env
       - ./db:/app/db
