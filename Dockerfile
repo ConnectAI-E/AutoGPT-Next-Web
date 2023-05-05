@@ -1,9 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:19-alpine
 
-ARG NODE_ENV
+#ARG NODE_ENV
 
-ENV NODE_ENV=$NODE_ENV
+#ENV NODE_ENV=$NODE_ENV
 
 # Set the working directory
 WORKDIR /app
