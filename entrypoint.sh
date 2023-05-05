@@ -10,7 +10,7 @@ sed -ie 's/@db.Text//' prisma/schema.prisma
 # Add Prisma and generate Prisma client
 npx prisma generate
 # Generate db when not exists
-source .env
+# source .env
 if [[ ! -f "/app/prisma/${DATABASE_URL:5}" ]]; then
   npx prisma migrate dev --name init
   npx prisma db push
