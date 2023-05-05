@@ -13,6 +13,19 @@ Font.register({
   ],
 });
 
+Font.registerHyphenationCallback((word: string) => {
+  if (word.length === 1) {
+    return [word];
+  }
+
+  return Array.from(word)
+    .map((char) => [char, ''])
+    .reduce((arr, current) => {
+      arr.push(...current);
+      return arr;
+    }, []);
+});
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
