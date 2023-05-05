@@ -74,7 +74,7 @@ const AgentPage: NextPage = () => {
       </div>
       <Toast
         model={[showCopied, setShowCopied]}
-        title={`${t("copied")} 🚀}`}
+        title={`${t("copied")} 🚀`}
         className="bg-gray-950 text-sm"
       />
     </DefaultLayout>
