@@ -82,6 +82,7 @@ model Agent {
 
 model AgentTask {
   id      String  @id @default(cuid())
+  parentTaskId String?
   agentId String
   type    String
   status  String?
