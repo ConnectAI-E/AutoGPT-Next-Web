@@ -16,7 +16,7 @@
     "invalid-guest-key": "Invalid Guest Key"
   },
   "all-tasks-completed": "All tasks completed. Shutting down.",
-  "manually-shutdown": "The agent has been manually shutdown.",
+  "manually-shutdown": "The current task has been manually shutdown.",
   "task-marked-as-complete": "Task marked as complete!",
   "new-goal": "Embarking on a new goal:",
   "added-task": "Added task:",
@@ -28,5 +28,7 @@
   "sorry-tips": "<0> Due to costs, we&apos;ve had to momentarily disable web search 🌐.<1></1> <2>But you can still use it on your site.</2>  <4> More Detials </4></0> ",
   "sorry": "Sorry",
   "web-search": "Web search",
-  "signin-tips": "<0> Please <1>sign in</1> to deploy an Agent! 🤖 </0> "
+  "signin-tips": "<0> Please <1>sign in</1> to deploy an Agent! 🤖 </0> ",
+  "generating-response": "🧠 Generating response...",
+  "searching-web-for": "🌐 Searching the web for {{arg}} ..."
 }
