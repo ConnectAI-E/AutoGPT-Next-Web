@@ -54,18 +54,20 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 
 ## Docker 部署
 
-### Docker 配置
+### Docker 本地配置
 
-使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法，这里提供了便捷的脚本以帮助您快速入门。
+使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法。
 
 ```bash
-./setup.sh --docker
+docker-compose -f docker-compose-local.yml up -d --remove-orphans
 ```
-### Docker-compose
 
-使用 `docker-compose` 部署
+### Docker-Image
+
+使用 `docker-image` 部署
+
 ```bash
-./setup.sh --docker-compose
+docker-compose up -d --remove-orphans
 ```
 
 ### 本地开发环境配置
@@ -73,7 +75,7 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 如果您想在本地开发 AutoGPT-Next-Web，则最简单的方法是使用提供的设置脚本。
 
 ```bash
-./setup.sh --local
+./setup.sh
 ```
 
 ### 手动配置

@@ -54,21 +54,20 @@ A: The project originated from AgentGPT. Our goal is to continuously provide use
 
 ## Docker Deployment
 
-### Docker Setup
+### Docker Local Setup
 
 The easiest way to run AutoGPT-Next-Web locally is by using docker.
-A convenient setup script is provided to help you get started.
 
 ```bash
-./setup.sh --docker
+ docker-compose -f docker-compose-local.yml up -d --remove-orphans
 ```
 
-### Docker-compose
+### Docker-Image
 
-Using `docker-compose` deploy
+Using `docker-image`
 
 ```bash
-./setup.sh --docker-compose
+docker-compose up -d --remove-orphans
 ```
 
 ### Local Development Setup
@@ -77,7 +76,7 @@ If you wish to develop AutoGPT-Next-Web locally, the easiest way is to
 use the provided setup script.
 
 ```bash
-./setup.sh --local
+./setup.sh
 ```
 
 ### Manual Setup
@@ -114,7 +113,8 @@ NODE_ENV=development
 NEXTAUTH_SECRET=''
 NEXTAUTH_URL=http://localhost:3000
 DATABASE_URL=file:./db.sqlite
-
+NEXT_PUBLIC_WEB_SEARCH_ENABLED='' #true or false
+SERP_API_KEY=''
 # Your open api key
 OPENAI_API_KEY=''
 ```
