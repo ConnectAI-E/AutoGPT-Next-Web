@@ -1,12 +1,13 @@
 name: Build and publish the Docker image
 
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
+  release:
+    types: [published]
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: Dogtititi/AutoGPT-Next-Web
 
 jobs:
   build-and-push-image:
@@ -27,7 +28,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@507c2f2dc502c992ad446e3d7a5dfbe311567a96
+        uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
@@ -39,6 +40,6 @@ jobs:
             NEXTAUTH_URL=http://localhost:3000
             DATABASE_URL=file:../db/db.sqlite
             SKIP_ENV_VALIDATION=1
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
