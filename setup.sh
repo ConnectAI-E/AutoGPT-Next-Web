@@ -17,27 +17,23 @@ else
   exit
 fi
 
+echo -n "Enable web search (true/false):"
+read NEXT_PUBLIC_WEB_SEARCH_ENABLED
+
+echo -n "Enter your serp api key to use web search :"
+read SERP_API_KEY
+
 NEXTAUTH_SECRET=$(openssl rand -base64 32)
 
 ENV="NODE_ENV=development\n\
 NEXTAUTH_SECRET=$NEXTAUTH_SECRET\n\
 NEXTAUTH_URL=http://localhost:3000\n\
 OPENAI_API_KEY=$OPENAI_API_KEY\n\
-DATABASE_URL=file:../db/db.sqlite\n"
+DATABASE_URL=file:../db/db.sqlite\n\
+SERP_API_KEY=$SERP_API_KEY\n\
+NEXT_PUBLIC_WEB_SEARCH_ENABLED=$NEXT_PUBLIC_WEB_SEARCH_ENABLED\n"
 
 printf $ENV > .env
-
-if [ "$1" = "--docker" ]; then
-  printf $ENV > .env.docker
-  source .env.docker
-  docker build --build-arg NODE_ENV=$NODE_ENV -t agentgpt .
-  docker run -d --name agentgpt -p 3000:3000 -v $(pwd)/db:/app/db agentgpt
-elif [ "$1" = "--docker-compose" ]; then
-  printf $ENV > .env.docker
-  docker-compose up -d --remove-orphans
-else
-  printf $ENV > .env
-  ./prisma/useSqlite.sh
-  npm install
-  npm run dev
-fi
+./prisma/useSqlite.sh
+npm install
+npm run dev
