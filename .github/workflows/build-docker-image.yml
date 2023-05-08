@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: Dogtititi/AutoGPT-Next-Web
+  IMAGE_NAME: dogtititi/autogpt-next-web
 
 jobs:
   build-and-push-image:
