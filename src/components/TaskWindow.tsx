@@ -4,7 +4,7 @@ import Expand from "./motions/expand";
 import { Task } from "../types/agentTypes";
 import { getMessageContainerStyle, getTaskStatusIcon } from "./utils/helpers";
 import { useMessageStore } from "./stores";
-import { FaListAlt } from "react-icons/fa";
+import { FaListAlt, FaTimesCircle } from "react-icons/fa";
 import { useAgentStore } from "./stores";
 import clsx from "clsx";
 import { useTranslation } from "next-i18next";
@@ -31,6 +31,15 @@ export const TaskWindow = () => {
 
 const Task = ({ task }: { task: Task }) => {
   const isAgentStopped = useAgentStore.use.isAgentStopped();
+  const deleteTask = useMessageStore.use.deleteTask();
+  const isTaskDeletable =
+    task.taskId && !isAgentStopped && task.status === "started";
+
+  const handleDeleteTask = () => {
+    if (isTaskDeletable) {
+      deleteTask(task.taskId as string);
+    }
+  };
   return (
     <FadeIn>
       <div
@@ -42,6 +51,16 @@ const Task = ({ task }: { task: Task }) => {
       >
         {getTaskStatusIcon(task, { isAgentStopped })}
         <span>{task.value}</span>
+        <div className="flex justify-end">
+          <FaTimesCircle
+            onClick={handleDeleteTask}
+            className={clsx(
+              isTaskDeletable && "cursor-pointer hover:text-red-500",
+              !isTaskDeletable && "cursor-not-allowed opacity-30"
+            )}
+            size={12}
+          />
+        </div>
       </div>
     </FadeIn>
   );

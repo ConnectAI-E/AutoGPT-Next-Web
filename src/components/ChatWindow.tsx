@@ -185,14 +185,14 @@ const ChatWindow = ({
       </div>
       {displaySettings && (
         <div className="flex flex-col items-center justify-center md:flex-row">
-          <SwitchContainer label="Web Search">
+          <SwitchContainer label={t("web-search")}>
             <Switch
               disabled={agent !== null}
               value={isWebSearchEnabled}
               onChange={handleChangeWebSearch}
             />
           </SwitchContainer>
-          <SwitchContainer label={PAUSE_MODE}>
+          <SwitchContainer label={t("pause-mode")}>
             <Switch
               disabled={agent !== null}
               value={agentMode === PAUSE_MODE}
