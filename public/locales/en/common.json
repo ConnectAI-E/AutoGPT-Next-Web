@@ -33,5 +33,7 @@
   "donation": "Donation",
   "continue": "Continue",
   "placeholder-agent-goal": "Make the world a better place.",
-  "paused": "Paused"
+  "paused": "Paused",
+  "add-task": "Add Task",
+  "custom-task":"Custom Task"
 }

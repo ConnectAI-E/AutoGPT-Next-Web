@@ -292,7 +292,7 @@ const Home: NextPage = () => {
                 displaySettings
                 openSorryDialog={() => setShowSorryDialog(true)}
               />
-              {tasks.length > 0 && <TaskWindow />}
+              {(agent || tasks.length > 0) && <TaskWindow />}
             </Expand>
 
             <div className="flex w-full flex-col gap-2 sm:mt-4 md:mt-10">
