@@ -10,7 +10,6 @@ import {
   FaCoins,
   FaCode,
   FaServer,
-  FaTachometerAlt,
 } from "react-icons/fa";
 import Dialog from "./Dialog";
 import Input from "./Input";
@@ -19,8 +18,6 @@ import Accordion from "./Accordion";
 import type { ModelSettings, SettingModel } from "../utils/types";
 import { useGuestMode } from "../hooks/useGuestMode";
 import clsx from "clsx";
-import { AUTOMATIC_MODE, PAUSE_MODE } from "../types/agentTypes";
-import { useAgentStore } from "./stores";
 
 export const SettingsDialog: React.FC<{
   show: boolean;
@@ -32,9 +29,6 @@ export const SettingsDialog: React.FC<{
   });
   const { isGuestMode } = useGuestMode(settings.customGuestKey);
   const { t } = useTranslation(["settings", "common"]);
-  const agent = useAgentStore.use.agent();
-  const agentMode = useAgentStore.use.agentMode();
-  const updateAgentMode = useAgentStore.use.updateAgentMode();
 
   useEffect(() => {
     setSettings(customSettings.settings);
@@ -253,24 +247,6 @@ export const SettingsDialog: React.FC<{
             type="password"
           />
         )}
-        <Input
-          left={
-            <>
-              <FaTachometerAlt />
-              <span className="ml-2">{t("mode")}</span>
-            </>
-          }
-          value={agentMode}
-          disabled={agent !== null}
-          onChange={() => null}
-          setValue={updateAgentMode as (agentMode: string) => void}
-          type="combobox"
-          toolTipProperties={{
-            message: t("mode-tips") as string,
-            disabled: false,
-          }}
-          attributes={{ options: [AUTOMATIC_MODE, PAUSE_MODE] }}
-        />
         <Accordion
           child={advancedSettings}
           name={t("advanced-settings")}
