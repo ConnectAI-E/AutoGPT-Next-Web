@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-[English](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/README.md) / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md) / [日本語](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_JA.md)
+[English](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/README.md) / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md) / 日本語
 
 デザイン性の高い AutoGPT-Next-Web の Web UI を Vercel 上にワンクリックで展開できます。
 
