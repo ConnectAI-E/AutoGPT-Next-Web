@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-English / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md)
+English / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_CN.md) / [日本語](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_JA.md)
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
