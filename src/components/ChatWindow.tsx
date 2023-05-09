@@ -20,6 +20,7 @@ import {
   TASK_STATUS_COMPLETED,
   TASK_STATUS_FINAL,
   PAUSE_MODE,
+  AUTOMATIC_MODE,
 } from "../types/agentTypes";
 import clsx from "clsx";
 import { getMessageContainerStyle, getTaskStatusIcon } from "./utils/helpers";
@@ -61,6 +62,7 @@ const ChatWindow = ({
   const agent = useAgentStore.use.agent();
   const isWebSearchEnabled = useAgentStore.use.isWebSearchEnabled();
   const setIsWebSearchEnabled = useAgentStore.use.setIsWebSearchEnabled();
+  const updateAgentMode = useAgentStore.use.updateAgentMode();
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
@@ -114,6 +116,10 @@ const ChatWindow = ({
       }
     }
     return depth;
+  };
+
+  const handleUpdateAgentMode = (value: boolean) => {
+    updateAgentMode(value ? PAUSE_MODE : AUTOMATIC_MODE);
   };
 
   return (
@@ -178,16 +184,38 @@ const ChatWindow = ({
         )}
       </div>
       {displaySettings && (
-        <div className="flex items-center justify-center">
-          <div className="m-1 flex items-center gap-2 rounded-lg border-[2px] border-white/20 bg-zinc-700 px-2 py-1">
-            <p className="font-mono text-sm">{t("web-search")}</p>
+        <div className="flex flex-col items-center justify-center md:flex-row">
+          <SwitchContainer label={t("web-search")}>
             <Switch
+              disabled={agent !== null}
               value={isWebSearchEnabled}
               onChange={handleChangeWebSearch}
             />
-          </div>
+          </SwitchContainer>
+          <SwitchContainer label={t("pause-mode")}>
+            <Switch
+              disabled={agent !== null}
+              value={agentMode === PAUSE_MODE}
+              onChange={handleUpdateAgentMode}
+            />
+          </SwitchContainer>
         </div>
       )}
+    </div>
+  );
+};
+
+const SwitchContainer = ({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className="m-1 flex w-36 items-center justify-center gap-2 rounded-lg border-[2px] border-white/20 bg-zinc-700 px-2 py-1">
+      <p className="font-mono text-sm">{label}</p>
+      {children}
     </div>
   );
 };
