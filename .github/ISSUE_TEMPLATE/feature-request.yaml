@@ -1,0 +1,61 @@
+name: Feature Request / Enhancement 功能请求/增强
+description: Suggest a new feature or feature enhancement for the project 为项目提出新功能或功能增强建议
+labels: ["enhancement", "needs triage"]
+body:
+  - type: checkboxes
+    id: no-duplicate-issues
+    attributes:
+      label: "⚠️ Please check that this feature request hasn't been suggested before.请检查之前是否没有建议过此功能请求。"
+      description: "The **Label filters** may help make your search more focussed.标签过滤器可能有助于使您的搜索更加集中。"
+      options:
+        - label: "I searched previous [Ideas in issue](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) didn't find any similar feature requests.我搜索了之前的 [Ideas in issue](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) 没有找到任何类似的功能请求。"
+          required: true
+           
+  - type: textarea
+    id: feature-description
+    validations:
+      required: true
+    attributes:
+      label: "🔖 Feature description 功能说明"
+      description: "A clear and concise description of what the feature request is.对功能请求是什么的清晰简洁的描述。"
+      placeholder: "You should add ...你应该添加..."
+
+  - type: textarea
+    id: solution
+    validations:
+      required: true
+    attributes:
+      label: "✔️ Solution 解决方案"
+      description: "A clear and concise description of what you want to happen, and why.清晰简洁地描述您想要发生的事情以及原因。"
+      placeholder: "In my use-case, ...在我的用例中，..."
+
+  - type: textarea
+    id: alternatives
+    validations:
+      required: false
+    attributes:
+      label: "❓ Alternatives 备选方案"
+      description: "A clear and concise description of any alternative solutions or features you've considered.对您考虑过的任何替代解决方案或功能的清晰简洁的描述"
+      placeholder: "I have considered ...我考虑过..."
+
+  - type: textarea
+    id: additional-context
+    validations:
+      required: false
+    attributes:
+      label: "📝 Additional Context 附加上下文"
+      description: "Add any other context or screenshots about the feature request here.在此处添加有关功能请求的任何其他上下文或屏幕截图。"
+      placeholder: "..."
+      
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: 'Acknowledgements 致谢'
+      description: 'Please confirm the following:请确认以下内容：'
+      options:
+        - label: 'My issue title is concise, descriptive, and in title casing.我的问题标题简明扼要，具有描述性，并且使用标题框。'
+          required: true
+        - label: 'I have searched the existing issues to make sure this feature has not been requested yet.我已经搜索了现有问题以确保尚未请求此功能。'
+          required: true
+        - label: 'I have provided enough information for the maintainers to understand and evaluate this request.我已经为维护者提供了足够的信息来理解和评估这个请求。'
+          required: true
