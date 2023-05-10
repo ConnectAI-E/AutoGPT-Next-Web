@@ -15,14 +15,22 @@ ENV NODE_ENV=production
 ARG SKIP_ENV_VALIDATION
 ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
 
+# Needed for the wait-for-db script
+RUN apk add --no-cache netcat-openbsd
+
 # Set the working directory
-WORKDIR /app
+WORKDIR /next
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Copy the rest of the application code
 COPY . .
+
+# Ensure correct line endings after these files are edited by windows
+RUN apk add --no-cache dos2unix netcat-openbsd \
+  && dos2unix /next/wait-for-db.sh \
+  && dos2unix /next/entrypoint.sh
 
 # Expose the port the app will run on
 EXPOSE 3000
@@ -36,12 +44,18 @@ RUN npm config set registry 'https://registry.npmmirror.com/'
 # Install dependencies
 RUN npm ci
 
-# Build the Next.js app
-RUN npm run build
+# Copy the wait-for-db.sh script
+COPY wait-for-db.sh /usr/local/bin/wait-for-db.sh
+RUN chmod +x /usr/local/bin/wait-for-db.sh
 
-
+# FIXME
+# # Build the Next.js app
+# RUN npm run build
 
 ENTRYPOINT ["sh", "entrypoint.sh"]
 
-# Start the application
-CMD ["npm", "start"]
+# FIXME
+# # Start the application
+# CMD ["npm", "start"]
+
+CMD ["npm", "run", "dev"]

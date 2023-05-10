@@ -1,8 +1,7 @@
 #!/bin/env sh
 
-# change schema.prisma
-sed -ie 's/mysql/sqlite/g' prisma/schema.prisma
-sed -ie 's/@db.Text//' prisma/schema.prisma
+# Ensure DB is available before running Prisma commands
+./wait-for-db.sh db 3306
 
 # Add Prisma and generate Prisma client
 npx prisma generate
@@ -11,6 +10,9 @@ if [[ ! -f "/app/prisma/${DATABASE_URL:5}" ]]; then
   npx prisma migrate dev --name init
   npx prisma db push
 fi
+
+# Generate Prisma client
+npx prisma generate
 
 # run cmd
 exec "$@"

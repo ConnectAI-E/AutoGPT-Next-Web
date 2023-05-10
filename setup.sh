@@ -33,7 +33,10 @@ DATABASE_URL=file:../db/db.sqlite\n\
 SERP_API_KEY=$SERP_API_KEY\n\
 NEXT_PUBLIC_WEB_SEARCH_ENABLED=$NEXT_PUBLIC_WEB_SEARCH_ENABLED\n"
 
+cd next
+
 printf $ENV > .env
 ./prisma/useSqlite.sh
 npm install
+prisma db push
 npm run dev
