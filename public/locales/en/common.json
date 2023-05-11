@@ -34,6 +34,6 @@
   "continue": "Continue",
   "placeholder-agent-goal": "Make the world a better place.",
   "paused": "Paused",
-  "add-task": "Add Task",
-  "custom-task":"Custom Task"
+  "add-task": "Add Task: ",
+  "custom-task": "Custom Task"
 }

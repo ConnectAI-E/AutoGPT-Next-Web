@@ -44,7 +44,7 @@ export const analyzeTaskPrompt = new PromptTemplate({
 
 export const executeTaskPrompt = new PromptTemplate({
   template:
-    'You are an AI agent called AgentGPT. You must answer in the "{customLanguage}" language. Given the following overall objective `{goal}` and the following sub-task, `{task}`. Perform the task.',
+    'Answer in the "{customLanguage}" language. Given the following overall objective `{goal}` and the following sub-task, `{task}`. Perform the task in a detailed manner. If coding is required, provide code in markdown',
   inputVariables: ["goal", "task", "customLanguage"],
 });
 
