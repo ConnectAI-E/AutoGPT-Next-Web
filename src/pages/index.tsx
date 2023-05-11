@@ -154,7 +154,7 @@ const Home: NextPage = () => {
       | React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
     // Only Enter is pressed, execute the function
-    if (e.key === "Enter" && !disableDeployAgent && !e.shiftKey) {
+    if (e.ctrlKey && e.key === "Enter" && !disableDeployAgent) {
       if (isAgentPaused) {
         handleContinue();
       }
