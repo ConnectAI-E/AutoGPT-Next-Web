@@ -399,12 +399,16 @@ class AutonomousAgent {
   }
 
   sendLoopMessage() {
+    let value = "";
+    if (this.modelSettings.customApiKey || this.guestSettings.isGuestMode) {
+      value = `${i18n?.t("loop-with-filled-customApiKey", { ns: "chat" })}`;
+    } else {
+      value = `${i18n?.t("loop-with-empty-customApiKey", { ns: "chat" })}`;
+    }
+
     this.sendMessage({
       type: MESSAGE_TYPE_SYSTEM,
-      value:
-        this.modelSettings.customApiKey !== ""
-          ? `${i18n?.t("errors.loop-with-filled-customApiKey", { ns: "chat" })}`
-          : `${i18n?.t("errors.loop-with-empty-customApiKey", { ns: "chat" })}`,
+      value,
       taskId: this.currentTask?.taskId,
     });
   }

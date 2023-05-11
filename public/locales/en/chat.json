@@ -6,7 +6,7 @@
   "restart": "Restart if this takes more than 30 seconds",
   "errors": {
     "adding-additional-task": "ERROR adding additional task(s). It might have been against our model's policies to run them. Continuing.",
-    "loop-with-filled-customApiKey": "This agent has been running for too long (50 Loops). To save your wallet this agent is shutting down. In the future, the number of iterations will be configurable.",
+    "loop-with-filled-customApiKey": "This agent has maxed out on loops. To save your wallet, this agent is shutting down. You can configure the number of loops in the advanced settings.",
     "loop-with-empty-customApiKey": "We're sorry, because this is a demo, we cannot have our agents running for too long. Note, if you desire longer runs, please provide your own API key in Settings. Shutting down.",
     "accessing-apis": "ERROR accessing OpenAI APIs. Please check your API key or try again later",
     "accessing-using-apis": "ERROR using your OpenAI API key. You've exceeded your current quota, please check your plan and billing details.",
