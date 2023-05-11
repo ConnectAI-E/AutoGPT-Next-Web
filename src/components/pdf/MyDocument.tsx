@@ -1,29 +1,32 @@
 import React from "react";
-import { Document, Page, Text, StyleSheet, Font ,View} from "@react-pdf/renderer";
+import {
+  Document,
+  Font,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+} from "@react-pdf/renderer";
+import { i18n } from "next-i18next";
+
+const getFontUrlForLanguageCode = (languageCode: string) => {
+  switch (languageCode) {
+    case "en":
+      return ""; // Do not use a custom font for english
+    case "zh":
+      return "/fonts/SimSun.ttf";
+    case "ja":
+      return "/fonts/Nasu-Regular.ttf";
+    default:
+      return "/fonts/Roboto-Regular.ttf";
+  }
+};
+
+const getFontUrl = () => getFontUrlForLanguageCode(i18n?.language || "en");
 
 Font.register({
-  family: "Roboto,SourceHanSansCN",
-  fonts: [
-    {
-      src: "/fonts/SourceHanSansCN-Regular.otf",
-    },
-    {
-      src: "/fonts/Roboto-Regular.ttf",
-    },
-  ],
-});
-
-Font.registerHyphenationCallback((word: string) => {
-  if (word.length === 1) {
-    return [word];
-  }
-
-  return Array.from(word)
-    .map((char) => [char, ''])
-    .reduce((arr, current) => {
-      arr.push(...current);
-      return arr;
-    }, []);
+  family: "customFont",
+  src: getFontUrl(),
 });
 
 const styles = StyleSheet.create({
@@ -31,17 +34,20 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#FFFFFF",
     padding: 40,
+    wordBreak: "break-all",
   },
   horizontalRule: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.3,
     borderBottomColor: "#000",
     borderBottomStyle: "solid",
   },
   section: {
-    fontSize: 12,
-    fontFamily: "Roboto,SourceHanSansCN",
+    fontSize: 10,
+    ...(getFontUrl() == "" ? {} : { fontFamily: "customFont" }),
     marginVertical: 10,
     lineHeight: 1.5,
+    wordBreak: "break-all",
+    paddingRight: 10,
   },
 });
 
@@ -51,9 +57,11 @@ const MyDocument: React.FC<{
 }> = ({ textSections }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      {textSections.map((text) => (
+      {textSections.map((text, index) => (
         <>
-          <Text style={styles.section}>{text}</Text>
+          <Text key={index} style={styles.section}>
+            {renderTextLines(text)}
+          </Text>
           <HorizontalRule />
         </>
       ))}
@@ -62,5 +70,23 @@ const MyDocument: React.FC<{
 );
 
 const HorizontalRule: React.FC = () => <View style={styles.horizontalRule} />;
+
+const renderTextLines = (text: string): React.ReactNode[] => {
+  const MAX_LINE_LENGTH = 10;
+  const lines: string[] = [];
+  let start = 0;
+  while (start < text.length) {
+    const end = start + MAX_LINE_LENGTH;
+    const line: string = text.slice(start, end);
+    lines.push(line);
+    start = end;
+  }
+  return lines.map((line: string, index) => (
+    <React.Fragment key={index}>
+      {line}
+      <br />
+    </React.Fragment>
+  ));
+};
 
 export default MyDocument;
