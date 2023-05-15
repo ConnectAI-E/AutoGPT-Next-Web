@@ -1,5 +1,14 @@
 #!/bin/env sh
 
+# copy .env file if not exists
+[ ! -f .env ] && [ -f .env.example ] && cp .env.example .env
+cp .env .env.temp
+dos2unix .env.temp
+cat .env.temp > .env
+rm .env.temp
+
+source .env
+
 # change schema.prisma
 sed -ie 's/mysql/sqlite/g' prisma/schema.prisma
 sed -ie 's/@db.Text//' prisma/schema.prisma
