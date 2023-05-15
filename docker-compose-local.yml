@@ -7,18 +7,10 @@ services:
   autogpt:
     build:
       context: .
-      args:
-        NEXTAUTH_URL: http://localhost:3000
-        DATABASE_URL: file:../db/db.sqlite
-        SKIP_ENV_VALIDATION: 1 # omit this property to enable schema validation for the environment variables
     container_name: autogpt
-    environment:
-      OPENAI_API_KEY: ${OPENAI_API_KEY} # openai api key
-      NEXT_PUBLIC_WEB_SEARCH_ENABLED: ${NEXT_PUBLIC_WEB_SEARCH_ENABLED} # enable web search
-      SERP_API_KEY: ${SERP_API_KEY} # serp api key
-      NEXT_PUBLIC_GUEST_KEY: ${NEXT_PUBLIC_GUEST_KEY} # guest key
     ports:
       - 3000:3000
     volumes:
       - db:/app/db
+      - .env:/app/.env
     restart: unless-stopped
