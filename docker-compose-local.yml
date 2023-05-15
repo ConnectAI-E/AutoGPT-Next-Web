@@ -12,5 +12,5 @@ services:
       - 3000:3000
     volumes:
       - db:/app/db
-      - .env.docker:/app/.env
+      - .env:/app/.env
     restart: unless-stopped
