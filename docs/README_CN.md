@@ -34,9 +34,16 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 - [x] 1. 增加 Docker 和 Docker Compose 支持
 - [x] 2. 增加 Endpoint URL 支持
-- [ ] 3. 增加 Azure OpenAI API 的支持
+- [x] 3. 增加 Azure OpenAI API 的支持
 - [ ] 4. 运行结果展示优化，更方便的查看结果
 - [ ] 5. 增加微信登录支持
+
+## 商业愿景
+在维护开源项目的期间，很多朋友前来咨询关于定制系统的事宜。考虑到可能有更多有类似需求的朋友，我们决定启动商业版本的内部测试计划
+* 计划支持 -
+用户登录系统、计费系统、收费系统等，使每个人都可以直接部署一个收费版本的AutoGPT，并直接获得收入。
+* 参与方式 -
+要预定商业版并查看商业版计划的详情，请单击下面的链接[AutoGPT-Next-Web商业愿景](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
 
 ## 常见问题
 
