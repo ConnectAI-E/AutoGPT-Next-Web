@@ -31,12 +31,12 @@ RUN npm config set registry 'https://registry.npmmirror.com/'
 # Install dependencies
 RUN npm ci
 
+
+ENTRYPOINT ["sh", "entrypoint.sh"]
+
 # Build the Next.js app
 RUN npm run build
 
-
-
-ENTRYPOINT ["sh", "entrypoint.sh"]
 
 # Start the application
 CMD ["npm", "start"]
