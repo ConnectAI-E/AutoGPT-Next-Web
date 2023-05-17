@@ -83,16 +83,9 @@ SERP_API_KEY=$SERP_API_KEY\n\
 NEXT_PUBLIC_WEB_SEARCH_ENABLED=$NEXT_PUBLIC_WEB_SEARCH_ENABLED\n"
 
 
-
-
 printf $ENV > .env
 
-if [ "$1" = "--docker-compose-local" ]; then
-  docker-compose -f docker-compose-local.yml up -d --remove-orphans
-elif [ "$1" = "--docker-compose" ]; then
-  docker-compose up -d --remove-orphans
-else
-  ./prisma/useSqlite.sh
-  npm install
-  npm run dev
-fi
+./prisma/useSqlite.sh
+npm install
+npx prisma db push
+npm run dev
