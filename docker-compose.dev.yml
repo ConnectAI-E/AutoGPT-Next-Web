@@ -11,9 +11,8 @@ services:
       context: .
       dockerfile: dev.Dockerfile
       args:
-        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-        NEXTAUTH_URL: ${NEXTAUTH_URL}
-        DATABASE_URL: ${DATABASE_URL}
+        NEXTAUTH_URL: http://localhost:3000
+        DATABASE_URL: file:./db.sqlite
         SKIP_ENV_VALIDATION: 1 # omit this property to enable schema validation for the environment variables
     container_name: autogpt
     environment:

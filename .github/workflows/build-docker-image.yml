@@ -38,20 +38,18 @@ jobs:
           context: .
           file: prod.Dockerfile
           build-args: |
-            SKIP_ENV_VALIDATION=1
-            NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-            NEXTAUTH_URL: ${NEXTAUTH_URL}
-            DATABASE_URL: ${DATABASE_URL}
+            NEXTAUTH_URL=http://localhost:3000
+            DATABASE_URL=file:./db.sqlite
             OPENAI_API_KEY: ${OPENAI_API_KEY}
             NEXT_PUBLIC_WEB_SEARCH_ENABLED: ${NEXT_PUBLIC_WEB_SEARCH_ENABLED}
             SERP_API_KEY: ${SERP_API_KEY}
-            NEXT_PUBLIC_FF_AUTH_ENABLED: ${NEXT_PUBLIC_FF_AUTH_ENABLED}
-            GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-            GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-            GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
-            GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
-            DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
-            DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+            # NEXT_PUBLIC_FF_AUTH_ENABLED: ${NEXT_PUBLIC_FF_AUTH_ENABLED}
+            # GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+            # GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+            # GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+            # GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}
+            # DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+            # DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

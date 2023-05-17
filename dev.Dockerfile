@@ -2,6 +2,8 @@ FROM node:19-alpine
 
 RUN apk update && apk add --no-cache openssl
 
+ARG NEXTAUTH_SECRET=$(openssl rand -base64 32)
+ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
@@ -27,6 +29,9 @@ COPY . .
 
 # Prevent Husky errors by disabling the `prepare` script
 RUN npm pkg set scripts.prepare="exit 0"
+
+# set npm registry
+RUN npm config set registry 'https://registry.npmmirror.com/'
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
