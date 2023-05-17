@@ -26,6 +26,10 @@ COPY . .
 
 # Environment variables must be present at build time
 # https://github.com/vercel/next.js/discussions/14030
+
+ARG SKIP_ENV_VALIDATION
+ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
+
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
@@ -98,6 +102,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 
 # Environment variables must be redefined at run time
+ARG SKIP_ENV_VALIDATION
+ENV SKIP_ENV_VALIDATION=$SKIP_ENV_VALIDATION
+
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
