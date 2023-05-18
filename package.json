@@ -28,7 +28,7 @@
     "@trpc/react-query": "^10.25.0",
     "@trpc/server": "^10.25.0",
     "@uiball/loaders": "^1.2.6",
-    "@upstash/ratelimit": "^0.4.2",
+    "@upstash/ratelimit": "^0.4.3",
     "@vercel/analytics": "^1.0.1",
     "@vercel/edge": "^0.3.3",
     "axios": "^0.26.0",
