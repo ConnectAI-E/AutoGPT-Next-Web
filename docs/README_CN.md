@@ -39,11 +39,13 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 - [ ] 5. 增加微信登录支持
 
 ## 商业愿景
+
 在维护开源项目的期间，很多朋友前来咨询关于定制系统的事宜。考虑到可能有更多有类似需求的朋友，我们决定启动商业版本的内部测试计划
-* 计划支持 -
-用户登录系统、计费系统、收费系统等，使每个人都可以直接部署一个收费版本的AutoGPT，并直接获得收入。
-* 参与方式 -
-要预定商业版并查看商业版计划的详情，请单击下面的链接[AutoGPT-Next-Web商业愿景](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
+
+- 计划支持 -
+  用户登录系统、计费系统、收费系统等，使每个人都可以直接部署一个收费版本的 AutoGPT，并直接获得收入。
+- 参与方式 -
+  要预定商业版并查看商业版计划的详情，请单击下面的链接[AutoGPT-Next-Web 商业愿景](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
 
 ## 常见问题
 
@@ -66,7 +68,7 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法。
 
 ```bash
-docker-compose -f docker-compose-local.yml up -d --remove-orphans
+docker-compose -f docker-compose.dev.yml up -d --remove-orphans
 ```
 
 ### Docker-Image
@@ -74,7 +76,7 @@ docker-compose -f docker-compose-local.yml up -d --remove-orphans
 使用 `docker-image` 部署
 
 ```bash
-docker-compose up -d --remove-orphans
+docker-compose -f docker-compose.prod.yml up -d --remove-orphans
 ```
 
 ### 本地开发环境配置

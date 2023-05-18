@@ -24,7 +24,7 @@
 
 ## 特徴
 
-1. Vercel を使ったワンクリックの無料デプロイメントが1分で完了
+1. Vercel を使ったワンクリックの無料デプロイメントが 1 分で完了
 2. 現地での対応力を向上させました： 中国語で入力すると、英語ではなく中国語で内容が表示
 3. AgentGPT に合わせた UI 設計、レスポンシブデザイン、ダークモードへの対応
 4. 独自ドメインをお持ちですか？バインド後、障壁なくどこでもすぐにアクセスできるのがさらに良い
@@ -39,11 +39,13 @@
 - [ ] 5. WeChat のログインに対応
 
 ## ビジネスバージョン
+
 オープンソースプロジェクトを維持する期間中、多くの友人がシステムのカスタマイズについて相談に来ました。類似のニーズを持つ友人がより多くいる可能性があることを考慮して、商用版の内部テスト計画を開始することにしました〜
-* 計画サポート -
-ユーザーログインシステム、請求システム、課金システムなどをサポートし、誰でも直接有料版のAutoGPTを展開し、収入を直接獲得することができます。
-* 参加方法 -
-商業版を事前予約し、商業版計画の詳細を見るには、以下のリンク[AutoGPT-Next-Webビジネスビジョン](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
+
+- 計画サポート -
+  ユーザーログインシステム、請求システム、課金システムなどをサポートし、誰でも直接有料版の AutoGPT を展開し、収入を直接獲得することができます。
+- 参加方法 -
+  商業版を事前予約し、商業版計画の詳細を見るには、以下のリンク[AutoGPT-Next-Web ビジネスビジョン](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
 
 ## はじめに
 
@@ -67,15 +69,15 @@ AutoGPT-Next-Web をローカルで実行する最も簡単な方法は、docker
 便利なセットアップスクリプトが提供されているので、ぜひお試しください。
 
 ```bash
-./setup.sh --docker
+docker-compose -f docker-compose.dev.yml up -d --remove-orphans
 ```
 
-### Docker-compose
+### Docker-Image
 
-`docker-compose` デプロイを使用
+`docker-image` デプロイを使用
 
 ```bash
-./setup.sh --docker-compose
+docker-compose  -f docker-compose.prod.yml up -d --remove-orphans
 ```
 
 ### ローカル開発セットアップ
@@ -126,7 +128,7 @@ DATABASE_URL=file:./db.sqlite
 OPENAI_API_KEY=''
 ```
 
-5. sqliteを使用するためにprismaスキーマを変更:
+5. sqlite を使用するために prisma スキーマを変更:
 
 ```bash
 ./prisma/useSqlite.sh

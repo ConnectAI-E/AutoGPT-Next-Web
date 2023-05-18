@@ -17,5 +17,6 @@ const config = {
     config.experiments = { asyncWebAssembly: true, layers: true };
     return config;
   },
+  output: "standalone",
 };
 export default config;
