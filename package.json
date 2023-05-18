@@ -29,7 +29,7 @@
     "@trpc/server": "^10.25.0",
     "@uiball/loaders": "^1.2.6",
     "@upstash/ratelimit": "^0.4.2",
-    "@vercel/analytics": "^1.0.0",
+    "@vercel/analytics": "^1.0.1",
     "@vercel/edge": "^0.3.3",
     "axios": "^0.26.0",
     "cheerio": "^1.0.0-rc.12",
