@@ -3,7 +3,7 @@ version: '3'
 services:
   autogpt:
     container_name: autogpt
-    image: dogtititi/autogpt-next-web:lastest
+    image: dogtititi/autogpt-next-web:latest
     # build:
     #   context: .
     #   dockerfile: prod.Dockerfile
