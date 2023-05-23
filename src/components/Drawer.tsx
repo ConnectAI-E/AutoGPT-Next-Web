@@ -143,7 +143,7 @@ const Drawer = ({
           {showDonation && (
             <DrawerItem
               icon={<FaDonate />}
-              text="donation"
+              text="support"
               onClick={showWeChatPay}
             />
           )}
