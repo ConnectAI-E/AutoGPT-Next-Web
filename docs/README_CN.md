@@ -10,7 +10,8 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 [Demo](https://auto-agentgpt.com) / [Issues](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [Join Discord](https://discord.gg/Xnsbhg6Uvd) / [Buy Me a Coffee](https://www.buymeacoffee.com/elricliu)
 
-[演示](https://auto-agentgpt.com/) / [反馈](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [QQ频道](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/fa0e85db-4419-42c1-8257-f6b2007c9db7) / [微信](https://user-images.githubusercontent.com/38354472/232797309-9348f3a6-1dd7-422a-ad01-935247b1970e.png) / [打赏开发者](https://user-images.githubusercontent.com/38354472/232796654-c749602b-c1d4-402b-8c31-e7c013b7a42d.png)
+[演示](https://auto-agentgpt.com/) / [反馈](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [QQ群](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/562fabbb-76cd-4902-bb07-9ec7d82871fc
+) / [微信](https://user-images.githubusercontent.com/38354472/232797309-9348f3a6-1dd7-422a-ad01-935247b1970e.png) / [打赏开发者](https://user-images.githubusercontent.com/38354472/232796654-c749602b-c1d4-402b-8c31-e7c013b7a42d.png)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDogtiti%2FAutoGPT-Next-Web&env=OPENAI_API_KEY&project-name=autogpt-next-web&repository-name=AutoGPT-Next-Web)
 
@@ -20,7 +21,7 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## Discuss with us
 
-![cover](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/a3f6012f-854f-497d-9090-ecaeb102682f)
+![cover](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/a54268e8-8d76-4af3-a59a-b88be71648fc)
 
 ## 特点
 
