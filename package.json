@@ -52,7 +52,7 @@
     "react-markdown": "^8.0.7",
     "rehype-highlight": "^6.0.0",
     "remark-gfm": "^3.0.1",
-    "stripe": "^12.5.0",
+    "stripe": "^12.9.0",
     "superjson": "1.9.1",
     "tailwindcss-radix": "^2.8.0",
     "uuid": "^9.0.0",
