@@ -31,7 +31,7 @@
     "@upstash/ratelimit": "^0.4.3",
     "@vercel/analytics": "^1.0.1",
     "@vercel/edge": "^0.3.4",
-    "axios": "^0.26.0",
+    "axios": "^1.4.0",
     "cheerio": "^1.0.0-rc.12",
     "chromadb": "^1.4.1",
     "clsx": "^1.2.1",
