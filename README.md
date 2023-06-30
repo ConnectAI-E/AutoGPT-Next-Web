@@ -6,7 +6,7 @@ English / [简体中文](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/d
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
-One-click free deployment of your private AutoGPT-Next-Web web application.
+One-click free deployment of your private AutoGPT-Next-Web web application
 
 [Demo](https://auto-agentgpt.com/) / [Issues](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [Join Discord](https://discord.gg/Xnsbhg6Uvd) / [Buy Me a Coffee](https://www.buymeacoffee.com/elricliu)
 
