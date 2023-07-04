@@ -37,7 +37,7 @@
     "clsx": "^1.2.1",
     "framer-motion": "^10.11.2",
     "html-to-image": "^1.11.11",
-    "i18next": "^22.4.15",
+    "i18next": "^22.5.1",
     "langchain": "^0.0.91",
     "micro": "^10.0.1",
     "micro-cors": "^0.1.1",
