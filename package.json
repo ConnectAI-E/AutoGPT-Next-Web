@@ -34,7 +34,7 @@
     "axios": "^0.26.0",
     "cheerio": "^1.0.0-rc.12",
     "chromadb": "^1.4.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "framer-motion": "^10.12.18",
     "html-to-image": "^1.11.11",
     "i18next": "^22.5.1",
