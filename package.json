@@ -67,7 +67,7 @@
     "@types/micro-cors": "^0.1.2",
     "@types/node": "^20.4.8",
     "@types/prettier": "^3.0.0",
-    "@types/react": "^18.2.17",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.6",
     "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
