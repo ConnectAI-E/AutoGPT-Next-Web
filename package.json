@@ -33,7 +33,7 @@
     "@vercel/edge": "^1.0.1",
     "axios": "^0.26.0",
     "cheerio": "^1.0.0-rc.12",
-    "chromadb": "^1.5.6",
+    "chromadb": "^1.5.9",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.3",
     "html-to-image": "^1.11.11",
