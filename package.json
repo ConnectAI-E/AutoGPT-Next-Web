@@ -55,7 +55,7 @@
     "stripe": "^13.3.0",
     "superjson": "1.13.1",
     "tailwindcss-radix": "^2.8.0",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "zod": "^3.22.0",
     "zustand": "^4.3.9"
   },
@@ -69,7 +69,7 @@
     "@types/prettier": "^3.0.0",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.6",
-    "@types/uuid": "^9.0.2",
+    "@types/uuid": "^9.0.4",
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.15",
