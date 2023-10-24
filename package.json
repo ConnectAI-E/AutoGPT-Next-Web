@@ -35,7 +35,7 @@
     "cheerio": "^1.0.0-rc.12",
     "chromadb": "^1.5.9",
     "clsx": "^2.0.0",
-    "framer-motion": "^10.16.3",
+    "framer-motion": "^10.16.4",
     "html-to-image": "^1.11.11",
     "i18next": "^22.5.1",
     "langchain": "^0.0.91",
