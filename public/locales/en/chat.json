@@ -6,7 +6,7 @@
   "restart": "Restart if this takes more than 30 seconds",
   "errors": {
     "adding-additional-task": "ERROR adding additional task(s). It might have been against our model's policies to run them. Continuing.",
-    "loop-with-filled-customApiKey": "This agent has been running for too long (50 Loops). To save your wallet this agent is shutting down. In the future, the number of iterations will be configurable.",
+    "loop-with-filled-customApiKey": "This agent has maxed out on loops. To save your wallet, this agent is shutting down. You can configure the number of loops in the advanced settings.",
     "loop-with-empty-customApiKey": "We're sorry, because this is a demo, we cannot have our agents running for too long. Note, if you desire longer runs, please provide your own API key in Settings. Shutting down.",
     "accessing-apis": "ERROR accessing OpenAI APIs. Please check your API key or try again later",
     "accessing-using-apis": "ERROR using your OpenAI API key. You've exceeded your current quota, please check your plan and billing details.",
@@ -16,7 +16,7 @@
     "invalid-guest-key": "Invalid Guest Key"
   },
   "all-tasks-completed": "All tasks completed. Shutting down.",
-  "manually-shutdown": "The agent has been manually shutdown.",
+  "manually-shutdown": "The current task has been manually shutdown.",
   "task-marked-as-complete": "Task marked as complete!",
   "new-goal": "Embarking on a new goal:",
   "added-task": "Added task:",
@@ -28,5 +28,8 @@
   "sorry-tips": "<0> Due to costs, we&apos;ve had to momentarily disable web search 🌐.<1></1> <2>But you can still use it on your site.</2>  <4> More Detials </4></0> ",
   "sorry": "Sorry",
   "web-search": "Web search",
-  "signin-tips": "<0> Please <1>sign in</1> to deploy an Agent! 🤖 </0> "
+  "signin-tips": "<0> Please <1>sign in</1> to deploy an Agent! 🤖 </0> ",
+  "generating-response": "🧠 Generating response...",
+  "searching-web-for": "🌐 Searching the web for {{arg}} ...",
+  "pause-mode": "Pause Mode"
 }

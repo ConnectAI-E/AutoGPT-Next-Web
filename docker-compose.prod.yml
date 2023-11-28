@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  autogpt:
+    container_name: autogpt
+    image: dogtititi/autogpt-next-web:latest
+    # build:
+    #   context: .
+    #   dockerfile: prod.Dockerfile
+    #   args:
+    #     NEXTAUTH_URL: http://localhost:3000
+    #     DATABASE_URL: file:./db.sqlite
+    #     OPENAI_API_KEY: ${OPENAI_API_KEY} # openai api key
+    #     NEXT_PUBLIC_WEB_SEARCH_ENABLED: ${NEXT_PUBLIC_WEB_SEARCH_ENABLED} # enable web search
+    #     SERP_API_KEY: ${SERP_API_KEY} # serp api key
+    #     NEXT_PUBLIC_GUEST_KEY: ${NEXT_PUBLIC_GUEST_KEY} #  guest key
+    #     NEXT_PUBLIC_FF_AUTH_ENABLED: ${NEXT_PUBLIC_FF_AUTH_ENABLED}  # auth enable
+    #     GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID} # google client id
+    #     GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET} # google client secret
+    #     GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID} # github client id
+    #     GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET} # github client secret
+    #     DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID} # discord client id
+    #     DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET} # discord client secret
+    ports:
+      - 3000:3000
+    restart: unless-stopped

@@ -1,0 +1,99 @@
+name: Bug Report/Bug反馈
+description: File a bug report/提交错误报告
+labels: ["bug", "needs triage/需要分类"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Before you start/开始之前
+        Please **make sure you are on the latest version**
+        请**确保你是最新版本**
+        If you encountered the issue after you installed, updated, or reloaded, **please try restarting before reporting the bug**.
+        如果您在安装、更新或重新加载后遇到问题，**请在报告错误之前尝试重新启动**。
+  - type: checkboxes
+    id: no-duplicate-issues
+    attributes:
+      label: |
+          Please check that this issue hasn't been reported before
+          请检查之前没有报告过此问题
+      description: |
+        The **Label filters** may help make your search more focussed.
+        **标签过滤器** 可能有助于使您的搜索更加集中。
+      options:
+        - label: "I searched previous [Bug Reports](https://github.com/Dogtiti/AutoGPT-Next-Web/issues?q=is%3Aissue+is%3Aopen+label%3Abug) didn't find any similar reports.我搜索了以前的 [Bug Reports](https://github.com/Dogtiti/AutoGPT-Next-Web/issues?q=is%3Aissue+is%3Aopen+label%3Abug) 没有找到任何类似的报告。"
+          required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior/预期行为
+      description: Tell us what **should** happen.告诉我们**应该**发生什么
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Current behaviour/当前行为
+      description: |
+        Tell us what happens instead of the expected behavior.
+        告诉我们发生了什么而不是预期的行为
+        Adding of screenshots really helps.
+        添加屏幕截图确实有帮助
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce/重现步骤
+      description: |
+        Which exact steps can a developer take to reproduce the issue?
+        开发人员可以采取哪些具体步骤来重现该问题？
+        The more detail you provide, the easier it will be to narrow down and fix the bug.
+        您提供的细节越多，缩小和修复错误的范围就越容易
+        Please paste in tasks and/or queries **as text, not screenshots**.
+        请粘贴任务和/或查询**作为文本，而不是屏幕截图**
+      placeholder: |
+        Example of the level of detail needed to reproduce any bugs efficiently and reliably.
+        高效可靠地重现任何错误所需的详细程度示例。
+        1. Go to the '...' page.
+           转到“...”页面。
+        2. Click on the '...' button.
+           单击“...”按钮。
+        3. Scroll down to '...'.
+           向下滚动到“...”。
+        4. Observe the error.
+           观察错误        
+    validations:
+      required: true
+  - type: textarea
+    id: possible-solution
+    attributes:
+      label: Possible solution/可能的解决方案
+      placeholder: I think that change foo to type bar would fix it.../我认为将 foo 更改为 bar 类型会解决它
+      description: |
+        Not obligatory, but please suggest a fix or reason for the bug, if you have an idea.  
+        不是强制性的，但如果您有想法，请提出错误的修复或原因。
+  - type: checkboxes
+    id: operating-systems
+    attributes:
+      label: Which Operating Systems are you using?您使用的是哪种操作系统？
+      description: You may select more than one.您可以选择多个。
+      options:
+        - label: Android
+        - label: iPhone/iPad
+        - label: Linux
+        - label: macOS
+        - label: Windows
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: 'Acknowledgements致谢'
+      description: 'Please confirm the following:请确认以下内容'
+      options:
+        - label: 'My issue title is concise, descriptive, and in title casing.我的问题标题简明扼要，具有描述性，并且使用标题框'
+          required: true
+        - label: 'I have searched the existing issues to make sure this bug has not been reported yet.我已经搜索了现有问题以确保尚未报告此错误。'
+          required: true
+        - label: 'I am using the latest version of AutoGPT-Next-Web.我使用的是最新版本的 AutoGPT-Next-Web'
+          required: true
+        - label: 'I have provided enough information for the maintainers to reproduce and diagnose the issue.我已经为维护者提供了足够的信息来重现和诊断问题。'
+          required: true

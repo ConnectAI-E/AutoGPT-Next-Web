@@ -2,7 +2,7 @@
 
 <h1 align="center">AutoGPT-Next-Web</h1>
 
-[English](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/README.md) / 简体中文
+[English](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/README.md) / 简体中文 / [日本語](https://github.com/Dogtiti/AutoGPT-Next-Web/blob/main/docs/README_JA.md)
 
 One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
@@ -10,7 +10,8 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 [Demo](https://auto-agentgpt.com) / [Issues](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [Join Discord](https://discord.gg/Xnsbhg6Uvd) / [Buy Me a Coffee](https://www.buymeacoffee.com/elricliu)
 
-[演示](https://auto-agentgpt.com/) / [反馈](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [QQ 群](https://user-images.githubusercontent.com/38354472/232797111-d34a81b0-2739-4251-82b6-6093dc0eb0b6.png) / [微信](https://user-images.githubusercontent.com/38354472/232797309-9348f3a6-1dd7-422a-ad01-935247b1970e.png) / [知识星球](https://user-images.githubusercontent.com/38354472/232797482-c42222ff-74f9-4519-ba6f-752288dbe262.png) / [打赏开发者](https://user-images.githubusercontent.com/38354472/232796654-c749602b-c1d4-402b-8c31-e7c013b7a42d.png)
+[演示](https://auto-agentgpt.com/) / [反馈](https://github.com/Dogtiti/AutoGPT-Next-Web/issues) / [QQ群](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/562fabbb-76cd-4902-bb07-9ec7d82871fc
+) / [微信](https://user-images.githubusercontent.com/38354472/232797309-9348f3a6-1dd7-422a-ad01-935247b1970e.png) / [打赏开发者](https://user-images.githubusercontent.com/38354472/232796654-c749602b-c1d4-402b-8c31-e7c013b7a42d.png)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FDogtiti%2FAutoGPT-Next-Web&env=OPENAI_API_KEY&project-name=autogpt-next-web&repository-name=AutoGPT-Next-Web)
 
@@ -20,7 +21,7 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 ## Discuss with us
 
-![cover](https://user-images.githubusercontent.com/38354472/232792153-683125c9-33bf-492f-ac6b-fbaab8c7b46e.png)
+![cover](https://github.com/Dogtiti/AutoGPT-Next-Web/assets/38354472/a54268e8-8d76-4af3-a59a-b88be71648fc)
 
 ## 特点
 
@@ -34,9 +35,18 @@ One-Click to deploy well-designed AutoGPT-Next-Web web UI on Vercel.
 
 - [x] 1. 增加 Docker 和 Docker Compose 支持
 - [x] 2. 增加 Endpoint URL 支持
-- [ ] 3. 增加 Azure OpenAI API 的支持
+- [x] 3. 增加 Azure OpenAI API 的支持
 - [ ] 4. 运行结果展示优化，更方便的查看结果
 - [ ] 5. 增加微信登录支持
+
+## 商业愿景
+
+在维护开源项目的期间，很多朋友前来咨询关于定制系统的事宜。考虑到可能有更多有类似需求的朋友，我们决定启动商业版本的内部测试计划
+
+- 计划支持 -
+  用户登录系统、计费系统、收费系统等，使每个人都可以直接部署一个收费版本的 AutoGPT，并直接获得收入。
+- 参与方式 -
+  要预定商业版并查看商业版计划的详情，请单击下面的链接[AutoGPT-Next-Web 商业愿景](https://egqz2y6eul.feishu.cn/docx/PxoMd7LGfoobAixiuWacxRWQnNd)。
 
 ## 常见问题
 
@@ -54,18 +64,20 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 
 ## Docker 部署
 
-### Docker 配置
+### Docker 本地配置
 
-使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法，这里提供了便捷的脚本以帮助您快速入门。
+使用 Docker 是在本地运行 AutoGPT-Next-Web 最简单的方法。
 
 ```bash
-./setup.sh --docker
+docker-compose -f docker-compose.dev.yml up -d --remove-orphans
 ```
-### Docker-compose
 
-使用 `docker-compose` 部署
+### Docker-Image
+
+使用 `docker-image` 部署
+
 ```bash
-./setup.sh --docker-compose
+docker-compose -f docker-compose.prod.yml up -d --remove-orphans
 ```
 
 ### 本地开发环境配置
@@ -73,7 +85,7 @@ A：项目源自于 AgentGPT，我们目标是持续输出对国内用户友好�
 如果您想在本地开发 AutoGPT-Next-Web，则最简单的方法是使用提供的设置脚本。
 
 ```bash
-./setup.sh --local
+./setup.sh
 ```
 
 ### 手动配置
@@ -130,3 +142,21 @@ OPENAI_API_KEY=''
 npx prisma db push
 npm run dev
 ```
+
+## Connect-AI More
+
+| <div style="width:200px">AI</div> |             <img width=110> SDK <img width=110>              |                         Application                          |
+| :-------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+|              🎒OpenAI              |    [Go-OpenAI](https://github.com/ConnectAI-E/Go-OpenAI)     | [🏅Feishu-OpenAI](https://github.com/ConnectAI-E/Feishu-OpenAI), [🎖Lark-OpenAI](https://github.com/ConnectAI-E/Lark-OpenAI), [Feishu-EX-ChatGPT](https://github.com/ConnectAI-E/Feishu-EX-ChatGPT), [🎖Feishu-OpenAI-Stream-Chatbot](https://github.com/ConnectAI-E/Feishu-OpenAI-Stream-Chatbot), [Feishu-TLDR](https://github.com/ConnectAI-E/Feishu-TLDR),[Feishu-OpenAI-Amazing](https://github.com/ConnectAI-E/Feishu-OpenAI-Amazing), [Feishu-Oral-Friend](https://github.com/ConnectAI-E/Feishu-Oral-Friend), [Feishu-OpenAI-Base-Helper](https://github.com/ConnectAI-E/Feishu-OpenAI-Base-Helper), [Feishu-Vector-Knowledge-Management](https://github.com/ConnectAI-E/Feishu-Vector-Knowledge-Management), [Feishu-OpenAI-PDF-Helper](https://github.com/ConnectAI-E/Feishu-OpenAI-PDF-Helper), [🏅Dingtalk-OpenAI](https://github.com/ConnectAI-E/Dingtalk-OpenAI), [Wework-OpenAI](https://github.com/ConnectAI-E/Wework-OpenAI), [WeWork-OpenAI-Node](https://github.com/ConnectAI-E/WeWork-OpenAI-Node), [llmplugin](https://github.com/ConnectAI-E/llmplugin) |
+|             🤖 AutoGPT             |                            ------                            | [🏅AutoGPT-Next-Web](https://github.com/ConnectAI-E/AutoGPT-Next-Web) |
+|         🎭 Stablediffusion         |                            ------                            | [🎖Feishu-Stablediffusion](https://github.com/ConnectAI-E/Feishu-Stablediffusion) |
+|           🍎 Midjourney            | [Go-Midjourney](https://github.com/ConnectAI-E/Feishu-Midjourney/tree/main/midjourney) | [🏅Feishu-Midjourney](https://github.com/ConnectAI-E/Feishu-Midjourney), [MidJourney-Web](https://github.com/ConnectAI-E/MidJourney-Web), [Dingtalk-Midjourney](https://github.com/ConnectAI-E/Dingtalk-Midjourney) |
+|            🍍 文心一言             |    [Go-Wenxin](https://github.com/ConnectAI-E/Go-Wenxin)     | [Feishu-Wenxin](https://github.com/ConnectAI-E/Feishu-Wenxin), [Dingtalk-Wenxin](https://github.com/ConnectAI-E/Dingtalk-Wenxin), [Wework-Wenxin](https://github.com/ConnectAI-E/Wework-Wenxin) |
+|             💸 Minimax             |   [Go-Minimax](https://github.com/ConnectAI-E/Go-Minimax)    | [Feishu-Minimax](https://github.com/ConnectAI-E/Feishu-Minimax), [Dingtalk-Minimax](https://github.com/ConnectAI-E/Dingtalk-Minimax), [Wework-Minimax](https://github.com/ConnectAI-E/Wework-Minimax) |
+|             ⛳️ CLAUDE              |    [Go-Claude](https://github.com/ConnectAI-E/Go-Claude)     | [Feishu-Claude](https://github.com/ConnectAI-E/Feishu-Claude), [DingTalk-Claude](https://github.com/ConnectAI-E/DingTalk-Claude), [Wework-Claude](https://github.com/ConnectAI-E/Wework-Claude) |
+|              🥁 PaLM               |      [Go-PaLM](https://github.com/ConnectAI-E/go-PaLM)       | [Feishu-PaLM](https://github.com/ConnectAI-E/Feishu-PaLM),[DingTalk-PaLM](https://github.com/ConnectAI-E/DingTalk-PaLM),[Wework-PaLM](https://github.com/ConnectAI-E/Wework-PaLM) |
+|             🎡 Prompt              |                                                              | [📖 Prompt-Engineering-Tutior](https://github.com/ConnectAI-E/Prompt-Engineering-Tutior) |
+|             🍋 ChatGLM             |                                                              | [Feishu-ChatGLM](https://github.com/ConnectAI-E/Feishu-ChatGLM) |
+|            ⛓ LangChain            |                                                              | [📖 LangChain-Tutior](https://github.com/ConnectAI-E/LangChain-Tutior) |
+
+

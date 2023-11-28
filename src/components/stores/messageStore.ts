@@ -24,6 +24,7 @@ const initialMessageState = {
 interface MessageSlice {
   messages: Message[];
   addMessage: (newMessage: Message) => void;
+  deleteTask: (taskId: string) => void;
 }
 
 const createMessageSlice: StateCreator<
@@ -49,16 +50,23 @@ const createMessageSlice: StateCreator<
           0,
           newMessage
         );
+        const tasks =
+          isTask(newTask) && !isExistingTask(newTask)
+            ? [newTask, ...state.tasks]
+            : [...state.tasks];
         return {
           ...state,
           messages: messagesCopy,
           // messages: [...state.messages, newMessage],
-          tasks:
-            isTask(newTask) && !isExistingTask(newTask)
-              ? [...state.tasks, newTask]
-              : [...state.tasks],
+          tasks,
         };
       });
+    },
+    deleteTask: (taskId) => {
+      set((state) => ({
+        ...state,
+        tasks: state.tasks.filter((task) => task.taskId !== taskId),
+      }));
     },
   };
 };

@@ -9,7 +9,7 @@ const isProdutionAndAuthEnabled =
 const requiredAuthEnabledForProduction = () => {
   return isProdutionAndAuthEnabled
     ? z.string().min(1).trim()
-    : z.string().min(1).trim().optional();
+    : z.string().optional();
 };
 
 const stringToBoolean = () => {

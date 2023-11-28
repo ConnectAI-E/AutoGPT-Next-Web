@@ -6,7 +6,7 @@
   "restart": "如果这需要超过 30 秒，请重新开始。",
   "errors": {
     "adding-additional-task": "添加额外的任务时发生了错误。可能是因为这些任务违反了我们模型的策略。不过，我们还是继续处理其他任务。",
-    "loop-with-filled-customApiKey": "该代理程序运行时间过长 (50个回合)。为了节省您的费用，该代理程序将关闭。在未来，迭代次数将是可配置的。",
+    "loop-with-filled-customApiKey": "此代理已达到可运行循环的最大次数。为了节省您的钱包，此代理现在将停止... 可以在设置中配置代理运行循环的最大次数。",
     "loop-with-empty-customApiKey": "非常抱歉，由于这只是一个演示，我们的代理程序不能运行太长时间。请注意，如果您需要更长的运行时间，请在设置中提供自己的API密钥。正在关闭...",
     "accessing-apis": "访问OpenAI API出错。请检查您的API密钥或稍后重试。",
     "accessing-using-apis": "使用OpenAI API密钥出错。您已超出当前限额，请检查您的计划和账单详情。",
@@ -16,7 +16,7 @@
     "invalid-guest-key": "访问码无效"
   },
   "all-tasks-completed": "所有任务已完成。正在关闭...",
-  "manually-shutdown": "代理已被手动关闭。",
+  "manually-shutdown": "当前任务已被手动关闭。",
   "task-marked-as-complete": "任务已标记为已完成！",
   "new-goal": "开始追寻一个新的目标：",
   "added-task": "已添加任务。",
@@ -28,5 +28,8 @@
   "sorry-tips": "<0>由于成本问题，我们不得不暂时禁用网络搜索 🌐。<1></1> <2>但您仍然可以在您的网站上使用它。</2>  <4> More Detials </4></0> ",
   "sorry": "抱歉",
   "web-search": "网络搜索",
-  "signin-tips": "<0> 请 <1>登录</1> 以部署代理! 🤖 </0> "
+  "signin-tips": "<0> 请 <1>登录</1> 以部署代理! 🤖 </0> ",
+  "generating-response": "🧠  生成回复中...",
+  "searching-web-for": "🌐 正在搜索 {{arg}} ...",
+  "pause-mode": "暂停模式"
 }

@@ -30,8 +30,10 @@
   "sign-out": "Sign Out",
   "export": "Export",
   "reset": "Reset",
-  "donation": "Donation",
+  "support": "Support",
   "continue": "Continue",
   "placeholder-agent-goal": "Make the world a better place.",
-  "paused": "Paused"
+  "paused": "Paused",
+  "add-task": "Add Task: ",
+  "custom-task": "Custom Task"
 }

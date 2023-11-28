@@ -26,6 +26,8 @@ export const agentRouter = createTRPCRouter({
         return prisma.agentTask.create({
           data: {
             agentId: agent.id,
+            taskId: e.taskId,
+            parentTaskId: e.parentTaskId,
             type: e.type,
             ...(e.type === MESSAGE_TYPE_TASK && { status: e.status }),
             info: e.info,

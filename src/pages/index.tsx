@@ -154,7 +154,7 @@ const Home: NextPage = () => {
       | React.KeyboardEvent<HTMLTextAreaElement>
   ) => {
     // Only Enter is pressed, execute the function
-    if (e.key === "Enter" && !disableDeployAgent && !e.shiftKey) {
+    if (e.ctrlKey && e.key === "Enter" && !disableDeployAgent) {
       if (isAgentPaused) {
         handleContinue();
       }
@@ -249,7 +249,7 @@ const Home: NextPage = () => {
         >
           <div
             id="layout"
-            className="flex h-full w-full max-w-screen-lg flex-col items-center justify-between gap-3 py-5 md:justify-center"
+            className="flex h-full w-full max-w-full flex-col items-center justify-between gap-3 md:justify-center"
           >
             <div
               id="title"
@@ -292,7 +292,7 @@ const Home: NextPage = () => {
                 displaySettings
                 openSorryDialog={() => setShowSorryDialog(true)}
               />
-              {tasks.length > 0 && <TaskWindow />}
+              {(agent || tasks.length > 0) && <TaskWindow />}
             </Expand>
 
             <div className="flex w-full flex-col gap-2 sm:mt-4 md:mt-10">
