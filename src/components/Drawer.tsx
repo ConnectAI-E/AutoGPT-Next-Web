@@ -91,7 +91,7 @@ const Drawer = ({
         className={clsx(
           showDrawer ? "translate-x-0 md:sticky" : "-translate-x-full",
           "z-30 m-0 flex h-screen w-72 flex-col justify-between bg-zinc-900 p-3 font-mono text-white shadow-3xl transition-all",
-          "fixed top-0 "
+          "fixed top-0 ",
         )}
       >
         <div className="flex flex-col gap-1 overflow-hidden">
@@ -102,7 +102,7 @@ const Drawer = ({
                 showDrawer
                   ? "-translate-x-2"
                   : "translate-x-12 border-2 border-white/20",
-                "absolute right-0 top-2 z-40 rounded-md bg-zinc-900 p-2 text-white transition-all hover:bg-zinc-700 "
+                "absolute right-0 top-2 z-40 rounded-md bg-zinc-900 p-2 text-white transition-all hover:bg-zinc-700 ",
               )}
               onClick={toggleDrawer}
             >
@@ -170,6 +170,17 @@ const Drawer = ({
             target="_blank"
           />
           <DrawerItem
+            icon={
+              <img
+                style={{ height: 24, width: 24 }}
+                src="/connect-ai-logo.svg"
+              ></img>
+            }
+            text="GPTsCopilot"
+            href="https://gptscopilot.ai/"
+            target="_blank"
+          />
+          <DrawerItem
             icon={<FaLanguage />}
             text="language"
             onClick={handleLanguageChange}
@@ -212,7 +223,7 @@ const DrawerItem = (props: DrawerItemProps) => {
         className={clsx(
           "group flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
-          `${className || ""}`
+          `${className || ""}`,
         )}
         href={href}
         target={target ?? "_blank"}
@@ -228,7 +239,7 @@ const DrawerItem = (props: DrawerItemProps) => {
         className={clsx(
           "group flex cursor-pointer flex-row items-center rounded-md p-2 hover:bg-white/5",
           border && "border-[1px] border-white/20",
-          `${className || ""}`
+          `${className || ""}`,
         )}
         onClick={onClick}
       >
