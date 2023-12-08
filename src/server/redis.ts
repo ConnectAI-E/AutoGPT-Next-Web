@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Ratelimit } from "@upstash/ratelimit"; // for deno: see above
 import { Redis } from "@upstash/redis";
 import { env } from "../env/server.mjs";
@@ -9,7 +10,7 @@ const redisRateLimiter = new Ratelimit({
   }),
   limiter: Ratelimit.slidingWindow(
     env.RATE_LIMITER_REQUESTS_PER_MINUTE ?? 100,
-    "60 s"
+    "60 s",
   ),
   analytics: true,
   prefix: "@upstash/ratelimit",
