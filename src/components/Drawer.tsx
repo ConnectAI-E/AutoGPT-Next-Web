@@ -172,7 +172,7 @@ const Drawer = ({
           <DrawerItem
             icon={
               <img
-                style={{ height: 24, width: 24 }}
+                style={{ height: 16, width: 16 }}
                 src="/connect-ai-logo.svg"
               ></img>
             }
