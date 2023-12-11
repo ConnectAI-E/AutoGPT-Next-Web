@@ -152,7 +152,7 @@ devDependencies:
     specifier: ^0.1.2
     version: 0.1.5
   '@types/node':
-    specifier: ^20.8.6
+    specifier: ^20.10.4
     version: 20.10.4
   '@types/prettier':
     specifier: ^3.0.0
